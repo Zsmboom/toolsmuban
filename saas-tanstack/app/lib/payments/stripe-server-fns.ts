@@ -8,7 +8,7 @@ import { getCurrentUserFn } from '~/lib/auth/server-fns';
 import { generateId } from '~/lib/auth';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
+  apiVersion: '2023-10-16',
 });
 
 export const createCheckoutSessionFn = createServerFn({ method: 'POST' })
@@ -117,10 +117,10 @@ export const handleWebhookFn = createServerFn({ method: 'POST' })
 
         await db.update(subscriptions)
           .set({
-            status: subscription.status,
+            status: subscription.status as "active" | "canceled" | "past_due" | "trialing" | "paused" | "expired",
             currentPeriodStart: new Date(subscription.current_period_start * 1000),
             currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+            cancelAtPeriodEnd: subscription.cancel_at_period_end as boolean,
           })
           .where(eq(subscriptions.providerId, subscription.id));
 
