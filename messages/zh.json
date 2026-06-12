@@ -1,0 +1,594 @@
+{
+  "metadata": {
+    "title": "SaaS 模板 - 现代化 SaaS 启动套件",
+    "siteName": "SaaS 模板",
+    "description": "包含身份验证、支付和管理后台的完整 SaaS 模板"
+  },
+  "common": {
+    "home": "首页",
+    "about": "关于",
+    "pricing": "价格",
+    "blog": "博客",
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出登录",
+    "dashboard": "控制台",
+    "settings": "设置",
+    "profile": "个人资料",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "filter": "筛选",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "close": "关闭"
+  },
+  "nav": {
+    "skipToMain": "跳转到主要内容",
+    "features": "功能特性",
+    "pricing": "价格方案",
+    "about": "关于我们",
+    "blog": "博客",
+    "docs": "文档",
+    "support": "技术支持"
+  },
+  "hero": {
+    "badge": "终极 SaaS 启动模板",
+    "title": "10倍速构建您的 SaaS 产品",
+    "description": "包含身份验证、支付、管理后台的完整 Next.js 15 模板，以及启动 SaaS 业务所需的一切。",
+    "subtitle": "使用我们的生产级模板，更快地构建和发布您的 SaaS 产品",
+    "cta": "免费开始",
+    "ctaShort": "开始使用",
+    "learnMore": "探索功能",
+    "productionReady": "生产就绪",
+    "typescript": "TypeScript",
+    "responsive": "完全响应式"
+  },
+  "features": {
+    "title": "启动所需的一切",
+    "subtitle": "完整的 SaaS 启动套件，内置所有基本功能，随时可定制。",
+    "lightningFast": {
+      "title": "极速性能",
+      "description": "基于 Next.js 15 构建，拥有最佳性能和最佳实践。"
+    },
+    "secureAuth": {
+      "title": "安全认证",
+      "description": "NextAuth.js v5，支持 OAuth 提供商和数据库会话。"
+    },
+    "dualPayment": {
+      "title": "双支付网关",
+      "description": "集成 Stripe 和 PayPal，实现最大灵活性。"
+    },
+    "analytics": {
+      "title": "分析仪表板",
+      "description": "全面的管理面板，包含用户分析和收入追踪。"
+    },
+    "responsive": {
+      "title": "完全响应式",
+      "description": "在移动端、平板和桌面设备上完美体验。"
+    },
+    "typescript": {
+      "title": "TypeScript 优先",
+      "description": "类型安全的代码库，卓越的开发体验。"
+    },
+    "roleAccess": {
+      "title": "基于角色的访问",
+      "description": "内置用户角色和路由保护中间件。"
+    },
+    "multiCountry": {
+      "title": "多国家支持",
+      "description": "开箱即用的国家级用户和分析追踪。"
+    }
+  },
+  "testimonials": {
+    "title": "深受开发者喜爱",
+    "subtitle": "看看我们的客户对他们的体验有何评价。",
+    "testimonial1": {
+      "name": "Sarah Johnson",
+      "role": "创始人，TechStart",
+      "content": "这个模板为我们节省了数月的开发时间。代码质量卓越，文档全面。"
+    },
+    "testimonial2": {
+      "name": "Michael Chen",
+      "role": "CTO，DataFlow",
+      "content": "内置的 Stripe 和 PayPal 支付集成使变现变得极其简单。强烈推荐！"
+    },
+    "testimonial3": {
+      "name": "Emily Rodriguez",
+      "role": "产品经理，AppVenture",
+      "content": "管理仪表板非常棒。我们可以实时跟踪从用户分析到收入指标的一切。"
+    }
+  },
+  "pricingCards": {
+    "title": "简单透明的价格",
+    "subtitle": "选择适合您业务的方案。随时取消。",
+    "mostPopular": "最受欢迎",
+    "getStarted": "开始使用",
+    "contactSales": "联系销售",
+    "trialInfo": "所有方案包含 14 天免费试用。无需信用卡。",
+    "basic": {
+      "name": "基础版",
+      "description": "非常适合入门",
+      "feature1": "每月最多 10,000 次请求",
+      "feature2": "基础分析仪表板",
+      "feature3": "电子邮件支持",
+      "feature4": "2 名团队成员",
+      "feature5": "99.9% 正常运行时间 SLA",
+      "feature6": "SSL 证书"
+    },
+    "pro": {
+      "name": "专业版",
+      "description": "适合成长中的企业",
+      "feature1": "每月最多 100,000 次请求",
+      "feature2": "高级分析和洞察",
+      "feature3": "优先支持",
+      "feature4": "10 名团队成员",
+      "feature5": "99.99% 正常运行时间 SLA",
+      "feature6": "自定义域名",
+      "feature7": "API 访问",
+      "feature8": "Webhooks"
+    },
+    "enterprise": {
+      "name": "企业版",
+      "description": "适合大型组织",
+      "feature1": "无限请求",
+      "feature2": "自定义分析",
+      "feature3": "专属支持",
+      "feature4": "无限团队成员",
+      "feature5": "99.99% 正常运行时间 SLA",
+      "feature6": "白标解决方案",
+      "feature7": "高级 API 访问",
+      "feature8": "自定义集成",
+      "feature9": "SLA 保证"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "subtitle": "关于模板您需要了解的一切。",
+    "question1": {
+      "q": "你们接受哪些支付方式？",
+      "a": "我们通过 Stripe 接受所有主要信用卡，以及 PayPal。两个支付网关都完全集成且安全。"
+    },
+    "question2": {
+      "q": "我可以随时取消订阅吗？",
+      "a": "是的，您可以随时取消订阅。您的访问权限将持续到当前计费周期结束，之后不会再收费。"
+    },
+    "question3": {
+      "q": "有免费试用吗？",
+      "a": "有！所有方案都提供 14 天免费试用。开始试用无需信用卡。"
+    },
+    "question4": {
+      "q": "身份验证是如何工作的？",
+      "a": "我们默认使用 NextAuth.js v5 与 Google OAuth。该模板设计可轻松添加更多提供商，如 GitHub、Microsoft 或自定义电子邮件/密码验证。"
+    },
+    "question5": {
+      "q": "代码是生产就绪的吗？",
+      "a": "当然！该模板遵循 Next.js 最佳实践，包含 TypeScript 以确保类型安全，并针对 Vercel 部署进行了优化。它包含适当的错误处理、加载状态和安全措施。"
+    },
+    "question6": {
+      "q": "它使用什么数据库？",
+      "a": "该模板使用 Turso (LibSQL) 与 Drizzle ORM。数据库模式完全类型化并包含迁移。如果需要，您可以轻松切换到其他 SQL 数据库，如 PostgreSQL 或 MySQL。"
+    },
+    "question7": {
+      "q": "你们提供支持吗？",
+      "a": "是的！基础方案包含电子邮件支持，专业方案获得优先支持，企业客户享有专属支持和 SLA 保证。"
+    },
+    "question8": {
+      "q": "我可以自定义设计吗？",
+      "a": "当然！该模板使用 Tailwind CSS 和 Shadcn UI 组件，使您可以轻松自定义颜色、排版和布局以匹配您的品牌。"
+    }
+  },
+  "cta": {
+    "title": "准备好开始了吗？",
+    "subtitle": "加入数千名使用我们模板构建出色 SaaS 产品的开发者。",
+    "startTrial": "开始免费试用",
+    "viewPricing": "查看价格",
+    "trialInfo": "14 天免费试用 • 无需信用卡 • 随时取消"
+  },
+  "auth": {
+    "loginTitle": "欢迎回来",
+    "loginSubtitle": "登录您的账户",
+    "signupTitle": "创建账户",
+    "signupSubtitle": "立即开始您的旅程",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "forgotPassword": "忘记密码？",
+    "rememberMe": "记住我",
+    "noAccount": "还没有账户？",
+    "hasAccount": "已有账户？",
+    "signInWith": "使用 {provider} 登录",
+    "continueWith": "使用 {provider} 继续",
+    "orContinueWith": "或继续使用",
+    "signInToAccess": "登录以访问您的账户",
+    "bySigningIn": "登录即表示您同意我们的",
+    "termsOfService": "服务条款",
+    "and": "和",
+    "privacyPolicy": "隐私政策",
+    "errors": {
+      "OAuthSignin": "登录时发生错误，请重试。",
+      "OAuthCallback": "身份验证回调时发生错误，请重试。",
+      "OAuthCreateAccount": "无法创建账户，请联系支持。",
+      "EmailCreateAccount": "无法创建账户，请联系支持。",
+      "Callback": "回调时发生错误，请重试。",
+      "OAuthAccountNotLinked": "此邮箱已关联到其他账户。",
+      "SessionRequired": "请先登录以访问此页面。",
+      "Default": "发生错误，请重试。",
+      "unknown": "登录时发生错误，请重试。"
+    },
+    "errorPage": {
+      "Configuration": {
+        "title": "配置错误",
+        "description": "服务器配置存在问题，请联系支持。"
+      },
+      "AccessDenied": {
+        "title": "访问被拒绝",
+        "description": "您没有登录权限。"
+      },
+      "Verification": {
+        "title": "验证失败",
+        "description": "登录链接已失效，可能已被使用或已过期。"
+      },
+      "OAuthSignin": {
+        "title": "OAuth 登录错误",
+        "description": "尝试使用 OAuth 提供商登录时发生错误。"
+      },
+      "OAuthCallback": {
+        "title": "OAuth 回调错误",
+        "description": "OAuth 回调过程中发生错误。"
+      },
+      "OAuthCreateAccount": {
+        "title": "账户创建失败",
+        "description": "无法创建 OAuth 提供商账户，请重试或联系支持。"
+      },
+      "EmailCreateAccount": {
+        "title": "邮箱账户创建失败",
+        "description": "无法创建邮箱账户，请联系支持。"
+      },
+      "Callback": {
+        "title": "回调错误",
+        "description": "回调过程中发生错误，请重试。"
+      },
+      "OAuthAccountNotLinked": {
+        "title": "账户已存在",
+        "description": "此邮箱已关联到其他账户，请使用原始方式登录。"
+      },
+      "SessionRequired": {
+        "title": "需要会话",
+        "description": "您必须登录才能访问此页面。"
+      },
+      "Default": {
+        "title": "身份验证错误",
+        "description": "身份验证过程中发生意外错误，请重试。"
+      },
+      "tryAgain": "重试",
+      "backToHome": "返回首页",
+      "persistsProblem": "如果此问题持续存在，请",
+      "contactSupport": "联系支持"
+    }
+  },
+  "dashboard": {
+    "welcome": "欢迎回来，{name}",
+    "overview": "概览",
+    "tools": "工具",
+    "history": "历史记录",
+    "settings": "设置",
+    "analytics": "数据分析",
+    "users": "用户管理",
+    "subscriptions": "订阅管理"
+  },
+  "pricing": {
+    "title": "简单透明的价格",
+    "subtitle": "选择适合您的方案",
+    "monthly": "按月付费",
+    "yearly": "按年付费",
+    "save": "节省 {amount}%",
+    "free": "免费版",
+    "starter": "入门版",
+    "pro": "专业版",
+    "enterprise": "企业版",
+    "perMonth": "每月",
+    "perYear": "每年",
+    "selectPlan": "选择方案",
+    "currentPlan": "当前方案",
+    "upgrade": "升级",
+    "features": "功能特性",
+    "includedFeatures": "{plan}的所有功能，另外包括："
+  },
+  "footer": {
+    "product": "产品",
+    "company": "公司",
+    "resources": "资源",
+    "legal": "法律信息",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "contact": "联系我们",
+    "allRightsReserved": "版权所有",
+    "aboutUs": "关于我们",
+    "careers": "招聘信息",
+    "features": "功能特性",
+    "documentation": "文档",
+    "cookiePolicy": "Cookie 政策",
+    "connect": "关注我们",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "errors": {
+    "pageNotFound": "页面未找到",
+    "pageNotFoundDescription": "您访问的页面不存在。",
+    "goHome": "返回首页",
+    "somethingWrong": "出错了",
+    "tryAgain": "重试",
+    "unauthorized": "未授权",
+    "forbidden": "禁止访问",
+    "internalError": "内部服务器错误"
+  },
+  "admin": {
+    "title": "管理后台",
+    "users": "用户管理",
+    "subscriptions": "订阅管理",
+    "analytics": "数据分析",
+    "logs": "系统日志",
+    "settings": "管理设置"
+  },
+  "homePage": {
+    "metaTitle": "SaaS 模板 - 10倍速启动您的 SaaS 产品",
+    "metaDescription": "包含身份验证、Stripe 和 PayPal 支付、管理后台和数据分析的完整 Next.js 15 SaaS 启动模板。生产就绪、完全可定制且性能优化。",
+    "schemaDescription": "现代化 SaaS 启动模板，包含 Next.js 15、身份验证和支付集成"
+  },
+  "pricingPage": {
+    "metaTitle": "价格方案 - 免费开始",
+    "metaDescription": "适合各种规模团队的灵活定价。基础版 $29/月，专业版 $99/月，企业版定制价格。提供 14 天免费试用，无需信用卡。随时取消。",
+    "title": "简单透明的价格",
+    "subtitle": "选择适合您的方案"
+  },
+  "aboutPage": {
+    "metaTitle": "关于我们 - 我们的使命与故事",
+    "metaDescription": "了解我们如何通过生产就绪的 Next.js 15 模板帮助开发者更快地构建出色的 SaaS 产品。使用 TypeScript、Tailwind CSS 和现代最佳实践构建。",
+    "title": "关于我们",
+    "subtitle": "我们的使命是帮助开发者更快地构建出色的 SaaS 产品。",
+    "story": {
+      "title": "我们的故事",
+      "paragraph1": "我们从一个简单的想法开始：构建 SaaS 产品不应该需要数月的设置和配置。每个开发者都应该有一个坚实的基础来构建。",
+      "paragraph2": "这个模板源于我们构建多个 SaaS 产品的经验。我们包含了所有我们希望在开始时拥有的东西 - 身份验证、支付、分析等等。",
+      "paragraph3": "如今，世界各地的开发者使用我们的模板更快地推出他们的想法，让他们能够专注于使产品独特的东西。"
+    },
+    "values": {
+      "title": "我们的价值观",
+      "quality": {
+        "title": "质量优先",
+        "description": "我们在模板的每个方面都保持高标准并遵循最佳实践。"
+      },
+      "developer": {
+        "title": "开发者体验",
+        "description": "清晰的代码、明确的文档和直观的结构使开发成为一种乐趣。"
+      },
+      "support": {
+        "title": "持续支持",
+        "description": "定期更新、错误修复和新功能让您保持领先。"
+      }
+    }
+  },
+  "termsPage": {
+    "metaTitle": "服务条款 - 法律条款与条件",
+    "metaDescription": "阅读我们的服务条款，了解使用我们的 SaaS 模板的规则和规定。",
+    "title": "服务条款",
+    "lastUpdated": "最后更新"
+  },
+  "privacyPage": {
+    "metaTitle": "隐私政策 - 我们如何保护您的数据",
+    "metaDescription": "我们的隐私政策解释了我们如何收集、使用和保护您的个人信息。我们优先考虑您的隐私和数据安全。",
+    "title": "隐私政策",
+    "lastUpdated": "最后更新"
+  },
+  "blogPage": {
+    "metaTitle": "博客 - SaaS 模板",
+    "metaDescription": "阅读我们关于构建成功 SaaS 产品的最新文章、教程和见解。",
+    "knowledgeBase": "知识库",
+    "title": "博客与资源",
+    "subtitle": "发现帮助您构建和发展 SaaS 产品的文章、教程和见解。",
+    "featured": "精选文章",
+    "recentArticles": "最新文章",
+    "noPosts": "暂无文章",
+    "checkBackSoon": "请稍后查看新文章和见解。",
+    "categories": "分类",
+    "tags": "标签"
+  },
+  "blogPost": {
+    "backToBlog": "返回博客",
+    "share": "分享：",
+    "tags": "标签：",
+    "relatedArticles": "相关文章"
+  },
+  "blogCategory": {
+    "backToBlog": "返回博客",
+    "category": "分类",
+    "articleCount": "此分类中有 {count} 篇文章"
+  },
+  "blogTag": {
+    "backToBlog": "返回博客",
+    "tag": "标签",
+    "articleCount": "带有此标签的文章有 {count} 篇"
+  },
+  "dashboardPage": {
+    "title": "控制台",
+    "welcome": "欢迎回来，{name}",
+    "stats": {
+      "toolsUsed": "已使用工具",
+      "creditsRemaining": "剩余积分",
+      "usageTime": "使用时长",
+      "thisMonth": "本月",
+      "resetsMonthly": "每月重置"
+    }
+  },
+  "toolsPage": {
+    "title": "工具",
+    "subtitle": "选择一个工具开始使用",
+    "launchTool": "启动工具",
+    "tools": {
+      "imageGenerator": {
+        "name": "AI 图像生成器",
+        "description": "使用 AI 创建精美图像"
+      },
+      "videoEditor": {
+        "name": "视频编辑器",
+        "description": "使用强大的工具编辑视频"
+      },
+      "textEnhancer": {
+        "name": "文本增强器",
+        "description": "使用 AI 改善您的写作"
+      },
+      "codeGenerator": {
+        "name": "代码生成器",
+        "description": "即时生成代码片段"
+      }
+    }
+  },
+  "historyPage": {
+    "title": "使用历史",
+    "subtitle": "查看您最近的工具使用和活动",
+    "noHistory": "暂无使用历史。开始使用工具以在此处查看您的活动。",
+    "table": {
+      "tool": "工具",
+      "action": "操作",
+      "duration": "持续时间",
+      "time": "时间"
+    }
+  },
+  "settingsPage": {
+    "title": "设置",
+    "subtitle": "管理您的账户设置和订阅",
+    "profile": {
+      "title": "个人资料",
+      "user": "用户",
+      "name": "姓名",
+      "email": "邮箱",
+      "namePlaceholder": "您的姓名",
+      "emailNote": "邮箱无法更改",
+      "save": "保存更改"
+    },
+    "subscription": {
+      "title": "订阅",
+      "currentPlan": "当前方案",
+      "free": "免费版",
+      "active": "活跃",
+      "renewsOn": "续订日期"
+    },
+    "payments": {
+      "title": "支付历史",
+      "date": "日期",
+      "amount": "金额",
+      "status": "状态"
+    }
+  },
+  "adminPage": {
+    "title": "管理后台",
+    "subtitle": "您的 SaaS 平台概览",
+    "stats": {
+      "totalUsers": "总用户数",
+      "registeredAccounts": "注册账户",
+      "activeSubscriptions": "活跃订阅",
+      "payingCustomers": "付费客户",
+      "totalRevenue": "总收入",
+      "allTime": "全部时间",
+      "toolUsage": "工具使用量",
+      "totalApiCalls": "总 API 调用"
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "manageUsers": {
+        "title": "管理用户",
+        "description": "查看和管理用户账户"
+      },
+      "manageSubscriptions": {
+        "title": "管理订阅",
+        "description": "查看订阅详情"
+      },
+      "viewLogs": {
+        "title": "查看日志",
+        "description": "系统日志和活动"
+      }
+    },
+    "recentActivity": {
+      "title": "最近活动",
+      "noActivity": "暂无最近活动"
+    }
+  },
+  "adminUsersPage": {
+    "title": "用户管理",
+    "subtitle": "管理和监控所有用户账户",
+    "searchPlaceholder": "搜索用户...",
+    "loading": "加载中...",
+    "totalUsers": "总用户数",
+    "searchResults": "搜索结果",
+    "currentPage": "当前页",
+    "pages": "页数"
+  },
+  "adminLogsPage": {
+    "title": "系统日志",
+    "subtitle": "监控工具使用和系统活动",
+    "loading": "加载中...",
+    "stats": {
+      "totalApiCalls": "总 API 调用",
+      "avgDuration": "平均持续时间",
+      "uniqueTools": "唯一工具"
+    },
+    "usageChart": "随时间使用情况",
+    "table": {
+      "user": "用户",
+      "tool": "工具",
+      "action": "操作",
+      "duration": "持续时间",
+      "time": "时间",
+      "unknown": "未知"
+    }
+  },
+  "adminSubscriptionsPage": {
+    "title": "订阅管理",
+    "subtitle": "监控和管理用户订阅",
+    "loading": "加载中...",
+    "stats": {
+      "activeSubscriptions": "活跃订阅",
+      "stripeSubscriptions": "Stripe 订阅",
+      "paypalSubscriptions": "PayPal 订阅",
+      "creemSubscriptions": "Creem 订阅"
+    },
+    "table": {
+      "user": "用户",
+      "plan": "方案",
+      "status": "状态",
+      "provider": "提供商",
+      "created": "创建时间",
+      "unknown": "未知"
+    }
+  },
+  "adminAnalyticsPage": {
+    "title": "国家分析",
+    "subtitle": "用户和使用情况的地理分布",
+    "loading": "加载中...",
+    "stats": {
+      "totalCountries": "总国家数",
+      "totalUsers": "总用户数",
+      "avgUsagePerUser": "人均使用量"
+    },
+    "userDistribution": "按国家分布的用户",
+    "topCountries": "使用量最高的国家",
+    "unknown": "未知",
+    "users": "用户",
+    "requests": "请求",
+    "detailedStats": "详细统计",
+    "table": {
+      "country": "国家",
+      "users": "用户",
+      "toolUsage": "工具使用",
+      "avgPerUser": "人均"
+    }
+  }
+}

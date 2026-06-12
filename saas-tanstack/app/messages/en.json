@@ -1,0 +1,593 @@
+{
+  "metadata": {
+    "title": "SaaS Template - Modern SaaS Starter Kit",
+    "siteName": "SaaS Template",
+    "description": "A complete SaaS template with authentication, payments, and admin dashboard"
+  },
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "profile": "Profile",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close"
+  },
+  "nav": {
+    "skipToMain": "Skip to main content",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "blog": "Blog",
+    "docs": "Documentation",
+    "support": "Support"
+  },
+  "hero": {
+    "badge": "The Ultimate SaaS Starter Template",
+    "title": "Build Your SaaS Product 10x Faster",
+    "description": "Complete Next.js 15 template with authentication, payments, admin dashboard, and everything you need to launch your SaaS business.",
+    "subtitle": "Build and launch your SaaS product faster with our production-ready template",
+    "cta": "Get Started Free",
+    "ctaShort": "Get Started",
+    "learnMore": "Explore Features",
+    "productionReady": "Production Ready",
+    "typescript": "TypeScript",
+    "responsive": "Fully Responsive"
+  },
+  "features": {
+    "title": "Everything You Need to Launch",
+    "subtitle": "A complete SaaS starter kit with all the essential features built-in and ready to customize.",
+    "lightningFast": {
+      "title": "Lightning Fast",
+      "description": "Built on Next.js 15 with optimal performance and best practices."
+    },
+    "secureAuth": {
+      "title": "Secure Authentication",
+      "description": "NextAuth.js v5 with OAuth providers and database sessions."
+    },
+    "dualPayment": {
+      "title": "Dual Payment Gateways",
+      "description": "Integrated with both Stripe and PayPal for maximum flexibility."
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "description": "Comprehensive admin panel with user analytics and revenue tracking."
+    },
+    "responsive": {
+      "title": "Fully Responsive",
+      "description": "Perfect experience on mobile, tablet, and desktop devices."
+    },
+    "typescript": {
+      "title": "TypeScript First",
+      "description": "Type-safe codebase with excellent developer experience."
+    },
+    "roleAccess": {
+      "title": "Role-Based Access",
+      "description": "Built-in user roles and route protection middleware."
+    },
+    "multiCountry": {
+      "title": "Multi-Country Support",
+      "description": "Track users and analytics by country out of the box."
+    }
+  },
+  "testimonials": {
+    "title": "Loved by Developers",
+    "subtitle": "See what our customers have to say about their experience.",
+    "testimonial1": {
+      "name": "Sarah Johnson",
+      "role": "Founder, TechStart",
+      "content": "This template saved us months of development time. The code quality is exceptional and the documentation is comprehensive."
+    },
+    "testimonial2": {
+      "name": "Michael Chen",
+      "role": "CTO, DataFlow",
+      "content": "The built-in payment integration with Stripe and PayPal made monetization incredibly easy. Highly recommended!"
+    },
+    "testimonial3": {
+      "name": "Emily Rodriguez",
+      "role": "Product Manager, AppVenture",
+      "content": "The admin dashboard is fantastic. We can track everything from user analytics to revenue metrics in real-time."
+    }
+  },
+  "pricingCards": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that's right for your business. Cancel anytime.",
+    "mostPopular": "Most Popular",
+    "getStarted": "Get Started",
+    "contactSales": "Contact Sales",
+    "trialInfo": "All plans include a 14-day free trial. No credit card required.",
+    "basic": {
+      "name": "Basic",
+      "description": "Perfect for getting started",
+      "feature1": "Up to 10,000 requests/month",
+      "feature2": "Basic analytics dashboard",
+      "feature3": "Email support",
+      "feature4": "2 team members",
+      "feature5": "99.9% uptime SLA",
+      "feature6": "SSL certificate"
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "For growing businesses",
+      "feature1": "Up to 100,000 requests/month",
+      "feature2": "Advanced analytics & insights",
+      "feature3": "Priority support",
+      "feature4": "10 team members",
+      "feature5": "99.99% uptime SLA",
+      "feature6": "Custom domain",
+      "feature7": "API access",
+      "feature8": "Webhooks"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "For large organizations",
+      "feature1": "Unlimited requests",
+      "feature2": "Custom analytics",
+      "feature3": "Dedicated support",
+      "feature4": "Unlimited team members",
+      "feature5": "99.99% uptime SLA",
+      "feature6": "White-label solution",
+      "feature7": "Advanced API access",
+      "feature8": "Custom integrations",
+      "feature9": "SLA guarantee"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about the template.",
+    "question1": {
+      "q": "What payment methods do you accept?",
+      "a": "We accept all major credit cards through Stripe, as well as PayPal. Both payment gateways are fully integrated and secure."
+    },
+    "question2": {
+      "q": "Can I cancel my subscription anytime?",
+      "a": "Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period, and you won't be charged again."
+    },
+    "question3": {
+      "q": "Is there a free trial?",
+      "a": "Yes! All plans come with a 14-day free trial. No credit card required to start your trial."
+    },
+    "question4": {
+      "q": "How does the authentication work?",
+      "a": "We use NextAuth.js v5 with Google OAuth by default. The template is designed to easily add more providers like GitHub, Microsoft, or custom email/password authentication."
+    },
+    "question5": {
+      "q": "Is the code production-ready?",
+      "a": "Absolutely! The template follows Next.js best practices, includes TypeScript for type safety, and is optimized for deployment on Vercel. It includes proper error handling, loading states, and security measures."
+    },
+    "question6": {
+      "q": "What database does it use?",
+      "a": "The template uses Turso (LibSQL) with Drizzle ORM. The database schema is fully typed and includes migrations. You can easily switch to other SQL databases like PostgreSQL or MySQL if needed."
+    },
+    "question7": {
+      "q": "Do you provide support?",
+      "a": "Yes! Basic plans include email support, Pro plans get priority support, and Enterprise customers receive dedicated support with SLA guarantees."
+    },
+    "question8": {
+      "q": "Can I customize the design?",
+      "a": "Of course! The template uses Tailwind CSS and Shadcn UI components, making it easy to customize colors, typography, and layouts to match your brand."
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "subtitle": "Join thousands of developers building amazing SaaS products with our template.",
+    "startTrial": "Start Free Trial",
+    "viewPricing": "View Pricing",
+    "trialInfo": "14-day free trial • No credit card required • Cancel anytime"
+  },
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to your account",
+    "signupTitle": "Create Account",
+    "signupSubtitle": "Start your journey today",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember me",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signInWith": "Sign in with {provider}",
+    "continueWith": "Continue with {provider}",
+    "orContinueWith": "Or continue with",
+    "signInToAccess": "Sign in to access your account",
+    "bySigningIn": "By signing in, you agree to our",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "errors": {
+      "OAuthSignin": "Error occurred during sign in. Please try again.",
+      "OAuthCallback": "Error occurred during authentication callback. Please try again.",
+      "OAuthCreateAccount": "Could not create account. Please contact support.",
+      "EmailCreateAccount": "Could not create account. Please contact support.",
+      "Callback": "Error occurred during callback. Please try again.",
+      "OAuthAccountNotLinked": "This email is already associated with another account.",
+      "SessionRequired": "Please sign in to access this page.",
+      "Default": "An error occurred. Please try again.",
+      "unknown": "An error occurred during sign in. Please try again."
+    },
+    "errorPage": {
+      "Configuration": {
+        "title": "Configuration Error",
+        "description": "There is a problem with the server configuration. Please contact support."
+      },
+      "AccessDenied": {
+        "title": "Access Denied",
+        "description": "You do not have permission to sign in."
+      },
+      "Verification": {
+        "title": "Verification Failed",
+        "description": "The sign in link is no longer valid. It may have been used already or expired."
+      },
+      "OAuthSignin": {
+        "title": "OAuth Sign In Error",
+        "description": "An error occurred while trying to sign in with the OAuth provider."
+      },
+      "OAuthCallback": {
+        "title": "OAuth Callback Error",
+        "description": "An error occurred during the OAuth callback process."
+      },
+      "OAuthCreateAccount": {
+        "title": "Account Creation Failed",
+        "description": "Could not create OAuth provider account. Please try again or contact support."
+      },
+      "EmailCreateAccount": {
+        "title": "Email Account Creation Failed",
+        "description": "Could not create email account. Please contact support."
+      },
+      "Callback": {
+        "title": "Callback Error",
+        "description": "An error occurred during the callback process. Please try again."
+      },
+      "OAuthAccountNotLinked": {
+        "title": "Account Already Exists",
+        "description": "This email is already associated with another account. Please sign in with your original method."
+      },
+      "SessionRequired": {
+        "title": "Session Required",
+        "description": "You must be signed in to access this page."
+      },
+      "Default": {
+        "title": "Authentication Error",
+        "description": "An unexpected error occurred during authentication. Please try again."
+      },
+      "tryAgain": "Try Again",
+      "backToHome": "Back to Home",
+      "persistsProblem": "If this problem persists, please",
+      "contactSupport": "contact support"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}",
+    "overview": "Overview",
+    "tools": "Tools",
+    "history": "History",
+    "settings": "Settings",
+    "analytics": "Analytics",
+    "users": "Users",
+    "subscriptions": "Subscriptions"
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that's right for you",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save {amount}%",
+    "free": "Free",
+    "starter": "Starter",
+    "pro": "Pro",
+    "enterprise": "Enterprise",
+    "perMonth": "per month",
+    "perYear": "per year",
+    "selectPlan": "Select Plan",
+    "currentPlan": "Current Plan",
+    "upgrade": "Upgrade",
+    "features": "Features",
+    "includedFeatures": "Everything in {plan}, plus:"
+  },
+  "footer": {
+    "product": "Product",
+    "company": "Company",
+    "resources": "Resources",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact Us",
+    "allRightsReserved": "All rights reserved",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "features": "Features",
+    "documentation": "Documentation",
+    "cookiePolicy": "Cookie Policy",
+    "connect": "Connect",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "errors": {
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDescription": "The page you're looking for doesn't exist.",
+    "goHome": "Go Home",
+    "somethingWrong": "Something went wrong",
+    "tryAgain": "Try again",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "internalError": "Internal Server Error"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Users Management",
+    "subscriptions": "Subscriptions",
+    "analytics": "Analytics",
+    "logs": "System Logs",
+    "settings": "Admin Settings"
+  },
+  "homePage": {
+    "metaTitle": "SaaS Template - Launch Your SaaS Product 10x Faster",
+    "metaDescription": "Complete Next.js 15 SaaS starter with authentication, Stripe & PayPal payments, admin dashboard, and analytics. Production-ready, fully customizable, and optimized for performance.",
+    "schemaDescription": "Modern SaaS starter template with Next.js 15, authentication, and payment integration"
+  },
+  "pricingPage": {
+    "metaTitle": "Pricing Plans - Start Free Today",
+    "metaDescription": "Flexible pricing for teams of all sizes. Basic $29/mo, Pro $99/mo, Enterprise custom pricing. Start with a 14-day free trial, no credit card required. Cancel anytime.",
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that's right for you"
+  },
+  "aboutPage": {
+    "metaTitle": "About Us - Our Mission & Story",
+    "metaDescription": "Learn how we're helping developers build amazing SaaS products faster with our production-ready Next.js 15 template. Built with TypeScript, Tailwind CSS, and modern best practices.",
+    "title": "About Us",
+    "subtitle": "We're on a mission to help developers build amazing SaaS products faster.",
+    "story": {
+      "title": "Our Story",
+      "paragraph1": "We started with a simple idea: building a SaaS product shouldn't require months of setup and configuration. Every developer deserves a solid foundation to build upon.",
+      "paragraph2": "This template was born from our experience building multiple SaaS products. We've included everything we wish we had when starting out - authentication, payments, analytics, and more.",
+      "paragraph3": "Today, developers around the world use our template to launch their ideas faster, allowing them to focus on what makes their product unique."
+    },
+    "values": {
+      "title": "Our Values",
+      "quality": {
+        "title": "Quality First",
+        "description": "We maintain high standards and follow best practices in every aspect of the template."
+      },
+      "developer": {
+        "title": "Developer Experience",
+        "description": "Clean code, clear documentation, and intuitive structure make development a joy."
+      },
+      "support": {
+        "title": "Continuous Support",
+        "description": "Regular updates, bug fixes, and new features to keep you ahead."
+      }
+    }
+  },
+  "termsPage": {
+    "metaTitle": "Terms of Service - Legal Terms & Conditions",
+    "metaDescription": "Read our terms of service to understand the rules and regulations for using our SaaS template.",
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated"
+  },
+  "privacyPage": {
+    "metaTitle": "Privacy Policy - How We Protect Your Data",
+    "metaDescription": "Our privacy policy explains how we collect, use, and protect your personal information. We prioritize your privacy and data security.",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated"
+  },
+  "blogPage": {
+    "metaTitle": "Blog - SaaS Template",
+    "metaDescription": "Read our latest articles, tutorials, and insights about building successful SaaS products.",
+    "knowledgeBase": "Knowledge Base",
+    "title": "Blog & Resources",
+    "subtitle": "Discover articles, tutorials, and insights to help you build and grow your SaaS product.",
+    "featured": "Featured Article",
+    "recentArticles": "Recent Articles",
+    "noPosts": "No posts yet",
+    "checkBackSoon": "Check back soon for new articles and insights.",
+    "categories": "Categories",
+    "tags": "Tags"
+  },
+  "blogPost": {
+    "backToBlog": "Back to Blog",
+    "share": "Share:",
+    "tags": "Tags:",
+    "relatedArticles": "Related Articles"
+  },
+  "blogCategory": {
+    "backToBlog": "Back to Blog",
+    "category": "Category",
+    "articleCount": "{count} {count, plural, one {article} other {articles}} in this category"
+  },
+  "blogTag": {
+    "backToBlog": "Back to Blog",
+    "tag": "Tag",
+    "articleCount": "{count} {count, plural, one {article} other {articles}} with this tag"
+  },
+  "dashboardPage": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}",
+    "stats": {
+      "toolsUsed": "Tools Used",
+      "creditsRemaining": "Credits Remaining",
+      "usageTime": "Usage Time",
+      "thisMonth": "This month",
+      "resetsMonthly": "Resets monthly"
+    }
+  },
+  "toolsPage": {
+    "title": "Tools",
+    "subtitle": "Select a tool to get started",
+    "launchTool": "Launch Tool",
+    "tools": {
+      "imageGenerator": {
+        "name": "AI Image Generator",
+        "description": "Create stunning images with AI"
+      },
+      "videoEditor": {
+        "name": "Video Editor",
+        "description": "Edit videos with powerful tools"
+      },
+      "textEnhancer": {
+        "name": "Text Enhancer",
+        "description": "Improve your writing with AI"
+      },
+      "codeGenerator": {
+        "name": "Code Generator",
+        "description": "Generate code snippets instantly"
+      }
+    }
+  },
+  "historyPage": {
+    "title": "Usage History",
+    "subtitle": "View your recent tool usage and activity",
+    "noHistory": "No usage history yet. Start using tools to see your activity here.",
+    "table": {
+      "tool": "Tool",
+      "action": "Action",
+      "duration": "Duration",
+      "time": "Time"
+    }
+  },
+  "settingsPage": {
+    "title": "Settings",
+    "subtitle": "Manage your account settings and subscription",
+    "profile": {
+      "title": "Profile",
+      "user": "User",
+      "name": "Name",
+      "email": "Email",
+      "namePlaceholder": "Your name",
+      "emailNote": "Email cannot be changed",
+      "save": "Save Changes"
+    },
+    "subscription": {
+      "title": "Subscription",
+      "currentPlan": "Current Plan",
+      "free": "Free",
+      "active": "Active",
+      "renewsOn": "Renews on"
+    },
+    "payments": {
+      "title": "Payment History",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status"
+    }
+  },
+  "adminPage": {
+    "title": "Admin Dashboard",
+    "subtitle": "Overview of your SaaS platform",
+    "stats": {
+      "totalUsers": "Total Users",
+      "registeredAccounts": "Registered accounts",
+      "activeSubscriptions": "Active Subscriptions",
+      "payingCustomers": "Paying customers",
+      "totalRevenue": "Total Revenue",
+      "allTime": "All time",
+      "toolUsage": "Tool Usage",
+      "totalApiCalls": "Total API calls"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "manageUsers": {
+        "title": "Manage Users",
+        "description": "View and manage user accounts"
+      },
+      "manageSubscriptions": {
+        "title": "Manage Subscriptions",
+        "description": "View subscription details"
+      },
+      "viewLogs": {
+        "title": "View Logs",
+        "description": "System logs and activity"
+      }
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "noActivity": "No recent activity"
+    }
+  },
+  "adminUsersPage": {
+    "title": "Users Management",
+    "subtitle": "Manage and monitor all user accounts",
+    "searchPlaceholder": "Search users...",
+    "loading": "Loading...",
+    "totalUsers": "Total Users",
+    "searchResults": "Search Results",
+    "currentPage": "Current Page",
+    "pages": "Pages"
+  },
+  "adminLogsPage": {
+    "title": "System Logs",
+    "subtitle": "Monitor tool usage and system activity",
+    "loading": "Loading...",
+    "stats": {
+      "totalApiCalls": "Total API Calls",
+      "avgDuration": "Avg Duration",
+      "uniqueTools": "Unique Tools"
+    },
+    "usageChart": "Usage Over Time",
+    "table": {
+      "user": "User",
+      "tool": "Tool",
+      "action": "Action",
+      "duration": "Duration",
+      "time": "Time",
+      "unknown": "Unknown"
+    }
+  },
+  "adminSubscriptionsPage": {
+    "title": "Subscriptions Management",
+    "subtitle": "Monitor and manage user subscriptions",
+    "loading": "Loading...",
+    "stats": {
+      "activeSubscriptions": "Active Subscriptions",
+      "stripeSubscriptions": "Stripe Subscriptions",
+      "paypalSubscriptions": "PayPal Subscriptions"
+    },
+    "table": {
+      "user": "User",
+      "plan": "Plan",
+      "status": "Status",
+      "provider": "Provider",
+      "created": "Created",
+      "unknown": "Unknown"
+    }
+  },
+  "adminAnalyticsPage": {
+    "title": "Country Analytics",
+    "subtitle": "Geographic distribution of users and usage",
+    "loading": "Loading...",
+    "stats": {
+      "totalCountries": "Total Countries",
+      "totalUsers": "Total Users",
+      "avgUsagePerUser": "Avg Usage/User"
+    },
+    "userDistribution": "User Distribution by Country",
+    "topCountries": "Top Countries by Usage",
+    "unknown": "Unknown",
+    "users": "users",
+    "requests": "requests",
+    "detailedStats": "Detailed Statistics",
+    "table": {
+      "country": "Country",
+      "users": "Users",
+      "toolUsage": "Tool Usage",
+      "avgPerUser": "Avg/User"
+    }
+  }
+}
