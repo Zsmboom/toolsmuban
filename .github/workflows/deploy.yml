@@ -1,0 +1,62 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'saas-tanstack/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saas-tanstack
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: saas-tanstack/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:cf
+        env:
+          VITE_APP_URL: ${{ vars.VITE_APP_URL || 'https://saas-tanstack.zsmalcor.workers.dev' }}
+          VITE_PAYMENT_PROVIDERS: ${{ vars.VITE_PAYMENT_PROVIDERS || 'stripe,creem,paypal' }}
+          VITE_STRIPE_BASIC_PRICE_ID: ${{ vars.VITE_STRIPE_BASIC_PRICE_ID || '' }}
+          VITE_STRIPE_PRO_PRICE_ID: ${{ vars.VITE_STRIPE_PRO_PRICE_ID || '' }}
+          VITE_STRIPE_ENTERPRISE_PRICE_ID: ${{ vars.VITE_STRIPE_ENTERPRISE_PRICE_ID || '' }}
+          VITE_CREEM_PRODUCT_BASIC: ${{ vars.VITE_CREEM_PRODUCT_BASIC || '' }}
+          VITE_CREEM_PRODUCT_PRO: ${{ vars.VITE_CREEM_PRODUCT_PRO || '' }}
+          VITE_CREEM_PRODUCT_ENTERPRISE: ${{ vars.VITE_CREEM_PRODUCT_ENTERPRISE || '' }}
+          VITE_PAYPAL_PLAN_BASIC: ${{ vars.VITE_PAYPAL_PLAN_BASIC || '' }}
+          VITE_PAYPAL_PLAN_PRO: ${{ vars.VITE_PAYPAL_PLAN_PRO || '' }}
+          VITE_PAYPAL_PLAN_ENTERPRISE: ${{ vars.VITE_PAYPAL_PLAN_ENTERPRISE || '' }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ vars.VITE_STRIPE_PUBLISHABLE_KEY || '' }}
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: saas-tanstack
+          secrets: |
+            DATABASE_URL
+            GOOGLE_CLIENT_ID
+            GOOGLE_CLIENT_SECRET
+            STRIPE_SECRET_KEY
+            STRIPE_WEBHOOK_SECRET
+            CREEM_API_KEY
+            CREEM_WEBHOOK_SECRET
+            PAYPAL_CLIENT_ID
+            PAYPAL_CLIENT_SECRET
+            PAYPAL_WEBHOOK_ID
