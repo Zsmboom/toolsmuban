@@ -1,13 +1,13 @@
-import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
+import { pgTable, text, integer, timestamp, boolean, jsonb, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // ============================================
 // Users Table
 // ============================================
-export const users = sqliteTable('users', {
+export const users = pgTable('users', {
   id: text('id').primaryKey(),
   email: text('email').notNull().unique(),
-  emailVerified: integer('email_verified', { mode: 'timestamp' }),
+  emailVerified: timestamp('email_verified'),
   name: text('name'),
   image: text('image'),
   country: text('country'),
@@ -25,9 +25,9 @@ export const users = sqliteTable('users', {
   lastLoginIp: text('last_login_ip'),
   lastLoginCountry: text('last_login_country'),
 
-  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }),
-  lastLoginAt: integer('last_login_at', { mode: 'timestamp' }),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at'),
+  lastLoginAt: timestamp('last_login_at'),
 }, (table) => ({
   emailIdx: index('email_idx').on(table.email),
   countryIdx: index('country_idx').on(table.country),
@@ -39,7 +39,7 @@ export const users = sqliteTable('users', {
 // ============================================
 // Accounts Table (OAuth)
 // ============================================
-export const accounts = sqliteTable('accounts', {
+export const accounts = pgTable('accounts', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   type: text('type').notNull(),
@@ -59,10 +59,10 @@ export const accounts = sqliteTable('accounts', {
 // ============================================
 // Sessions Table
 // ============================================
-export const sessions = sqliteTable('sessions', {
+export const sessions = pgTable('sessions', {
   sessionToken: text('session_token').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  expires: integer('expires', { mode: 'timestamp' }).notNull(),
+  expires: timestamp('expires').notNull(),
 }, (table) => ({
   userIdIdx: index('session_user_id_idx').on(table.userId),
 }));
@@ -70,10 +70,10 @@ export const sessions = sqliteTable('sessions', {
 // ============================================
 // Verification Tokens Table
 // ============================================
-export const verificationTokens = sqliteTable('verification_tokens', {
+export const verificationTokens = pgTable('verification_tokens', {
   identifier: text('identifier').notNull(),
   token: text('token').notNull(),
-  expires: integer('expires', { mode: 'timestamp' }).notNull(),
+  expires: timestamp('expires').notNull(),
 }, (table) => ({
   tokenIdx: index('token_idx').on(table.token),
 }));
@@ -81,7 +81,7 @@ export const verificationTokens = sqliteTable('verification_tokens', {
 // ============================================
 // Subscriptions Table
 // ============================================
-export const subscriptions = sqliteTable('subscriptions', {
+export const subscriptions = pgTable('subscriptions', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   plan: text('plan', { enum: ['free', 'basic', 'pro', 'enterprise'] }).default('free').notNull(),
@@ -91,12 +91,12 @@ export const subscriptions = sqliteTable('subscriptions', {
   provider: text('provider', { enum: ['stripe', 'paypal'] }),
   providerId: text('provider_id'),
   priceId: text('price_id'),
-  currentPeriodStart: integer('current_period_start', { mode: 'timestamp' }),
-  currentPeriodEnd: integer('current_period_end', { mode: 'timestamp' }),
-  cancelAtPeriodEnd: integer('cancel_at_period_end', { mode: 'boolean' }).default(false),
-  canceledAt: integer('canceled_at', { mode: 'timestamp' }),
-  trialStart: integer('trial_start', { mode: 'timestamp' }),
-  trialEnd: integer('trial_end', { mode: 'timestamp' }),
+  currentPeriodStart: timestamp('current_period_start'),
+  currentPeriodEnd: timestamp('current_period_end'),
+  cancelAtPeriodEnd: boolean('cancel_at_period_end').default(false),
+  canceledAt: timestamp('canceled_at'),
+  trialStart: timestamp('trial_start'),
+  trialEnd: timestamp('trial_end'),
 
   // Subscription source tracking
   source: text('source'),
@@ -105,8 +105,8 @@ export const subscriptions = sqliteTable('subscriptions', {
   utmMedium: text('utm_medium'),
   utmCampaign: text('utm_campaign'),
 
-  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at'),
 }, (table) => ({
   userIdIdx: index('subscription_user_id_idx').on(table.userId),
   statusIdx: index('subscription_status_idx').on(table.status),
@@ -118,7 +118,7 @@ export const subscriptions = sqliteTable('subscriptions', {
 // ============================================
 // Payments Table
 // ============================================
-export const payments = sqliteTable('payments', {
+export const payments = pgTable('payments', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   subscriptionId: text('subscription_id').references(() => subscriptions.id, { onDelete: 'set null' }),
@@ -130,9 +130,9 @@ export const payments = sqliteTable('payments', {
   provider: text('provider', { enum: ['stripe', 'paypal'] }).notNull(),
   providerId: text('provider_id'),
   description: text('description'),
-  metadata: text('metadata', { mode: 'json' }),
-  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }),
+  metadata: jsonb('metadata'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at'),
 }, (table) => ({
   userIdIdx: index('payment_user_id_idx').on(table.userId),
   statusIdx: index('payment_status_idx').on(table.status),
@@ -143,12 +143,12 @@ export const payments = sqliteTable('payments', {
 // ============================================
 // Tool Usage Logs Table
 // ============================================
-export const toolUsageLogs = sqliteTable('tool_usage_logs', {
+export const toolUsageLogs = pgTable('tool_usage_logs', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   toolName: text('tool_name').notNull(),
   action: text('action').notNull(),
-  metadata: text('metadata', { mode: 'json' }),
+  metadata: jsonb('metadata'),
   duration: integer('duration'),
   ipAddress: text('ip_address'),
   country: text('country'),
@@ -157,7 +157,7 @@ export const toolUsageLogs = sqliteTable('tool_usage_logs', {
   creditsUsed: integer('credits_used').default(0).notNull(),
   creditTransactionId: text('credit_transaction_id'),
 
-  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 }, (table) => ({
   userIdIdx: index('log_user_id_idx').on(table.userId),
   toolNameIdx: index('log_tool_name_idx').on(table.toolName),
@@ -169,12 +169,12 @@ export const toolUsageLogs = sqliteTable('tool_usage_logs', {
 // ============================================
 // Country Stats Table
 // ============================================
-export const countryStats = sqliteTable('country_stats', {
+export const countryStats = pgTable('country_stats', {
   id: text('id').primaryKey(),
   country: text('country').notNull().unique(),
   userCount: integer('user_count').default(0).notNull(),
   toolUsageCount: integer('tool_usage_count').default(0).notNull(),
-  lastUpdated: integer('last_updated', { mode: 'timestamp' }).default(new Date()).notNull(),
+  lastUpdated: timestamp('last_updated').defaultNow().notNull(),
 }, (table) => ({
   countryIdx: index('country_stats_country_idx').on(table.country),
 }));
@@ -182,7 +182,7 @@ export const countryStats = sqliteTable('country_stats', {
 // ============================================
 // Credits Table (User Credit Accounts)
 // ============================================
-export const credits = sqliteTable('credits', {
+export const credits = pgTable('credits', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().unique().references(() => users.id, { onDelete: 'cascade' }),
 
@@ -194,11 +194,11 @@ export const credits = sqliteTable('credits', {
   // Monthly quota management
   monthlyQuota: integer('monthly_quota').default(0).notNull(),
   monthlyUsed: integer('monthly_used').default(0).notNull(),
-  quotaResetAt: integer('quota_reset_at', { mode: 'timestamp' }),
+  quotaResetAt: timestamp('quota_reset_at'),
 
   // Timestamps
-  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at'),
 }, (table) => ({
   userIdIdx: index('credit_user_id_idx').on(table.userId),
 }));
@@ -206,7 +206,7 @@ export const credits = sqliteTable('credits', {
 // ============================================
 // Credit Transactions Table
 // ============================================
-export const creditTransactions = sqliteTable('credit_transactions', {
+export const creditTransactions = pgTable('credit_transactions', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
 
@@ -227,9 +227,9 @@ export const creditTransactions = sqliteTable('credit_transactions', {
 
   // Description and metadata
   description: text('description'),
-  metadata: text('metadata', { mode: 'json' }),
+  metadata: jsonb('metadata'),
 
-  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 }, (table) => ({
   userIdIdx: index('credit_tx_user_id_idx').on(table.userId),
   typeIdx: index('credit_tx_type_idx').on(table.type),

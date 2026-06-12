@@ -1,14 +1,7 @@
-import { createClient } from '@libsql/client';
-import { drizzle } from 'drizzle-orm/libsql';
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
 
-// For Cloudflare Workers, use HTTP client
-// For local development, you can use file-based SQLite
-const databaseUrl = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || './local.db';
+const sql = neon(process.env.DATABASE_URL!);
 
-const client = createClient({
-  url: databaseUrl,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-export const db = drizzle(client, { schema });
+export const db = drizzle(sql, { schema });
