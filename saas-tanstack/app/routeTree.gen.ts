@@ -19,7 +19,13 @@ import { Route as AuthCallbackRouteImport } from './routes/auth-callback'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminSubscriptionsRouteImport } from './routes/admin.subscriptions'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as ApiWebhookStripeRouteImport } from './routes/api.webhook.stripe'
+import { Route as ApiWebhookPaypalRouteImport } from './routes/api.webhook.paypal'
+import { Route as ApiWebhookCreemRouteImport } from './routes/api.webhook.creem'
+import { Route as ApiPaypalCheckoutRouteImport } from './routes/api.paypal.checkout'
+import { Route as ApiCreemCheckoutRouteImport } from './routes/api.creem.checkout'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -71,16 +77,46 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSubscriptionsRoute = AdminSubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiWebhookStripeRoute = ApiWebhookStripeRouteImport.update({
   id: '/api/webhook/stripe',
   path: '/api/webhook/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWebhookPaypalRoute = ApiWebhookPaypalRouteImport.update({
+  id: '/api/webhook/paypal',
+  path: '/api/webhook/paypal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWebhookCreemRoute = ApiWebhookCreemRouteImport.update({
+  id: '/api/webhook/creem',
+  path: '/api/webhook/creem',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPaypalCheckoutRoute = ApiPaypalCheckoutRouteImport.update({
+  id: '/api/paypal/checkout',
+  path: '/api/paypal/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCreemCheckoutRoute = ApiCreemCheckoutRouteImport.update({
+  id: '/api/creem/checkout',
+  path: '/api/creem/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth-callback': typeof AuthCallbackRoute
   '/blog': typeof BlogRoute
   '/checkout-cancel': typeof CheckoutCancelRoute
@@ -88,12 +124,17 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/admin/subscriptions': typeof AdminSubscriptionsRoute
+  '/api/creem/checkout': typeof ApiCreemCheckoutRoute
+  '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
+  '/api/webhook/creem': typeof ApiWebhookCreemRoute
+  '/api/webhook/paypal': typeof ApiWebhookPaypalRoute
   '/api/webhook/stripe': typeof ApiWebhookStripeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth-callback': typeof AuthCallbackRoute
   '/blog': typeof BlogRoute
   '/checkout-cancel': typeof CheckoutCancelRoute
@@ -101,13 +142,18 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/admin/subscriptions': typeof AdminSubscriptionsRoute
+  '/api/creem/checkout': typeof ApiCreemCheckoutRoute
+  '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
+  '/api/webhook/creem': typeof ApiWebhookCreemRoute
+  '/api/webhook/paypal': typeof ApiWebhookPaypalRoute
   '/api/webhook/stripe': typeof ApiWebhookStripeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth-callback': typeof AuthCallbackRoute
   '/blog': typeof BlogRoute
   '/checkout-cancel': typeof CheckoutCancelRoute
@@ -115,6 +161,12 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/admin/subscriptions': typeof AdminSubscriptionsRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/api/creem/checkout': typeof ApiCreemCheckoutRoute
+  '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
+  '/api/webhook/creem': typeof ApiWebhookCreemRoute
+  '/api/webhook/paypal': typeof ApiWebhookPaypalRoute
   '/api/webhook/stripe': typeof ApiWebhookStripeRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +182,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/pricing'
+    | '/admin/subscriptions'
+    | '/admin/payments'
+    | '/api/creem/checkout'
+    | '/api/paypal/checkout'
+    | '/api/webhook/creem'
+    | '/api/webhook/paypal'
     | '/api/webhook/stripe'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +201,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/pricing'
+    | '/admin/subscriptions'
+    | '/admin/payments'
+    | '/api/creem/checkout'
+    | '/api/paypal/checkout'
+    | '/api/webhook/creem'
+    | '/api/webhook/paypal'
     | '/api/webhook/stripe'
   id:
     | '__root__'
@@ -156,13 +220,19 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/pricing'
+    | '/admin/subscriptions'
+    | '/admin/payments'
+    | '/api/creem/checkout'
+    | '/api/paypal/checkout'
+    | '/api/webhook/creem'
+    | '/api/webhook/paypal'
     | '/api/webhook/stripe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthCallbackRoute: typeof AuthCallbackRoute
   BlogRoute: typeof BlogRoute
   CheckoutCancelRoute: typeof CheckoutCancelRoute
@@ -170,6 +240,10 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   PricingRoute: typeof PricingRoute
+  ApiCreemCheckoutRoute: typeof ApiCreemCheckoutRoute
+  ApiPaypalCheckoutRoute: typeof ApiPaypalCheckoutRoute
+  ApiWebhookCreemRoute: typeof ApiWebhookCreemRoute
+  ApiWebhookPaypalRoute: typeof ApiWebhookPaypalRoute
   ApiWebhookStripeRoute: typeof ApiWebhookStripeRoute
 }
 
@@ -245,6 +319,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/subscriptions': {
+      id: '/admin/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/admin/subscriptions'
+      preLoaderRoute: typeof AdminSubscriptionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/payments': {
+      id: '/admin/payments'
+      path: '/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/webhook/stripe': {
       id: '/api/webhook/stripe'
       path: '/api/webhook/stripe'
@@ -252,13 +340,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiWebhookStripeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/webhook/creem': {
+      id: '/api/webhook/creem'
+      path: '/api/webhook/creem'
+      fullPath: '/api/webhook/creem'
+      preLoaderRoute: typeof ApiWebhookCreemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/creem/checkout': {
+      id: '/api/creem/checkout'
+      path: '/api/creem/checkout'
+      fullPath: '/api/creem/checkout'
+      preLoaderRoute: typeof ApiCreemCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/paypal/checkout': {
+      id: '/api/paypal/checkout'
+      path: '/api/paypal/checkout'
+      fullPath: '/api/paypal/checkout'
+      preLoaderRoute: typeof ApiPaypalCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/webhook/paypal': {
+      id: '/api/webhook/paypal'
+      path: '/api/webhook/paypal'
+      fullPath: '/api/webhook/paypal'
+      preLoaderRoute: typeof ApiWebhookPaypalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminSubscriptionsRoute: typeof AdminSubscriptionsRoute
+  AdminPaymentsRoute: typeof AdminPaymentsRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminSubscriptionsRoute: AdminSubscriptionsRoute,
+  AdminPaymentsRoute: AdminPaymentsRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthCallbackRoute: AuthCallbackRoute,
   BlogRoute: BlogRoute,
   CheckoutCancelRoute: CheckoutCancelRoute,
@@ -266,6 +394,10 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   PricingRoute: PricingRoute,
+  ApiCreemCheckoutRoute: ApiCreemCheckoutRoute,
+  ApiPaypalCheckoutRoute: ApiPaypalCheckoutRoute,
+  ApiWebhookCreemRoute: ApiWebhookCreemRoute,
+  ApiWebhookPaypalRoute: ApiWebhookPaypalRoute,
   ApiWebhookStripeRoute: ApiWebhookStripeRoute,
 }
 export const routeTree = rootRouteImport

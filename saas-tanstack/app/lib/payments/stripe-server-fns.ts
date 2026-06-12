@@ -2,10 +2,11 @@ import { createServerFn } from '@tanstack/react-start';
 import { getRequest } from '@tanstack/react-start/server';
 import Stripe from 'stripe';
 import { db } from '~/lib/db';
-import { subscriptions, payments, credits } from '~/lib/db/schema';
+import { subscriptions, credits, payments } from '~/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { getCurrentUserFn } from '~/lib/auth/server-fns';
 import { generateId } from '~/lib/auth';
+import { getPlanByPriceId, getPlanCredits } from './index';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
@@ -30,8 +31,8 @@ export const createCheckoutSessionFn = createServerFn({ method: 'POST' })
           quantity: 1,
         },
       ],
-      success_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/checkout-cancel`,
+      success_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/checkout-success?session_id={CHECKOUT_SESSION_ID}&provider=stripe`,
+      cancel_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/checkout-cancel?provider=stripe`,
       metadata: {
         userId: user.id,
       },
@@ -89,50 +90,85 @@ export const handleWebhookFn = createServerFn({ method: 'POST' })
           throw new Error('No userId in session metadata');
         }
 
-        const subscription = await stripe.subscriptions.retrieve(
+        const stripeSubscription = await stripe.subscriptions.retrieve(
           session.subscription as string
         );
 
+        const planFromPrice = session.metadata?.plan
+          ? (session.metadata.plan as 'basic' | 'pro' | 'enterprise')
+          : 'basic';
+
+        // Create subscription record
+        const subId = await generateId();
         await db.insert(subscriptions).values({
-          id: await generateId(),
+          id: subId,
           userId,
-          plan: 'basic',
-          status: 'active',
+          plan: planFromPrice,
+          status: stripeSubscription.status as 'active' | 'canceled' | 'past_due' | 'trialing' | 'paused' | 'expired',
           provider: 'stripe',
-          providerId: subscription.id,
-          currentPeriodStart: new Date(subscription.current_period_start * 1000),
-          currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-          cancelAtPeriodEnd: subscription.cancel_at_period_end,
+          providerId: stripeSubscription.id,
+          customerId: stripeSubscription.customer as string,
+          priceId: session.metadata?.price_id,
+          currentPeriodStart: new Date(stripeSubscription.current_period_start * 1000),
+          currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
+          cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
         });
 
-        await db.update(credits)
-          .set({ monthlyQuota: 500 })
-          .where(eq(credits.userId, userId));
+        // Record payment
+        const paymentId = await generateId();
+        await db.insert(payments).values({
+          id: paymentId,
+          userId,
+          subscriptionId: subId,
+          amount: session.amount_total || 0,
+          status: 'succeeded',
+          provider: 'stripe',
+          providerId: session.id,
+        });
+
+        // Update credits quota
+        const creditsPerMonth = getPlanCredits(planFromPrice);
+        const existingCredits = await db.query.credits.findFirst({
+          where: eq(credits.userId, userId),
+        });
+        const quotaValue = creditsPerMonth < 0 ? 999999 : creditsPerMonth;
+        if (existingCredits) {
+          await db.update(credits)
+            .set({ monthlyQuota: quotaValue, updatedAt: new Date() })
+            .where(eq(credits.userId, userId));
+        } else {
+          await db.insert(credits).values({
+            id: await generateId(),
+            userId,
+            balance: 100,
+            monthlyQuota: quotaValue,
+          });
+        }
 
         break;
       }
 
       case 'customer.subscription.updated': {
-        const subscription = event.data.object as Stripe.Subscription;
+        const stripeSubUpdated = event.data.object as Stripe.Subscription;
 
         await db.update(subscriptions)
           .set({
-            status: subscription.status as "active" | "canceled" | "past_due" | "trialing" | "paused" | "expired",
-            currentPeriodStart: new Date(subscription.current_period_start * 1000),
-            currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-            cancelAtPeriodEnd: subscription.cancel_at_period_end as boolean,
+            status: stripeSubUpdated.status as "active" | "canceled" | "past_due" | "trialing" | "paused" | "expired",
+            currentPeriodStart: new Date(stripeSubUpdated.current_period_start * 1000),
+            currentPeriodEnd: new Date(stripeSubUpdated.current_period_end * 1000),
+            cancelAtPeriodEnd: stripeSubUpdated.cancel_at_period_end as boolean,
           })
-          .where(eq(subscriptions.providerId, subscription.id));
+          .where(eq(subscriptions.providerId, stripeSubUpdated.id));
 
         break;
       }
 
       case 'customer.subscription.deleted': {
-        const subscription = event.data.object as Stripe.Subscription;
+        const stripeSubDeleted = event.data.object as Stripe.Subscription;
 
         await db.update(subscriptions)
-          .set({ status: 'canceled' })
-          .where(eq(subscriptions.providerId, subscription.id));
+          .set({ status: 'canceled', canceledAt: new Date(), updatedAt: new Date() })
+          .where(eq(subscriptions.providerId, stripeSubDeleted.id));
 
         break;
       }

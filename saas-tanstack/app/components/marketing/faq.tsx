@@ -19,7 +19,7 @@ export default function FAQ() {
     },
     {
       question: 'What payment methods do you accept?',
-      answer: 'We accept all major credit cards (Visa, MasterCard, American Express) through Stripe, as well as PayPal. All payments are securely processed and encrypted.',
+      answer: 'We accept all major credit cards (Visa, MasterCard, American Express) through Stripe, as well as payments via Creem and PayPal. All payments are securely processed and encrypted.',
     },
     {
       question: 'Is there a free trial?',

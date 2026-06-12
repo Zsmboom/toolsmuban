@@ -88,8 +88,9 @@ export const subscriptions = pgTable('subscriptions', {
   status: text('status', {
     enum: ['active', 'canceled', 'past_due', 'trialing', 'paused', 'expired']
   }).default('active').notNull(),
-  provider: text('provider', { enum: ['stripe', 'paypal'] }),
+  provider: text('provider', { enum: ['stripe', 'paypal', 'creem'] }),
   providerId: text('provider_id'),
+  customerId: text('customer_id'),
   priceId: text('price_id'),
   currentPeriodStart: timestamp('current_period_start'),
   currentPeriodEnd: timestamp('current_period_end'),
@@ -127,7 +128,7 @@ export const payments = pgTable('payments', {
   status: text('status', {
     enum: ['pending', 'succeeded', 'failed', 'refunded', 'canceled']
   }).default('pending').notNull(),
-  provider: text('provider', { enum: ['stripe', 'paypal'] }).notNull(),
+  provider: text('provider', { enum: ['stripe', 'paypal', 'creem'] }).notNull(),
   providerId: text('provider_id'),
   description: text('description'),
   metadata: jsonb('metadata'),

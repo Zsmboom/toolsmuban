@@ -29,6 +29,7 @@
     "@vitejs/plugin-react": "^5.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "creem_io": "^1.0.0",
     "date-fns": "^3.0.0",
     "drizzle-orm": "^0.45.0",
     "framer-motion": "^11.0.0",
