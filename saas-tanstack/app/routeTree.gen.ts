@@ -124,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/admin/payments': typeof AdminPaymentsRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/api/creem/checkout': typeof ApiCreemCheckoutRoute
   '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
@@ -142,6 +143,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/admin/payments': typeof AdminPaymentsRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/api/creem/checkout': typeof ApiCreemCheckoutRoute
   '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
@@ -161,8 +163,8 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
-  '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/api/creem/checkout': typeof ApiCreemCheckoutRoute
   '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
   '/api/webhook/creem': typeof ApiWebhookCreemRoute
@@ -182,8 +184,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/pricing'
-    | '/admin/subscriptions'
     | '/admin/payments'
+    | '/admin/subscriptions'
     | '/api/creem/checkout'
     | '/api/paypal/checkout'
     | '/api/webhook/creem'
@@ -201,8 +203,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/pricing'
-    | '/admin/subscriptions'
     | '/admin/payments'
+    | '/admin/subscriptions'
     | '/api/creem/checkout'
     | '/api/paypal/checkout'
     | '/api/webhook/creem'
@@ -220,8 +222,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/pricing'
-    | '/admin/subscriptions'
     | '/admin/payments'
+    | '/admin/subscriptions'
     | '/api/creem/checkout'
     | '/api/paypal/checkout'
     | '/api/webhook/creem'
@@ -340,18 +342,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiWebhookStripeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/webhook/paypal': {
+      id: '/api/webhook/paypal'
+      path: '/api/webhook/paypal'
+      fullPath: '/api/webhook/paypal'
+      preLoaderRoute: typeof ApiWebhookPaypalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/webhook/creem': {
       id: '/api/webhook/creem'
       path: '/api/webhook/creem'
       fullPath: '/api/webhook/creem'
       preLoaderRoute: typeof ApiWebhookCreemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/creem/checkout': {
-      id: '/api/creem/checkout'
-      path: '/api/creem/checkout'
-      fullPath: '/api/creem/checkout'
-      preLoaderRoute: typeof ApiCreemCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/paypal/checkout': {
@@ -361,24 +363,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPaypalCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/webhook/paypal': {
-      id: '/api/webhook/paypal'
-      path: '/api/webhook/paypal'
-      fullPath: '/api/webhook/paypal'
-      preLoaderRoute: typeof ApiWebhookPaypalRouteImport
+    '/api/creem/checkout': {
+      id: '/api/creem/checkout'
+      path: '/api/creem/checkout'
+      fullPath: '/api/creem/checkout'
+      preLoaderRoute: typeof ApiCreemCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 interface AdminRouteChildren {
-  AdminSubscriptionsRoute: typeof AdminSubscriptionsRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminSubscriptionsRoute: typeof AdminSubscriptionsRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminSubscriptionsRoute: AdminSubscriptionsRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminSubscriptionsRoute: AdminSubscriptionsRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
