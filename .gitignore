@@ -40,11 +40,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# drizzle
-drizzle/
+# drizzle（只忽略根 Next.js 项目的产物；
+# saas-tanstack/drizzle 下的迁移文件必须入库，否则克隆出来无法建表）
+/drizzle/
 
 # virtual environment
 venv/
 
 # local database
 local.db
+
+# Python 缓存
+__pycache__/
+*.pyc

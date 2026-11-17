@@ -6,10 +6,60 @@ on:
     paths:
       - 'saas-tanstack/**'
       - '.github/workflows/deploy.yml'
+  pull_request:
+    paths:
+      - 'saas-tanstack/**'
   workflow_dispatch:
 
 jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saas-tanstack
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: saas-tanstack/package-lock.json
+
+      - run: npm ci
+
+      - name: Security audit
+        run: npm run audit
+
+      - name: Check Cloudflare binding types
+        run: npm run types:cf
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      # 模板同时支持 Neon 和 D1。当前没启用的那个也必须能编译、能过测试，
+      # 否则等到真要切换时才发现坏了。这里把两种配置都跑一遍。
+      - name: Verify the inactive database provider still builds
+        run: |
+          ACTIVE=$(grep -oE "'(neon|d1)'" app/lib/db/provider.ts | head -1 | tr -d "'")
+          OTHER=$([ "$ACTIVE" = "neon" ] && echo d1 || echo neon)
+          echo "active=$ACTIVE, verifying $OTHER"
+          npm run db:use "$OTHER"
+          npm run type-check
+          npm run lint
+          npm test
+          npm run db:use "$ACTIVE"
+          git diff --exit-code -- app/lib/db drizzle.config.ts
+
   deploy:
+    # 只有校验通过才部署，且 PR 不部署
+    needs: verify
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -17,35 +67,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: 'npm'
           cache-dependency-path: saas-tanstack/package-lock.json
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+      - run: npm ci
 
+      # 这些是非机密的构建期变量（商品/价格 ID、站点地址），
+      # 会被内联进产物，供服务端和浏览器端共用。
+      # 真正的机密走 `wrangler secret put`，不在这里出现。
       - name: Build
         run: npm run build:cf
         env:
-          VITE_APP_URL: ${{ vars.VITE_APP_URL || 'https://saas-tanstack.zsmalcor.workers.dev' }}
-          VITE_PAYMENT_PROVIDERS: ${{ vars.VITE_PAYMENT_PROVIDERS || 'stripe,creem,paypal' }}
-          VITE_STRIPE_BASIC_PRICE_ID: ${{ vars.VITE_STRIPE_BASIC_PRICE_ID || '' }}
-          VITE_STRIPE_PRO_PRICE_ID: ${{ vars.VITE_STRIPE_PRO_PRICE_ID || '' }}
-          VITE_STRIPE_ENTERPRISE_PRICE_ID: ${{ vars.VITE_STRIPE_ENTERPRISE_PRICE_ID || '' }}
-          VITE_CREEM_PRODUCT_BASIC: ${{ vars.VITE_CREEM_PRODUCT_BASIC || '' }}
-          VITE_CREEM_PRODUCT_PRO: ${{ vars.VITE_CREEM_PRODUCT_PRO || '' }}
-          VITE_CREEM_PRODUCT_ENTERPRISE: ${{ vars.VITE_CREEM_PRODUCT_ENTERPRISE || '' }}
-          VITE_PAYPAL_PLAN_BASIC: ${{ vars.VITE_PAYPAL_PLAN_BASIC || '' }}
-          VITE_PAYPAL_PLAN_PRO: ${{ vars.VITE_PAYPAL_PLAN_PRO || '' }}
-          VITE_PAYPAL_PLAN_ENTERPRISE: ${{ vars.VITE_PAYPAL_PLAN_ENTERPRISE || '' }}
-          VITE_STRIPE_PUBLISHABLE_KEY: ${{ vars.VITE_STRIPE_PUBLISHABLE_KEY || '' }}
+          VITE_APP_URL: ${{ vars.VITE_APP_URL }}
+          VITE_PAYMENT_PROVIDERS: ${{ vars.VITE_PAYMENT_PROVIDERS || 'stripe' }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_STRIPE_BASIC_PRICE_ID: ${{ vars.VITE_STRIPE_BASIC_PRICE_ID }}
+          VITE_STRIPE_PRO_PRICE_ID: ${{ vars.VITE_STRIPE_PRO_PRICE_ID }}
+          VITE_STRIPE_ENTERPRISE_PRICE_ID: ${{ vars.VITE_STRIPE_ENTERPRISE_PRICE_ID }}
+          VITE_CREEM_PRODUCT_BASIC: ${{ vars.VITE_CREEM_PRODUCT_BASIC }}
+          VITE_CREEM_PRODUCT_PRO: ${{ vars.VITE_CREEM_PRODUCT_PRO }}
+          VITE_CREEM_PRODUCT_ENTERPRISE: ${{ vars.VITE_CREEM_PRODUCT_ENTERPRISE }}
+          VITE_PAYPAL_PLAN_BASIC: ${{ vars.VITE_PAYPAL_PLAN_BASIC }}
+          VITE_PAYPAL_PLAN_PRO: ${{ vars.VITE_PAYPAL_PLAN_PRO }}
+          VITE_PAYPAL_PLAN_ENTERPRISE: ${{ vars.VITE_PAYPAL_PLAN_ENTERPRISE }}
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
           workingDirectory: saas-tanstack

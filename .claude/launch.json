@@ -4,7 +4,7 @@
     {
       "name": "dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": ["--prefix", "saas-tanstack", "run", "dev"],
       "port": 3000,
       "autoPort": false
     }

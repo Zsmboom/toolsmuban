@@ -1,11 +1,25 @@
 {
-  "version": 1,
+  "version": 2,
   "skills": {
     "stripe-best-practices": {
       "source": "stripe/ai",
       "sourceType": "github",
       "skillPath": "skills/stripe-best-practices/SKILL.md",
       "computedHash": "1d40561cf073332f1c22d6d85f45db3680e727bd28288c0913923ab29133133a"
+    },
+    "neon": {
+      "source": "neondatabase/agent-skills",
+      "commit": "60b9a53fdd08c3be22781c5e51f6b689a77d3e39",
+      "sourceType": "github",
+      "skillPath": "skills/neon/SKILL.md",
+      "computedHash": "18f5e4de54d88f84d2e36b5e4f1888211940abbd0ae794ff597556340787da77"
+    },
+    "neon-postgres": {
+      "source": "neondatabase/agent-skills",
+      "commit": "60b9a53fdd08c3be22781c5e51f6b689a77d3e39",
+      "sourceType": "github",
+      "skillPath": "skills/neon-postgres/SKILL.md",
+      "computedHash": "0e1db49f25e9208cb24fa2084a542d52d60a85c09271b915acc3dad6901de6a0"
     }
   }
 }
