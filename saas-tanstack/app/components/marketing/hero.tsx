@@ -1,66 +1,114 @@
 import { Link } from '@tanstack/react-router';
+import { ArrowRight, Check, ChevronRight, Play } from 'lucide-react';
+import { buttonClass } from '~/components/ui/button';
+import { useTranslations } from '~/lib/i18n-context';
+import { TOOLS } from '~/lib/tools/registry';
 
+/**
+ * 首屏：左边说清楚这是什么，右边直接给一张「工具跑起来长什么样」的静态演示。
+ *
+ * 之前这里是 Tailwind 官方营销模板那个 clipPath 渐变色块 —— 它是全站
+ * 仅有的两处硬编码颜色，也是「模板感」最重的一块。换成 `grid-field`
+ * 细网格底纹：给大片留白一点结构，但不抢内容。
+ *
+ * 右边这张卡不是装饰：工具站的首屏必须先回答「跑一次是什么体验、
+ * 花多少积分」，用一段文案说服不了这件事。
+ */
 export default function Hero() {
+  const t = useTranslations('hero');
+  const cost = TOOLS.demo.cost;
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted/50 py-24 sm:py-32">
-      <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="mb-8">
-            <span className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium text-muted-foreground">
-              🚀 The Ultimate SaaS Starter Template
+    <section className="relative overflow-hidden border-b border-border bg-background">
+      <div className="grid-field pointer-events-none absolute inset-0" aria-hidden="true" />
+
+      <div className="shell relative py-16 sm:py-24 lg:py-28">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(26rem,0.95fr)] lg:gap-16">
+          <div className="animate-rise">
+            <span className="inline-flex min-h-8 items-center gap-2 rounded-full border border-border bg-card px-3 text-xs text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+              {t('badge')}
             </span>
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            Build Your SaaS Product{' '}
-            <span className="text-primary">10x Faster</span>
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl">
-            Complete TanStack Start template with authentication, payments, admin dashboard,
-            and everything you need to launch your SaaS business.
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Link to="/login">
-              <button className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-                Get Started Free
-              </button>
-            </Link>
-            <Link to="/features">
-              <button className="text-sm font-semibold leading-6 text-foreground">
-                Explore Features <span aria-hidden="true">→</span>
-              </button>
-            </Link>
-          </div>
-          <div className="mt-16 flex items-center justify-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <svg className="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Production Ready
+
+            <h1 className="display-1 mt-6 max-w-[16ch] text-pretty text-foreground">
+              {t('title')}
+            </h1>
+
+            <p className="lede measure mt-6 text-pretty text-muted-foreground">
+              {t('description')}
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link to="/login" className={buttonClass({ variant: 'primary', size: 'lg' })}>
+                {t('cta')}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link
+                to="/{-$locale}/features"
+                className={buttonClass({ variant: 'secondary', size: 'lg' })}
+              >
+                {t('learnMore')}
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
             </div>
-            <div className="flex items-center gap-2">
-              <svg className="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              TypeScript
+
+            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              {['noCard', 'openSource', 'selfHost'].map((key) => (
+                <li key={key} className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+                  {t(`checks.${key}`)}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 工具运行演示 —— 静态渲染，不做假的可交互控件 */}
+          <div className="surface overflow-hidden" aria-label={t('demo.label')}>
+            <div className="flex items-center justify-between gap-3 border-b border-border bg-subtle px-4 py-3">
+              <div className="flex items-center gap-1.5" aria-hidden="true">
+                <span className="h-2.5 w-2.5 rounded-full border border-border" />
+                <span className="h-2.5 w-2.5 rounded-full border border-border" />
+                <span className="h-2.5 w-2.5 rounded-full border border-border" />
+              </div>
+              <span className="tabular text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
+                {t('demo.label')}
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <svg className="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Fully Responsive
+
+            <div className="space-y-5 p-5 sm:p-6">
+              <div>
+                <p className="text-xs text-muted-foreground">{t('demo.inputLabel')}</p>
+                <div className="mt-2 rounded-[var(--radius)] border border-input bg-background px-3 py-2.5 text-sm text-foreground">
+                  {t('demo.inputValue')}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-3">
+                <span
+                  className={buttonClass({ variant: 'primary', size: 'md' })}
+                  aria-hidden="true"
+                >
+                  <Play className="h-3.5 w-3.5" aria-hidden="true" />
+                  {t('demo.run')}
+                </span>
+                <span className="tabular text-xs text-muted-foreground">
+                  {t('demo.cost', { cost })}
+                </span>
+              </div>
+
+              <div>
+                <p className="text-xs text-muted-foreground">{t('demo.outputLabel')}</p>
+                <div className="mt-2 rounded-[var(--radius)] border border-border bg-subtle px-3 py-2.5 text-sm text-foreground">
+                  {t('demo.outputValue')}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-3 text-xs sm:px-6">
+              <span className="text-muted-foreground">{t('demo.ledger')}</span>
+              <span className="tabular text-foreground">{t('demo.balance', { cost })}</span>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
-          <div
-            className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-          />
         </div>
       </div>
     </section>

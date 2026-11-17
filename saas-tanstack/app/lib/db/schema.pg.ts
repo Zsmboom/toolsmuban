@@ -1,4 +1,14 @@
-import { pgTable, text, integer, timestamp, boolean, jsonb, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  integer,
+  timestamp,
+  boolean,
+  jsonb,
+  index,
+  uniqueIndex,
+  primaryKey,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // ============================================
@@ -12,6 +22,12 @@ export const users = pgTable('users', {
   image: text('image'),
   country: text('country'),
   role: text('role', { enum: ['user', 'admin'] }).default('user').notNull(),
+
+  // 邮箱密码登录（OAuth 用户为 null）
+  passwordHash: text('password_hash'),
+  // 失败次数达到阈值就锁一段时间，挡暴力破解
+  failedLoginAttempts: integer('failed_login_attempts').default(0).notNull(),
+  lockedUntil: timestamp('locked_until'),
 
   // User tracking fields
   referrer: text('referrer'),
@@ -54,6 +70,11 @@ export const accounts = pgTable('accounts', {
   session_state: text('session_state'),
 }, (table) => ({
   userIdIdx: index('account_user_id_idx').on(table.userId),
+  // 同一个 OAuth 账号只应存在一行，否则每次登录都会插入重复记录
+  providerAccountUnique: uniqueIndex('account_provider_account_unique').on(
+    table.provider,
+    table.providerAccountId
+  ),
 }));
 
 // ============================================
@@ -76,6 +97,7 @@ export const verificationTokens = pgTable('verification_tokens', {
   expires: timestamp('expires').notNull(),
 }, (table) => ({
   tokenIdx: index('token_idx').on(table.token),
+  pk: primaryKey({ columns: [table.identifier, table.token] }),
 }));
 
 // ============================================
@@ -114,6 +136,8 @@ export const subscriptions = pgTable('subscriptions', {
   providerIdx: index('subscription_provider_idx').on(table.provider),
   sourceIdx: index('subscription_source_idx').on(table.source),
   utmSourceIdx: index('subscription_utm_source_idx').on(table.utmSource),
+  // upsert 的冲突目标，必须是唯一约束而不能只是普通索引
+  providerIdUnique: uniqueIndex('subscription_provider_id_unique').on(table.providerId),
 }));
 
 // ============================================
@@ -139,6 +163,10 @@ export const payments = pgTable('payments', {
   statusIdx: index('payment_status_idx').on(table.status),
   providerIdx: index('payment_provider_idx').on(table.provider),
   createdAtIdx: index('payment_created_at_idx').on(table.createdAt),
+  providerPaymentUnique: uniqueIndex('payment_provider_payment_unique').on(
+    table.provider,
+    table.providerId
+  ),
 }));
 
 // ============================================
@@ -237,6 +265,47 @@ export const creditTransactions = pgTable('credit_transactions', {
   sourceIdx: index('credit_tx_source_idx').on(table.source),
   createdAtIdx: index('credit_tx_created_at_idx').on(table.createdAt),
   toolUsageLogIdIdx: index('credit_tx_tool_log_idx').on(table.toolUsageLogId),
+}));
+
+// ============================================
+// Webhook Events Table (幂等去重)
+// ============================================
+// 三家支付渠道都会重投 webhook。处理前先往这里插一条，
+// 插入冲突就说明这个事件已经处理过，直接跳过，避免重复开通/重复入账。
+export const webhookEvents = pgTable('webhook_events', {
+  id: text('id').primaryKey(),
+  provider: text('provider', { enum: ['stripe', 'paypal', 'creem'] }).notNull(),
+  eventId: text('event_id').notNull(),
+  eventType: text('event_type'),
+  payload: jsonb('payload'),
+  processedAt: timestamp('processed_at').defaultNow().notNull(),
+}, (table) => ({
+  providerEventUnique: uniqueIndex('webhook_provider_event_unique').on(
+    table.provider,
+    table.eventId
+  ),
+  processedAtIdx: index('webhook_processed_at_idx').on(table.processedAt),
+}));
+
+// ============================================
+// Admin Audit Log（后台操作留痕）
+// ============================================
+// 谁、在什么时候、对哪个对象做了什么。后台的每一个写操作都要落这张表，
+// 否则出了问题无法追溯是哪个管理员操作的。
+export const adminAuditLogs = pgTable('admin_audit_logs', {
+  id: text('id').primaryKey(),
+  actorId: text('actor_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  actorEmail: text('actor_email'),
+  action: text('action').notNull(),
+  targetType: text('target_type'),
+  targetId: text('target_id'),
+  detail: jsonb('detail'),
+  ipAddress: text('ip_address'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  actorIdx: index('audit_actor_idx').on(table.actorId),
+  actionIdx: index('audit_action_idx').on(table.action),
+  createdAtIdx: index('audit_created_at_idx').on(table.createdAt),
 }));
 
 // ============================================

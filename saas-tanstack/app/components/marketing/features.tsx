@@ -1,107 +1,87 @@
-export default function Features() {
-  const features = [
-    {
-      title: 'Lightning Fast',
-      description: 'Built on TanStack Start with optimal performance and best practices.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Secure Authentication',
-      description: 'Custom auth with OAuth providers and database sessions.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Dual Payment Gateways',
-      description: 'Integrated with both Stripe and PayPal for maximum flexibility.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Analytics Dashboard',
-      description: 'Comprehensive admin panel with user analytics and revenue tracking.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Fully Responsive',
-      description: 'Perfect experience on mobile, tablet, and desktop devices.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'TypeScript First',
-      description: 'Type-safe codebase with excellent developer experience.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Role-Based Access',
-      description: 'Built-in user roles and route protection middleware.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Multi-Country Support',
-      description: 'Track users and analytics by country out of the box.',
-      icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-    },
-  ];
+import {
+  BarChart3,
+  CreditCard,
+  FileCode2,
+  Globe,
+  KeyRound,
+  ShieldCheck,
+  Smartphone,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react';
+import Section from '~/components/ui/section';
+import { useTranslations } from '~/lib/i18n-context';
+
+/**
+ * 能力网格。
+ *
+ * 之前这里的八条是写死的英文，而 messages.features.* 里同样的八条
+ * 一直躺着没被用过 —— 中文站点开首页就会露出英文。现在只从 i18n 读。
+ *
+ * 图标统一走 lucide-react，不再手写 24×24 的 SVG path。
+ */
+const FEATURES: { key: string; icon: LucideIcon }[] = [
+  { key: 'lightningFast', icon: Zap },
+  { key: 'secureAuth', icon: ShieldCheck },
+  { key: 'dualPayment', icon: CreditCard },
+  { key: 'analytics', icon: BarChart3 },
+  { key: 'responsive', icon: Smartphone },
+  { key: 'typescript', icon: FileCode2 },
+  { key: 'roleAccess', icon: KeyRound },
+  { key: 'multiCountry', icon: Globe },
+];
+
+export default function Features({ showHeading = true }: { showHeading?: boolean } = {}) {
+  const t = useTranslations('features');
 
   return (
-    <section id="features" className="py-24 sm:py-32">
-      <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Everything You Need to Launch
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            A complete SaaS starter kit with all the essential features built-in and ready to customize.
-          </p>
-        </div>
-        <div className="mx-auto mt-16 max-w-5xl">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="relative rounded-lg border p-6 hover:shadow-lg transition-shadow"
-              >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  {feature.icon}
-                </div>
-                <h3 className="text-lg font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+    <Section
+      id="features"
+      eyebrow={showHeading ? t('eyebrow') : undefined}
+      title={showHeading ? t('title') : undefined}
+      lede={showHeading ? t('subtitle') : undefined}
+      // /features 页的 H1 已经说过一遍了，这里不再重复一个区块标题，
+      // 顶部内边距也交给上面那个标题区，避免两段留白叠在一起
+      className={showHeading ? undefined : '[&>div]:pt-0'}
+    >
+      <ul className="grid-hairline sm:grid-cols-2 lg:grid-cols-4">
+        {FEATURES.map((feature) => (
+          <li key={feature.key} className="bg-card p-6 sm:p-7">
+            <feature.icon className="h-5 w-5 text-primary" aria-hidden="true" />
+            <h3 className="mt-4 text-base font-medium text-foreground">
+              {t(`${feature.key}.title`)}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {t(`${feature.key}.description`)}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  );
+}
+
+const BOUNDARIES = ['noContent', 'noEmailMarketing', 'noTeams', 'noMobileApp'] as const;
+
+/**
+ * 「模板不做什么」—— 边界写在动手之前，而不是等人搭了一半才发现。
+ * 这是 /features 页独有的一块，让它和首页的能力网格长得不一样。
+ */
+export function Boundaries() {
+  const t = useTranslations('boundaries');
+
+  return (
+    <Section tone="subtle" tight eyebrow={t('eyebrow')} title={t('title')} lede={t('lede')}>
+      <ul className="grid gap-px bg-border sm:grid-cols-2">
+        {BOUNDARIES.map((key) => (
+          <li key={key} className="bg-subtle p-6 sm:p-7">
+            <h3 className="text-base font-medium text-foreground">{t(`${key}.title`)}</h3>
+            <p className="measure mt-2 text-sm leading-relaxed text-muted-foreground">
+              {t(`${key}.description`)}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </Section>
   );
 }

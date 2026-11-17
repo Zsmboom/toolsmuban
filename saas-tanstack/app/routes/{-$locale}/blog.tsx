@@ -1,97 +1,100 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import Navbar from '~/components/layout/navbar';
-import Footer from '~/components/layout/footer';
+import { ArrowUpRight } from 'lucide-react';
+import Section from '~/components/ui/section';
+import Badge from '~/components/ui/badge';
+import { GridFill } from '~/components/ui/grid-fill';
+import { blogPosts, formatPostDate } from '~/lib/blog';
+import { useI18n, useTranslations } from '~/lib/i18n-context';
+import { normalizeLocale } from '~/lib/i18n';
+import { buildPageHead } from '~/lib/site-config';
 
-export const Route = createFileRoute('/blog')({
-  head: () => ({
-    meta: [
-      { title: 'Blog - SaaS Template' },
-      {
-        name: 'description',
-        content: 'Latest articles and tutorials on building SaaS products with TanStack Start.',
-      },
-    ],
-  }),
+export const Route = createFileRoute('/{-$locale}/blog')({
+  head: ({ match }) =>
+    buildPageHead({
+      locale: normalizeLocale(match.params.locale),
+      title: 'Blog',
+      description: 'Articles and tutorials on building and shipping tool sites.',
+      path: '/blog',
+    }),
   component: BlogPage,
 });
 
-const posts = [
-  {
-    title: 'Getting Started with TanStack Start',
-    excerpt: 'Learn how to build your first SaaS product with TanStack Start and deploy it to Cloudflare Workers.',
-    date: 'June 1, 2026',
-    slug: 'getting-started-with-tanstack-start',
-  },
-  {
-    title: 'Authentication Best Practices',
-    excerpt: 'Discover the best practices for implementing secure authentication in your SaaS application.',
-    date: 'May 28, 2026',
-    slug: 'authentication-best-practices',
-  },
-  {
-    title: 'Payment Integration Guide',
-    excerpt: 'A comprehensive guide to integrating Stripe and PayPal payments into your SaaS product.',
-    date: 'May 25, 2026',
-    slug: 'payment-integration-guide',
-  },
-  {
-    title: 'Building an Admin Dashboard',
-    excerpt: 'Learn how to build a powerful admin dashboard with analytics and user management features.',
-    date: 'May 22, 2026',
-    slug: 'building-admin-dashboard',
-  },
-];
-
+/**
+ * 列表页独有的是**头条一篇 + 其余成网格**：全部平铺等于告诉读者
+ * 「这些文章一样重要」，那就没有入口了。
+ *
+ * 卡片不再做 hover:-translate-y + hover:shadow —— 那是全站唯一一处
+ * 会让布局抖动的悬停效果。现在只动边框与底色。
+ */
 function BlogPage() {
+  const { locale } = useI18n();
+  const t = useTranslations('blogPage');
+  const [featured, ...rest] = blogPosts;
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1 pt-20">
-        <section className="py-24 sm:py-32">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl font-heading">Blog</h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                Latest articles and tutorials on building SaaS products
-              </p>
-            </div>
-            <div className="mx-auto mt-16 max-w-4xl">
-              <div className="grid grid-cols-1 gap-8">
-                {posts.map((post, index) => (
-                  <article
-                    key={index}
-                    className="group rounded-xl bg-card border border-border p-8 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300"
-                  >
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                      <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                        Tutorial
-                      </span>
-                      <time>{post.date}</time>
-                    </div>
-                    <h2 className="mt-4 text-2xl font-bold font-heading">
-                      <Link
-                        to={`/blog/${post.slug}`}
-                        className="hover:text-primary transition-colors duration-200 cursor-pointer"
-                      >
-                        {post.title}
-                      </Link>
-                    </h2>
-                    <p className="mt-4 text-muted-foreground leading-relaxed">{post.excerpt}</p>
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="mt-4 inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-all duration-200 cursor-pointer gap-1 group-hover:gap-2"
-                    >
-                      Read more
-                      <span aria-hidden="true">→</span>
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </div>
+    <Section
+      tight
+      headingLevel="h1"
+      eyebrow={t('knowledgeBase')}
+      title={t('title')}
+      lede={t('subtitle')}
+    >
+      {featured ? (
+        <Link
+          to="/{-$locale}/blog/$slug"
+          params={{ slug: featured.slug }}
+          className="surface-interactive group block p-6 sm:p-10"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge tone="brand">{t('featured')}</Badge>
+            <Badge>{featured.category}</Badge>
+            <time dateTime={featured.date} className="tabular text-xs text-muted-foreground">
+              {formatPostDate(featured.date, locale)}
+            </time>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+          <h2 className="display-3 mt-5 max-w-3xl text-pretty text-foreground transition-colors group-hover:text-primary">
+            {featured.title}
+          </h2>
+          <p className="measure mt-4 text-muted-foreground">{featured.excerpt}</p>
+          <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+            {t('readMore')}
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </span>
+        </Link>
+      ) : null}
+
+      {rest.length > 0 ? (
+        <>
+          <h2 className="eyebrow mt-14">{t('recentArticles')}</h2>
+          <ul className="grid-hairline mt-4 sm:grid-cols-2 lg:grid-cols-4">
+            {rest.map((post) => (
+              <li key={post.slug} className="bg-card">
+                <Link
+                  to="/{-$locale}/blog/$slug"
+                  params={{ slug: post.slug }}
+                  className="group flex h-full flex-col p-6 transition-colors hover:bg-accent sm:p-7"
+                >
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Badge>{post.category}</Badge>
+                    <time dateTime={post.date} className="tabular text-xs text-muted-foreground">
+                      {formatPostDate(post.date, locale)}
+                    </time>
+                  </div>
+                  <h3 className="mt-4 text-lg font-medium leading-snug text-foreground transition-colors group-hover:text-primary">
+                    {post.title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                    {post.excerpt}
+                  </p>
+                </Link>
+              </li>
+            ))}
+            <GridFill count={rest.length} />
+          </ul>
+        </>
+      ) : (
+        <p className="text-muted-foreground">{t('noPosts')}</p>
+      )}
+    </Section>
   );
 }

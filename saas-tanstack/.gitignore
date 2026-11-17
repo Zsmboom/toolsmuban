@@ -42,3 +42,10 @@ pnpm-debug.log*
 *.timestamp_*.js
 .neon
 # Neon
+
+# 备份构建产物
+dist_bak/
+
+# 环境变量备份（含密钥），一律不入库
+.env*.bak*
+.env.local.*

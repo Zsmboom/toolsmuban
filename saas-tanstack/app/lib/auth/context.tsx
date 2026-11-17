@@ -1,12 +1,11 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from './index';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import type { User } from './index';
 import { getCurrentUserFn, logoutFn } from './server-fns';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (sessionToken: string) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   refetchUser: () => Promise<void>;
 }
 
@@ -16,8 +15,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
+      // 会话 cookie 是 HttpOnly 的，前端读不到也不该读，
+      // 一律由服务端根据 cookie 判断身份。
       const userData = await getCurrentUserFn();
       setUser(userData);
     } catch (error) {
@@ -26,32 +27,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchUser();
   }, []);
 
-  const login = (sessionToken: string) => {
-    document.cookie = `session_token=${sessionToken}; path=/; max-age=${30 * 24 * 60 * 60}`;
-    fetchUser();
-  };
+  useEffect(() => {
+    void fetchUser();
+  }, [fetchUser]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await logoutFn();
-      document.cookie = 'session_token=; path=/; max-age=0';
-      setUser(null);
     } catch (error) {
       console.error('Failed to logout:', error);
+    } finally {
+      // cookie 由服务端清除，这里只同步本地状态
+      setUser(null);
     }
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refetchUser: fetchUser }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({ user, loading, logout, refetchUser: fetchUser }),
+    [user, loading, logout, fetchUser]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

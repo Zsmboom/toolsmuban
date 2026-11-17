@@ -1,40 +1,50 @@
+/**
+ * 本模块只导出 createServerFn —— 客户端构建时整体替换成 RPC 存根。
+ * webhook 处理在 ./stripe-webhooks.ts，由 api 路由动态导入。
+ */
 import { createServerFn } from '@tanstack/react-start';
-import { getRequest } from '@tanstack/react-start/server';
-import Stripe from 'stripe';
+import { eq, desc } from 'drizzle-orm';
 import { db } from '~/lib/db';
-import { subscriptions, credits, payments } from '~/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { subscriptions } from '~/lib/db/schema';
 import { getCurrentUserFn } from '~/lib/auth/server-fns';
-import { generateId } from '~/lib/auth';
-import { getPlanByPriceId, getPlanCredits } from './index';
+import { assertKnownProductId } from './plans';
+import { appUrl, stripe } from './stripe-api';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
-});
 
 export const createCheckoutSessionFn = createServerFn({ method: 'POST' })
-  .validator((data: { priceId: string }) => data)
+  .validator((data: { priceId: string }) => {
+    if (!data?.priceId || typeof data.priceId !== 'string') {
+      throw new Error('Missing priceId');
+    }
+    return { priceId: data.priceId };
+  })
   .handler(async ({ data }) => {
     const user = await getCurrentUserFn();
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
+    if (!user) throw new Error('User not authenticated');
 
-    const { priceId } = data;
+    // 只接受我们配置过的价格，避免前端塞任意 price id
+    const plan = assertKnownProductId('stripe', data.priceId);
 
-    const session = await stripe.checkout.sessions.create({
+    const existing = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.userId, user.id),
+      orderBy: [desc(subscriptions.createdAt)],
+    });
+
+    const session = await stripe().checkout.sessions.create({
       mode: 'subscription',
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
-      success_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/checkout-success?session_id={CHECKOUT_SESSION_ID}&provider=stripe`,
-      cancel_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/checkout-cancel?provider=stripe`,
-      metadata: {
-        userId: user.id,
+      line_items: [{ price: data.priceId, quantity: 1 }],
+      success_url: `${appUrl()}/checkout-success?session_id={CHECKOUT_SESSION_ID}&provider=stripe`,
+      cancel_url: `${appUrl()}/checkout-cancel?provider=stripe`,
+      // 复用已有的 Stripe customer，避免同一个人反复开新客户
+      ...(existing?.customerId
+        ? { customer: existing.customerId }
+        : { customer_email: user.email ?? undefined }),
+      client_reference_id: user.id,
+      // webhook 回来时靠这些元数据确定「谁买了哪一档」，
+      // 少写 plan 会导致所有订阅都被记成同一个套餐
+      metadata: { userId: user.id, plan: plan.id, priceId: data.priceId },
+      subscription_data: {
+        metadata: { userId: user.id, plan: plan.id, priceId: data.priceId },
       },
     });
 
@@ -43,136 +53,22 @@ export const createCheckoutSessionFn = createServerFn({ method: 'POST' })
 
 export const createPortalSessionFn = createServerFn({ method: 'POST' }).handler(async () => {
   const user = await getCurrentUserFn();
-  if (!user) {
-    throw new Error('User not authenticated');
-  }
+  if (!user) throw new Error('User not authenticated');
 
   const subscription = await db.query.subscriptions.findFirst({
     where: eq(subscriptions.userId, user.id),
+    orderBy: [desc(subscriptions.createdAt)],
   });
 
-  if (!subscription?.providerId) {
-    throw new Error('No active subscription found');
+  // billing portal 要的是 customer id（cus_…），不是 subscription id（sub_…）
+  if (!subscription?.customerId) {
+    throw new Error('No Stripe customer found for this account');
   }
 
-  const session = await stripe.billingPortal.sessions.create({
-    customer: subscription.providerId,
-    return_url: `${process.env.VITE_APP_URL || 'http://localhost:3000'}/dashboard`,
+  const session = await stripe().billingPortal.sessions.create({
+    customer: subscription.customerId,
+    return_url: `${appUrl()}/dashboard`,
   });
 
   return { url: session.url };
 });
-
-export const handleWebhookFn = createServerFn({ method: 'POST' })
-  .validator((data: { payload: string; signature: string }) => data)
-  .handler(async ({ data }) => {
-    const { payload, signature } = data;
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-    if (!webhookSecret) {
-      throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
-    }
-
-    let event: Stripe.Event;
-
-    try {
-      event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
-    } catch (err) {
-      throw new Error('Webhook signature verification failed');
-    }
-
-    switch (event.type) {
-      case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.Checkout.Session;
-        const userId = session.metadata?.userId;
-
-        if (!userId) {
-          throw new Error('No userId in session metadata');
-        }
-
-        const stripeSubscription = await stripe.subscriptions.retrieve(
-          session.subscription as string
-        );
-
-        const planFromPrice = session.metadata?.plan
-          ? (session.metadata.plan as 'basic' | 'pro' | 'enterprise')
-          : 'basic';
-
-        // Create subscription record
-        const subId = await generateId();
-        await db.insert(subscriptions).values({
-          id: subId,
-          userId,
-          plan: planFromPrice,
-          status: stripeSubscription.status as 'active' | 'canceled' | 'past_due' | 'trialing' | 'paused' | 'expired',
-          provider: 'stripe',
-          providerId: stripeSubscription.id,
-          customerId: stripeSubscription.customer as string,
-          priceId: session.metadata?.price_id,
-          currentPeriodStart: new Date(stripeSubscription.current_period_start * 1000),
-          currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
-          cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
-        });
-
-        // Record payment
-        const paymentId = await generateId();
-        await db.insert(payments).values({
-          id: paymentId,
-          userId,
-          subscriptionId: subId,
-          amount: session.amount_total || 0,
-          status: 'succeeded',
-          provider: 'stripe',
-          providerId: session.id,
-        });
-
-        // Update credits quota
-        const creditsPerMonth = getPlanCredits(planFromPrice);
-        const existingCredits = await db.query.credits.findFirst({
-          where: eq(credits.userId, userId),
-        });
-        const quotaValue = creditsPerMonth < 0 ? 999999 : creditsPerMonth;
-        if (existingCredits) {
-          await db.update(credits)
-            .set({ monthlyQuota: quotaValue, updatedAt: new Date() })
-            .where(eq(credits.userId, userId));
-        } else {
-          await db.insert(credits).values({
-            id: await generateId(),
-            userId,
-            balance: 100,
-            monthlyQuota: quotaValue,
-          });
-        }
-
-        break;
-      }
-
-      case 'customer.subscription.updated': {
-        const stripeSubUpdated = event.data.object as Stripe.Subscription;
-
-        await db.update(subscriptions)
-          .set({
-            status: stripeSubUpdated.status as "active" | "canceled" | "past_due" | "trialing" | "paused" | "expired",
-            currentPeriodStart: new Date(stripeSubUpdated.current_period_start * 1000),
-            currentPeriodEnd: new Date(stripeSubUpdated.current_period_end * 1000),
-            cancelAtPeriodEnd: stripeSubUpdated.cancel_at_period_end as boolean,
-          })
-          .where(eq(subscriptions.providerId, stripeSubUpdated.id));
-
-        break;
-      }
-
-      case 'customer.subscription.deleted': {
-        const stripeSubDeleted = event.data.object as Stripe.Subscription;
-
-        await db.update(subscriptions)
-          .set({ status: 'canceled', canceledAt: new Date(), updatedAt: new Date() })
-          .where(eq(subscriptions.providerId, stripeSubDeleted.id));
-
-        break;
-      }
-    }
-
-    return { received: true };
-  });

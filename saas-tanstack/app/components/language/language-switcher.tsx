@@ -1,19 +1,37 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from '@tanstack/react-router';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import { ChevronDown } from 'lucide-react';
-import { locales, type Locale, defaultLocale } from '~/lib/i18n';
+import {
+  ENABLED_LOCALES,
+  isMultiLocaleEnabled,
+  localeNames,
+  localizedPath,
+  stripLocalePrefix,
+  type Locale,
+} from '~/lib/i18n';
+import { setLocaleFn } from '~/lib/i18n-server';
+import { useI18n, useTranslations } from '~/lib/i18n-context';
+import { buttonClass } from '~/components/ui/button';
 
+/**
+ * 语言切换器。
+ *
+ * 切换语言 = 跳到同一页面的另一个语言 URL（默认语言无前缀，其它带前缀），
+ * 同时把选择写进 cookie 以便下次引导。
+ *
+ * 只启用一种语言时整个组件不渲染 —— 单语言站点不该出现语言选项。
+ */
 export default function LanguageSwitcher() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { locale: currentLocale } = useI18n();
+  const t = useTranslations('nav');
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setIsOpen(false);
     };
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
@@ -26,61 +44,58 @@ export default function LanguageSwitcher() {
     };
   }, []);
 
-  const getCurrentLocale = (): Locale => {
-    const segments = location.pathname.split('/');
-    const potentialLocale = segments[1];
-    if (locales.includes(potentialLocale as Locale)) {
-      return potentialLocale as Locale;
-    }
-    return defaultLocale;
-  };
+  if (!isMultiLocaleEnabled) return null;
 
-  const currentLocale = getCurrentLocale();
-
-  const handleLanguageChange = (locale: Locale) => {
-    const segments = location.pathname.split('/');
-    let newPath: string;
-    if (locales.includes(segments[1] as Locale)) {
-      segments[1] = locale;
-      newPath = segments.join('/');
-    } else {
-      newPath = `/${locale}${location.pathname}`;
-    }
-    navigate({ to: newPath });
+  const handleLanguageChange = async (locale: Locale) => {
     setIsOpen(false);
-  };
+    if (locale === currentLocale) return;
 
-  const languageNames: Record<Locale, string> = {
-    en: 'English',
-    zh: '中文',
+    // 当前 URL 剥掉语言前缀，换算成目标语言的地址
+    const { path } = stripLocalePrefix(location.pathname);
+    const target = localizedPath(path, locale);
+
+    try {
+      await setLocaleFn({ data: { locale } });
+    } catch (error) {
+      console.error('Failed to persist language preference:', error);
+    }
+
+    await navigate({ to: target, replace: false });
   };
 
   return (
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        aria-haspopup="true"
+        aria-haspopup="menu"
         aria-expanded={isOpen}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-xl hover:bg-accent hover:border-primary/30 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all duration-200 cursor-pointer"
+        aria-label={t('changeLanguage')}
+        className={buttonClass({ variant: 'secondary', size: 'md' })}
       >
-        <span>{languageNames[currentLocale]}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <span>{localeNames[currentLocale]}</span>
+        <ChevronDown
+          className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-card border border-border rounded-xl shadow-lg z-50 overflow-hidden" role="menu">
-          {locales.map((locale) => (
+        <div
+          className="surface absolute right-0 z-50 mt-2 w-40 overflow-hidden"
+          role="menu"
+        >
+          {ENABLED_LOCALES.map((locale) => (
             <button
               key={locale}
               onClick={() => handleLanguageChange(locale)}
               role="menuitem"
-              className={`block w-full text-left px-4 py-2.5 text-sm transition-colors duration-150 cursor-pointer ${
+              className={`flex min-h-11 w-full cursor-pointer items-center px-4 text-left text-sm transition-colors ${
                 locale === currentLocale
-                  ? 'bg-primary/10 text-primary font-medium'
+                  ? 'bg-brand-subtle font-medium text-primary'
                   : 'text-foreground hover:bg-accent'
               }`}
             >
-              {languageNames[locale]}
+              {localeNames[locale]}
             </button>
           ))}
         </div>

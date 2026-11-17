@@ -27,7 +27,9 @@
     "back": "返回",
     "next": "下一步",
     "previous": "上一步",
-    "close": "关闭"
+    "close": "关闭",
+    "date": "时间",
+    "upgrade": "升级套餐"
   },
   "nav": {
     "skipToMain": "跳转到主要内容",
@@ -36,74 +38,75 @@
     "about": "关于我们",
     "blog": "博客",
     "docs": "文档",
-    "support": "技术支持"
+    "support": "技术支持",
+    "toggleMenu": "展开/收起导航菜单",
+    "changeLanguage": "切换语言",
+    "primary": "主导航"
   },
   "hero": {
-    "badge": "终极 SaaS 启动模板",
-    "title": "10倍速构建您的 SaaS 产品",
-    "description": "包含身份验证、支付、管理后台的完整 Next.js 15 模板，以及启动 SaaS 业务所需的一切。",
-    "subtitle": "使用我们的生产级模板，更快地构建和发布您的 SaaS 产品",
+    "badge": "可直接上线的工具站模板",
+    "title": "一个收费工具站要的东西，已经接好了。",
+    "description": "登录注册、积分账本、三个支付渠道、管理后台和 SEO 默认项，跑在 TanStack Start 与 Cloudflare Workers 上。把你的工具加进来就能上线。",
     "cta": "免费开始",
-    "ctaShort": "开始使用",
-    "learnMore": "探索功能",
-    "productionReady": "生产就绪",
-    "typescript": "TypeScript",
-    "responsive": "完全响应式"
+    "learnMore": "看看都包含什么",
+    "checks": {
+      "noCard": "注册不需要信用卡",
+      "openSource": "代码归你自己",
+      "selfHost": "部署到你自己的 Cloudflare 账号"
+    },
+    "demo": {
+      "label": "演示工具 · 一次运行示例",
+      "inputLabel": "输入",
+      "inputValue": "用一句话概括这段文字。",
+      "run": "运行",
+      "cost": "每次运行 {cost} 积分",
+      "outputLabel": "结果",
+      "outputValue": "这段文字主张：计量应该由平台负责，而不是每个工具各写一遍。",
+      "ledger": "积分账本",
+      "balance": "−{cost} 积分 · 运行失败自动退回"
+    }
   },
   "features": {
-    "title": "启动所需的一切",
-    "subtitle": "完整的 SaaS 启动套件，内置所有基本功能，随时可定制。",
+    "title": "上线要用的东西，这里都有",
+    "subtitle": "一个收费工具站需要的每一块都已经写好并测过，剩下的只有工具本身。",
     "lightningFast": {
-      "title": "极速性能",
-      "description": "基于 Next.js 15 构建，拥有最佳性能和最佳实践。"
+      "title": "边缘渲染",
+      "description": "TanStack Start 在 Cloudflare Workers 上做服务端渲染，离访客更近。"
     },
     "secureAuth": {
-      "title": "安全认证",
-      "description": "NextAuth.js v5，支持 OAuth 提供商和数据库会话。"
+      "title": "安全的登录",
+      "description": "邮箱密码 + Google OAuth，HttpOnly 会话 Cookie、PKCE，连续失败会锁定。"
     },
     "dualPayment": {
-      "title": "双支付网关",
-      "description": "集成 Stripe 和 PayPal，实现最大灵活性。"
+      "title": "三个支付渠道",
+      "description": "Stripe、Creem、PayPal 共用同一份套餐定义，Webhook 做了去重。"
     },
     "analytics": {
-      "title": "分析仪表板",
-      "description": "全面的管理面板，包含用户分析和收入追踪。"
+      "title": "管理后台",
+      "description": "用户、订阅、支付、工具日志，以及每一次后台写操作的留痕。"
     },
     "responsive": {
-      "title": "完全响应式",
-      "description": "在移动端、平板和桌面设备上完美体验。"
+      "title": "响应式与双主题",
+      "description": "一套 token 同时驱动营销页、应用内和后台的浅色与深色。"
     },
     "typescript": {
-      "title": "TypeScript 优先",
-      "description": "类型安全的代码库，卓越的开发体验。"
+      "title": "端到端 TypeScript",
+      "description": "带类型的路由、带类型的服务端函数、带类型的数据库 schema。"
     },
     "roleAccess": {
-      "title": "基于角色的访问",
-      "description": "内置用户角色和路由保护中间件。"
+      "title": "基于角色的访问控制",
+      "description": "登录用户与管理员各有路由级守卫，判断发生在服务端。"
     },
     "multiCountry": {
-      "title": "多国家支持",
-      "description": "开箱即用的国家级用户和分析追踪。"
-    }
+      "title": "双语与 SEO 就绪",
+      "description": "语言由 URL 决定，hreflang、canonical、sitemap 和 robots 都是现成的。"
+    },
+    "eyebrow": "包含什么"
   },
   "testimonials": {
     "title": "深受开发者喜爱",
     "subtitle": "看看我们的客户对他们的体验有何评价。",
-    "testimonial1": {
-      "name": "Sarah Johnson",
-      "role": "创始人，TechStart",
-      "content": "这个模板为我们节省了数月的开发时间。代码质量卓越，文档全面。"
-    },
-    "testimonial2": {
-      "name": "Michael Chen",
-      "role": "CTO，DataFlow",
-      "content": "内置的 Stripe 和 PayPal 支付集成使变现变得极其简单。强烈推荐！"
-    },
-    "testimonial3": {
-      "name": "Emily Rodriguez",
-      "role": "产品经理，AppVenture",
-      "content": "管理仪表板非常棒。我们可以实时跟踪从用户分析到收入指标的一切。"
-    }
+    "eyebrow": "用户怎么说"
   },
   "pricingCards": {
     "title": "简单透明的价格",
@@ -146,50 +149,72 @@
       "feature7": "高级 API 访问",
       "feature8": "自定义集成",
       "feature9": "SLA 保证"
+    },
+    "free": {
+      "name": "免费版",
+      "description": "先免费试用再决定",
+      "feature1": "每月 100 积分",
+      "feature2": "核心工具",
+      "feature3": "社区支持",
+      "feature4": "单用户"
+    },
+    "perMonth": "/月",
+    "forever": "永久免费",
+    "payWith": "支付方式",
+    "currentPlan": "当前套餐",
+    "checkoutFailed": "无法发起支付，请重试。",
+    "notConfigured": "暂不可用",
+    "eyebrow": "价格",
+    "processing": "处理中…",
+    "providers": {
+      "stripe": "银行卡",
+      "creem": "Creem",
+      "paypal": "PayPal"
     }
   },
   "faq": {
     "title": "常见问题",
-    "subtitle": "关于模板您需要了解的一切。",
+    "subtitle": "模板是怎么搭的，以及哪些地方本来就等着你改。",
     "question1": {
-      "q": "你们接受哪些支付方式？",
-      "a": "我们通过 Stripe 接受所有主要信用卡，以及 PayPal。两个支付网关都完全集成且安全。"
+      "q": "支持哪些支付渠道？",
+      "a": "Stripe、Creem 和 PayPal，三个可以同时开。它们共用同一份套餐定义，所以无论用户从哪个渠道付款，拿到的都是他真正买的那一档。"
     },
     "question2": {
-      "q": "我可以随时取消订阅吗？",
-      "a": "是的，您可以随时取消订阅。您的访问权限将持续到当前计费周期结束，之后不会再收费。"
+      "q": "订阅可以随时取消吗？",
+      "a": "可以。取消走各渠道自己的客户门户，已付费周期结束之前访问权限不受影响。"
     },
     "question3": {
-      "q": "有免费试用吗？",
-      "a": "有！所有方案都提供 14 天免费试用。开始试用无需信用卡。"
+      "q": "积分是怎么算的？",
+      "a": "每档套餐自带每月积分额度。调用工具会在执行前扣积分，运行失败自动退回 —— 失败永远不向用户收费。"
     },
     "question4": {
-      "q": "身份验证是如何工作的？",
-      "a": "我们默认使用 NextAuth.js v5 与 Google OAuth。该模板设计可轻松添加更多提供商，如 GitHub、Microsoft 或自定义电子邮件/密码验证。"
+      "q": "登录是怎么做的？",
+      "a": "邮箱密码和 Google OAuth 都内置了。会话是服务端签发的 HttpOnly、Secure、SameSite=Lax Cookie，OAuth 流程带 state 和 PKCE 校验。"
     },
     "question5": {
-      "q": "代码是生产就绪的吗？",
-      "a": "当然！该模板遵循 Next.js 最佳实践，包含 TypeScript 以确保类型安全，并针对 Vercel 部署进行了优化。它包含适当的错误处理、加载状态和安全措施。"
+      "q": "能直接上生产吗？",
+      "a": "带类型的路由与服务端函数、去重的 Webhook、后台操作留痕、登录限流、SEO 默认项都是现成的。唯一没带的是你的工具。"
     },
     "question6": {
-      "q": "它使用什么数据库？",
-      "a": "该模板使用 Turso (LibSQL) 与 Drizzle ORM。数据库模式完全类型化并包含迁移。如果需要，您可以轻松切换到其他 SQL 数据库，如 PostgreSQL 或 MySQL。"
+      "q": "用的什么数据库？",
+      "a": "Drizzle ORM 配两套可互换的驱动：边缘部署用 Cloudflare D1（SQLite），其余场景用 Neon（Postgres）。一份 schema，有测试保证两边一致。"
     },
     "question7": {
-      "q": "你们提供支持吗？",
-      "a": "是的！基础方案包含电子邮件支持，专业方案获得优先支持，企业客户享有专属支持和 SLA 保证。"
+      "q": "怎么加我自己的工具？",
+      "a": "在 app/lib/tools/registry.ts 里声明，在 app/lib/tools/server-fns.ts 里实现 handler。计量、日志和退款逻辑不用动就继续生效。"
     },
     "question8": {
-      "q": "我可以自定义设计吗？",
-      "a": "当然！该模板使用 Tailwind CSS 和 Shadcn UI 组件，使您可以轻松自定义颜色、排版和布局以匹配您的品牌。"
-    }
+      "q": "怎么换设计？",
+      "a": "颜色、圆角、字体全都是 app/styles/globals.css 里的 token。改这一个文件全站跟着变 —— ESLint 会挡住组件里硬编码的调色板色，保证它一直是这样。"
+    },
+    "eyebrow": "常见问题"
   },
   "cta": {
-    "title": "准备好开始了吗？",
-    "subtitle": "加入数千名使用我们模板构建出色 SaaS 产品的开发者。",
-    "startTrial": "开始免费试用",
+    "title": "从「管道已经接好」的地方开始。",
+    "subtitle": "登录，跑一次演示工具，看着一个积分被扣掉、记下日志、汇总进后台。",
+    "startTrial": "免费开始",
     "viewPricing": "查看价格",
-    "trialInfo": "14 天免费试用 • 无需信用卡 • 随时取消"
+    "trialInfo": "注册账号不需要信用卡。"
   },
   "auth": {
     "loginTitle": "欢迎回来",
@@ -271,7 +296,63 @@
       "backToHome": "返回首页",
       "persistsProblem": "如果此问题持续存在，请",
       "contactSupport": "联系支持"
-    }
+    },
+    "errorTitle": "登录失败",
+    "tryAgain": "重试",
+    "completing": "正在完成登录…",
+    "missingCode": "未收到授权码，请重新发起登录。",
+    "genericError": "登录失败，请重试。",
+    "accessDenied": "你取消了本次登录授权。",
+    "signingIn": "正在登录…",
+    "signIn": "登录",
+    "signUp": "注册",
+    "signUpTitle": "创建账号",
+    "switchToSignUp": "还没有账号？",
+    "switchToSignIn": "已经有账号了？",
+    "signUpLink": "去注册",
+    "signInLink": "去登录",
+    "name": "昵称（选填）",
+    "creatingAccount": "正在创建账号…",
+    "errors2": {
+      "INVALID_CREDENTIALS": "邮箱或密码不正确。",
+      "ACCOUNT_LOCKED": "失败次数过多，请 15 分钟后再试。",
+      "EMAIL_TAKEN": "该邮箱已注册，请直接登录。",
+      "OAUTH_ONLY": "该账号是用 Google 创建的，请使用 Google 登录。",
+      "WEAK_PASSWORD": "请设置一个更强的密码。",
+      "UNKNOWN": "出错了，请重试。",
+      "INVALID_TOKEN": "链接无效或已过期，请重新申请。"
+    },
+    "passwordErrors": {
+      "tooShort": "密码至少 8 位。",
+      "tooLong": "密码太长了。",
+      "tooCommon": "这个密码太常见了，换一个不容易被猜到的。",
+      "needsVariety": "字母搭配数字或符号，或者用更长的口令。"
+    },
+    "forgotTitle": "忘记密码了？",
+    "forgotSubtitle": "填写邮箱，我们给你发一条重置链接。",
+    "forgotLink": "忘记密码？",
+    "sendResetLink": "发送重置链接",
+    "sending": "发送中…",
+    "resetLinkSent": "如果该邮箱已注册，重置链接已经发出，请查收邮箱。",
+    "backToSignIn": "返回登录",
+    "resetTitle": "设置新密码",
+    "newPassword": "新密码",
+    "resetSubmit": "更新密码",
+    "resetDone": "密码已更新，其他设备上的登录状态已全部退出。",
+    "verifying": "正在验证邮箱…",
+    "verifiedTitle": "邮箱已验证",
+    "verifiedBody": "搞定，你的邮箱地址已确认。",
+    "verifyFailedTitle": "验证失败",
+    "verifyFailedBody": "链接无效或已过期，可以在控制台重新发送一封。",
+    "goToDashboard": "进入控制台",
+    "changePassword": "修改密码",
+    "currentPassword": "当前密码",
+    "passwordChanged": "密码已更新。",
+    "emailVerification": "邮箱验证",
+    "verificationHint": "没收到验证邮件？可以重新发一封。",
+    "resendVerification": "重新发送验证邮件",
+    "verificationSent": "验证邮件已发出，请查收邮箱。",
+    "passwordHint": "至少 8 位。字母和数字或符号混着用。"
   },
   "dashboard": {
     "welcome": "欢迎回来，{name}",
@@ -281,7 +362,15 @@
     "settings": "设置",
     "analytics": "数据分析",
     "users": "用户管理",
-    "subscriptions": "订阅管理"
+    "subscriptions": "订阅管理",
+    "plan": "套餐",
+    "status": "状态",
+    "changePlan": "更换套餐",
+    "upgradePlan": "升级套餐",
+    "manageSubscription": "管理订阅",
+    "renewsOn": "{date} 续费",
+    "noSubscription": "暂无有效订阅",
+    "toolsHint": "跑一次演示工具，看着一个积分被扣掉、记下日志、汇总进后台。"
   },
   "pricing": {
     "title": "简单透明的价格",
@@ -347,7 +436,16 @@
     "metaTitle": "价格方案 - 免费开始",
     "metaDescription": "适合各种规模团队的灵活定价。基础版 $29/月，专业版 $99/月，企业版定制价格。提供 14 天免费试用，无需信用卡。随时取消。",
     "title": "简单透明的价格",
-    "subtitle": "选择适合您的方案"
+    "subtitle": "选择适合您的方案",
+    "costs": {
+      "eyebrow": "积分消耗",
+      "title": "每次调用花多少",
+      "lede": "套餐给的是每月积分额度，这张表说明它会被怎么花掉。",
+      "tool": "工具",
+      "description": "做什么",
+      "credits": "每次运行积分",
+      "note": "运行失败会自动退回积分 —— 只有真正产出结果的调用才会计费。"
+    }
   },
   "aboutPage": {
     "metaTitle": "关于我们 - 我们的使命与故事",
@@ -374,19 +472,90 @@
         "title": "持续支持",
         "description": "定期更新、错误修复和新功能让您保持领先。"
       }
+    },
+    "facts": {
+      "title": "一览",
+      "stack": {
+        "label": "技术栈",
+        "value": "TanStack Start · React 19"
+      },
+      "database": {
+        "label": "数据库",
+        "value": "Drizzle · D1 / Neon"
+      },
+      "payments": {
+        "label": "支付",
+        "value": "Stripe · Creem · PayPal"
+      },
+      "deploy": {
+        "label": "部署到",
+        "value": "Cloudflare Workers"
+      }
     }
   },
   "termsPage": {
     "metaTitle": "服务条款 - 法律条款与条件",
     "metaDescription": "阅读我们的服务条款，了解使用我们的 SaaS 模板的规则和规定。",
     "title": "服务条款",
-    "lastUpdated": "最后更新"
+    "lastUpdated": "最后更新",
+    "sections": {
+      "s1": {
+        "heading": "条款的接受",
+        "body": "创建账号或使用本服务即表示你同意这些条款。若不同意，请不要使用本服务。"
+      },
+      "s2": {
+        "heading": "账号",
+        "body": "你对自己账号下发生的行为负责，并需妥善保管登录方式。除非你的套餐另有说明，账号仅供单人使用。"
+      },
+      "s3": {
+        "heading": "积分与套餐",
+        "body": "付费套餐包含每月积分额度。积分在每个计费周期开始时重置，不累积到下期。调用工具会消耗积分；运行失败会自动退回。"
+      },
+      "s4": {
+        "heading": "计费与取消",
+        "body": "订阅在取消之前会自动续费。你可以随时在个人中心取消，访问权限持续到已付费周期结束。"
+      },
+      "s5": {
+        "heading": "可接受使用",
+        "body": "你不得利用本服务从事违法行为、侵犯他人权利，或试图破坏、逆向本平台。"
+      },
+      "s6": {
+        "heading": "免责与责任限制",
+        "body": "本服务按「现状」提供，不附带任何形式的担保。在法律允许的最大范围内，我们的累计赔偿责任以你在索赔发生前十二个月内支付的金额为限。"
+      }
+    }
   },
   "privacyPage": {
     "metaTitle": "隐私政策 - 我们如何保护您的数据",
     "metaDescription": "我们的隐私政策解释了我们如何收集、使用和保护您的个人信息。我们优先考虑您的隐私和数据安全。",
     "title": "隐私政策",
-    "lastUpdated": "最后更新"
+    "lastUpdated": "最后更新",
+    "sections": {
+      "s1": {
+        "heading": "我们收集哪些信息",
+        "body": "你登录时，身份提供方给到的邮箱、名字和头像；你调用工具产生的使用记录；以及你产生任何付费时的账单记录。"
+      },
+      "s2": {
+        "heading": "我们如何使用这些信息",
+        "body": "用于运行你的账号、计量积分消耗、处理支付、提供支持并改进服务。我们不出售你的个人数据。"
+      },
+      "s3": {
+        "heading": "支付数据",
+        "body": "银行卡信息完全由支付渠道（Stripe、Creem、PayPal）处理。我们从不接触也不存储完整的支付凭据，只保留对账所需的标识符。"
+      },
+      "s4": {
+        "heading": "Cookie",
+        "body": "我们只设置一个严格必要的 HttpOnly 会话 Cookie 用于保持登录，以及一个语言偏好 Cookie。不使用任何广告 Cookie。"
+      },
+      "s5": {
+        "heading": "数据保留",
+        "body": "账号与账单记录在你的账号存续期间保留，并按适用的税务与会计规定保留相应期限。"
+      },
+      "s6": {
+        "heading": "你的权利",
+        "body": "你可以随时联系我们，要求访问、更正或删除你的个人数据。"
+      }
+    }
   },
   "blogPage": {
     "metaTitle": "博客 - SaaS 模板",
@@ -399,7 +568,8 @@
     "noPosts": "暂无文章",
     "checkBackSoon": "请稍后查看新文章和见解。",
     "categories": "分类",
-    "tags": "标签"
+    "tags": "标签",
+    "readMore": "阅读全文"
   },
   "blogPost": {
     "backToBlog": "返回博客",
@@ -519,7 +689,16 @@
     "recentActivity": {
       "title": "最近活动",
       "noActivity": "暂无最近活动"
-    }
+    },
+    "welcome": "欢迎回来，{name}",
+    "totalUsers": "用户总数",
+    "newThisMonth": "本月新增 {count}",
+    "revenueMtd": "本月收入",
+    "revenueHint": "本月成功的支付",
+    "activeSubscriptions": "有效订阅",
+    "activeHint": "状态为 active",
+    "toolRunsMtd": "本月调用次数",
+    "toolRunsHint": "已记录的工具执行"
   },
   "adminUsersPage": {
     "title": "用户管理",
@@ -529,11 +708,29 @@
     "totalUsers": "总用户数",
     "searchResults": "搜索结果",
     "currentPage": "当前页",
-    "pages": "页数"
+    "pages": "页数",
+    "user": "用户",
+    "role": "角色",
+    "signIn": "登录方式",
+    "credits": "积分",
+    "joined": "注册时间",
+    "actions": "操作",
+    "empty": "还没有用户",
+    "accountCount": "{count} 个账号",
+    "password": "密码",
+    "locked": "已锁定",
+    "unlock": "解锁",
+    "signOut": "强制下线",
+    "operationFailed": "操作失败",
+    "creditsAdjusted": "积分已调整",
+    "unlocked": "已解锁",
+    "sessionsRevoked": "会话已全部注销",
+    "creditPrompt": "调整积分（例如 100 或 -50）：",
+    "reasonPrompt": "原因（会写进操作留痕）："
   },
   "adminLogsPage": {
     "title": "系统日志",
-    "subtitle": "监控工具使用和系统活动",
+    "subtitle": "工具调用记录，以及每一次后台写操作",
     "loading": "加载中...",
     "stats": {
       "totalApiCalls": "总 API 调用",
@@ -548,11 +745,27 @@
       "duration": "持续时间",
       "time": "时间",
       "unknown": "未知"
-    }
+    },
+    "toolRuns": "工具调用",
+    "tool": "工具",
+    "user": "用户",
+    "credits": "积分",
+    "duration": "耗时",
+    "country": "国家",
+    "when": "时间",
+    "noToolRuns": "还没有调用记录",
+    "auditTrail": "后台操作留痕",
+    "auditHint": "每一次后台写操作都会留痕，用于事后追溯是谁做的。",
+    "action": "操作",
+    "actor": "操作人",
+    "target": "对象",
+    "detail": "详情",
+    "ip": "IP",
+    "noAudit": "还没有后台操作记录"
   },
   "adminSubscriptionsPage": {
     "title": "订阅管理",
-    "subtitle": "监控和管理用户订阅",
+    "subtitle": "所有支付渠道下的全部订阅",
     "loading": "加载中...",
     "stats": {
       "activeSubscriptions": "活跃订阅",
@@ -566,11 +779,20 @@
       "provider": "提供商",
       "created": "创建时间",
       "unknown": "未知"
-    }
+    },
+    "total": "共计",
+    "user": "用户",
+    "plan": "套餐",
+    "status": "状态",
+    "provider": "渠道",
+    "periodEnd": "周期结束",
+    "created": "创建时间",
+    "empty": "还没有订阅",
+    "unknownUser": "未知"
   },
   "adminAnalyticsPage": {
     "title": "国家分析",
-    "subtitle": "用户和使用情况的地理分布",
+    "subtitle": "最近 30 天",
     "loading": "加载中...",
     "stats": {
       "totalCountries": "总国家数",
@@ -588,6 +810,201 @@
       "users": "用户",
       "toolUsage": "工具使用",
       "avgPerUser": "人均"
+    },
+    "toolRuns30d": "调用次数（30 天）",
+    "credits30d": "消耗积分（30 天）",
+    "revenueMtd": "本月收入",
+    "newUsersMtd": "本月新增用户",
+    "dailyRuns": "每日调用次数",
+    "noData": "还没有调用数据。",
+    "barTitle": "{day}：{runs} 次调用，{credits} 积分"
+  },
+  "credits": {
+    "title": "积分",
+    "balance": "余额",
+    "monthlyQuota": "每月额度 {quota}",
+    "unlimited": "不限量",
+    "used": "已用",
+    "quotaUsed": "已用额度 {percent}%",
+    "insufficient": "积分不足，请升级套餐或等待下月重置。",
+    "history": "积分明细",
+    "noTransactions": "暂无积分变动记录。",
+    "type": "类型",
+    "amount": "数量",
+    "description": "说明",
+    "date": "时间",
+    "balanceAfter": "变动后余额"
+  },
+  "tools": {
+    "title": "工具",
+    "subtitle": "运行工具会从每月额度中扣除积分。",
+    "demoName": "示例工具",
+    "demoDescription": "一个占位工具，用来演示完整的积分计费链路，接入自己的能力时替换掉它。",
+    "costLabel": "每次运行消耗 {cost} 积分",
+    "run": "运行",
+    "running": "运行中…",
+    "input": "输入",
+    "inputPlaceholder": "随便输点什么…",
+    "result": "结果",
+    "runFailed": "运行失败，本次未扣除积分。",
+    "recentRuns": "最近运行",
+    "noRuns": "暂无运行记录。",
+    "tool": "工具",
+    "creditsUsed": "消耗积分"
+  },
+  "legal": {
+    "lastUpdated": "最后更新：{date}",
+    "placeholderNotice": "以下为模板占位文本，正式上线前请替换为你自己的条款。",
+    "contact": {
+      "title": "联系我们",
+      "body": "对本文档有疑问？请发邮件至"
     }
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "我们通常在一个工作日内回复。",
+    "emailUs": "邮箱",
+    "topics": {
+      "support": {
+        "title": "产品支持",
+        "description": "东西坏了，或者行为和你预期的不一样。",
+        "sla": "1 个工作日"
+      },
+      "billing": {
+        "title": "账单",
+        "description": "发票、退款、套餐变更和支付失败。",
+        "sla": "1 个工作日"
+      },
+      "security": {
+        "title": "安全",
+        "description": "漏洞报告与数据请求。请附上复现步骤。",
+        "sla": "24 小时"
+      },
+      "other": {
+        "title": "其他",
+        "description": "合作、媒体，以及不属于上面三类的一切。",
+        "sla": "3 个工作日"
+      }
+    }
+  },
+  "featuresPage": {
+    "title": "包里都有什么",
+    "subtitle": "登录注册、积分计量、三个支付渠道、管理后台和 SEO 默认项，已经接在一起了。",
+    "eyebrow": "功能"
+  },
+  "theme": {
+    "switchTo": {
+      "light": "切换到浅色主题",
+      "dark": "切换到深色主题",
+      "system": "跟随系统主题"
+    },
+    "current": {
+      "light": "浅色主题",
+      "dark": "深色主题",
+      "system": "跟随系统主题"
+    }
+  },
+  "appNav": {
+    "dashboard": "概览",
+    "tools": "工具",
+    "settings": "设置",
+    "admin": "后台",
+    "overview": "总览",
+    "subscriptions": "订阅",
+    "payments": "支付记录",
+    "users": "用户",
+    "logs": "日志",
+    "analytics": "数据",
+    "logout": "退出登录",
+    "adminPanel": "管理后台",
+    "adminPanelHint": "用户、账单与操作留痕",
+    "adminFallbackName": "管理员",
+    "backToApp": "返回前台",
+    "anonymous": "你",
+    "openMenu": "打开导航",
+    "closeMenu": "关闭导航"
+  },
+  "facts": {
+    "paymentProviders": "支付渠道",
+    "locales": "语言",
+    "databases": "数据库驱动",
+    "tools": "注册表中的工具"
+  },
+  "howItWorks": {
+    "eyebrow": "怎么用",
+    "title": "从注册到一次计费运行，只有四步。",
+    "lede": "这四步之间的所有管道就是这套模板本身。工具那一部分由你来写。",
+    "signUp": {
+      "title": "注册",
+      "description": "邮箱密码或 Google 登录。会话是服务端签发的 HttpOnly Cookie。"
+    },
+    "pickPlan": {
+      "title": "选套餐",
+      "description": "Stripe、Creem 或 PayPal 任选。每档套餐自带每月积分额度。"
+    },
+    "runTool": {
+      "title": "调用工具",
+      "description": "运行前先扣积分，运行失败会自动退回，失败不花钱。"
+    },
+    "watchUsage": {
+      "title": "看用量",
+      "description": "每次运行都记下耗时与来源国家，后台会把它们聚合出来。"
+    }
+  },
+  "toolGrid": {
+    "eyebrow": "工具矩阵",
+    "title": "所有工具都登记在同一份注册表里。",
+    "lede": "积分成本、是否需要登录、文案全部来自同一处声明，所以首页、价格表和执行器不可能各说各话。",
+    "cost": "{cost} 积分",
+    "signInRequired": "需要登录",
+    "noSignIn": "无需登录",
+    "addTool": {
+      "title": "加上你自己的工具",
+      "description": "声明一次 —— id、消耗积分、是否要求登录 —— 计量、日志和失败退款就照常工作，不用再改。"
+    }
+  },
+  "boundaries": {
+    "eyebrow": "边界",
+    "title": "这套模板不做什么。",
+    "lede": "写在动手之前，而不是等你做到一半才发现。",
+    "noContent": {
+      "title": "没有 CMS",
+      "description": "文章存在 app/lib/blog.ts 的一个带类型的数组里。需要 CMS 时把数据源换掉即可。"
+    },
+    "noEmailMarketing": {
+      "title": "没有营销邮件",
+      "description": "只发事务性邮件（验证、找回密码）。没有营销活动、名单和退订处理。"
+    },
+    "noTeams": {
+      "title": "没有团队与组织",
+      "description": "账号是单人的。共享空间、席位和邀请需要你自己加。"
+    },
+    "noMobileApp": {
+      "title": "没有移动 App",
+      "description": "它是一个响应式网站。包里没有 React Native，也没有原生壳。"
+    }
+  },
+  "checkout": {
+    "successTitle": "支付成功",
+    "successBody": "订阅正在开通 —— 可能需要几秒钟才会出现在你的个人中心。",
+    "orderId": "订单号",
+    "goToDashboard": "进入个人中心",
+    "backToHome": "返回首页",
+    "cancelTitle": "支付已取消",
+    "cancelBody": "没有产生任何扣款。想好了随时可以再选一次套餐。",
+    "viewPlans": "查看套餐"
+  },
+  "adminPaymentsPage": {
+    "subtitle": "所有渠道的全部支付流水",
+    "revenue": "收入",
+    "succeeded": "成功",
+    "user": "用户",
+    "amount": "金额",
+    "status": "状态",
+    "provider": "渠道",
+    "description": "说明",
+    "date": "时间",
+    "empty": "还没有支付记录",
+    "unknownUser": "未知"
   }
 }

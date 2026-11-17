@@ -8,7 +8,9 @@ describe('Utility Functions', () => {
     });
 
     it('should handle conditional classes', () => {
-      expect(cn('class1', true && 'class2', false && 'class3')).toBe('class1 class2');
+      const isActive = true;
+      const isDisabled = false;
+      expect(cn('class1', isActive && 'class2', isDisabled && 'class3')).toBe('class1 class2');
     });
   });
 

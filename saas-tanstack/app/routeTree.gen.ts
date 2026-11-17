@@ -9,32 +9,80 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout-success'
 import { Route as CheckoutCancelRouteImport } from './routes/checkout-cancel'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthCallbackRouteImport } from './routes/auth-callback'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminSubscriptionsRouteImport } from './routes/admin.subscriptions'
-import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as Char123LocaleChar125TermsRouteImport } from './routes/{-$locale}/terms'
+import { Route as Char123LocaleChar125PrivacyRouteImport } from './routes/{-$locale}/privacy'
+import { Route as Char123LocaleChar125PricingRouteImport } from './routes/{-$locale}/pricing'
+import { Route as Char123LocaleChar125FeaturesRouteImport } from './routes/{-$locale}/features'
+import { Route as Char123LocaleChar125ContactRouteImport } from './routes/{-$locale}/contact'
+import { Route as Char123LocaleChar125BlogRouteImport } from './routes/{-$locale}/blog'
+import { Route as Char123LocaleChar125AboutRouteImport } from './routes/{-$locale}/about'
+import { Route as AdminUsersRouteImport } from './routes/admin/users'
+import { Route as AdminSubscriptionsRouteImport } from './routes/admin/subscriptions'
+import { Route as AdminPaymentsRouteImport } from './routes/admin/payments'
+import { Route as AdminLogsRouteImport } from './routes/admin/logs'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
+import { Route as Char123LocaleChar125BlogSlugRouteImport } from './routes/{-$locale}/blog.$slug'
 import { Route as ApiWebhookStripeRouteImport } from './routes/api.webhook.stripe'
 import { Route as ApiWebhookPaypalRouteImport } from './routes/api.webhook.paypal'
 import { Route as ApiWebhookCreemRouteImport } from './routes/api.webhook.creem'
 import { Route as ApiPaypalCheckoutRouteImport } from './routes/api.paypal.checkout'
+import { Route as ApiFilesSplatRouteImport } from './routes/api.files.$'
 import { Route as ApiCreemCheckoutRouteImport } from './routes/api.creem.checkout'
 
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -52,41 +100,106 @@ const CheckoutCancelRoute = CheckoutCancelRouteImport.update({
   path: '/checkout-cancel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth-callback',
   path: '/auth-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
+const Char123LocaleChar125RouteRoute =
+  Char123LocaleChar125RouteRouteImport.update({
+    id: '/{-$locale}',
+    path: '/{-$locale}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+const Char123LocaleChar125IndexRoute =
+  Char123LocaleChar125IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const Char123LocaleChar125TermsRoute =
+  Char123LocaleChar125TermsRouteImport.update({
+    id: '/terms',
+    path: '/terms',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125PrivacyRoute =
+  Char123LocaleChar125PrivacyRouteImport.update({
+    id: '/privacy',
+    path: '/privacy',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125PricingRoute =
+  Char123LocaleChar125PricingRouteImport.update({
+    id: '/pricing',
+    path: '/pricing',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125FeaturesRoute =
+  Char123LocaleChar125FeaturesRouteImport.update({
+    id: '/features',
+    path: '/features',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ContactRoute =
+  Char123LocaleChar125ContactRouteImport.update({
+    id: '/contact',
+    path: '/contact',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125BlogRoute =
+  Char123LocaleChar125BlogRouteImport.update({
+    id: '/blog',
+    path: '/blog',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125AboutRoute =
+  Char123LocaleChar125AboutRouteImport.update({
+    id: '/about',
+    path: '/about',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSubscriptionsRoute = AdminSubscriptionsRouteImport.update({
   id: '/subscriptions',
   path: '/subscriptions',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminLogsRoute = AdminLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const Char123LocaleChar125BlogSlugRoute =
+  Char123LocaleChar125BlogSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => Char123LocaleChar125BlogRoute,
+  } as any)
 const ApiWebhookStripeRoute = ApiWebhookStripeRouteImport.update({
   id: '/api/webhook/stripe',
   path: '/api/webhook/stripe',
@@ -107,6 +220,11 @@ const ApiPaypalCheckoutRoute = ApiPaypalCheckoutRouteImport.update({
   path: '/api/paypal/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFilesSplatRoute = ApiFilesSplatRouteImport.update({
+  id: '/api/files/$',
+  path: '/api/files/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCreemCheckoutRoute = ApiCreemCheckoutRouteImport.update({
   id: '/api/creem/checkout',
   path: '/api/creem/checkout',
@@ -114,135 +232,244 @@ const ApiCreemCheckoutRoute = ApiCreemCheckoutRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/auth-callback': typeof AuthCallbackRoute
-  '/blog': typeof BlogRoute
   '/checkout-cancel': typeof CheckoutCancelRoute
   '/checkout-success': typeof CheckoutSuccessRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
-  '/pricing': typeof PricingRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/settings': typeof SettingsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tools': typeof ToolsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/logs': typeof AdminLogsRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteWithChildren
+  '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/features': typeof Char123LocaleChar125FeaturesRoute
+  '/{-$locale}/pricing': typeof Char123LocaleChar125PricingRoute
+  '/{-$locale}/privacy': typeof Char123LocaleChar125PrivacyRoute
+  '/{-$locale}/terms': typeof Char123LocaleChar125TermsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/api/creem/checkout': typeof ApiCreemCheckoutRoute
+  '/api/files/$': typeof ApiFilesSplatRoute
   '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
   '/api/webhook/creem': typeof ApiWebhookCreemRoute
   '/api/webhook/paypal': typeof ApiWebhookPaypalRoute
   '/api/webhook/stripe': typeof ApiWebhookStripeRoute
+  '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
   '/auth-callback': typeof AuthCallbackRoute
-  '/blog': typeof BlogRoute
   '/checkout-cancel': typeof CheckoutCancelRoute
   '/checkout-success': typeof CheckoutSuccessRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
-  '/pricing': typeof PricingRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/settings': typeof SettingsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tools': typeof ToolsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/logs': typeof AdminLogsRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteWithChildren
+  '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/features': typeof Char123LocaleChar125FeaturesRoute
+  '/{-$locale}/pricing': typeof Char123LocaleChar125PricingRoute
+  '/{-$locale}/privacy': typeof Char123LocaleChar125PrivacyRoute
+  '/{-$locale}/terms': typeof Char123LocaleChar125TermsRoute
+  '/admin': typeof AdminIndexRoute
+  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/api/creem/checkout': typeof ApiCreemCheckoutRoute
+  '/api/files/$': typeof ApiFilesSplatRoute
   '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
   '/api/webhook/creem': typeof ApiWebhookCreemRoute
   '/api/webhook/paypal': typeof ApiWebhookPaypalRoute
   '/api/webhook/stripe': typeof ApiWebhookStripeRoute
+  '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/auth-callback': typeof AuthCallbackRoute
-  '/blog': typeof BlogRoute
   '/checkout-cancel': typeof CheckoutCancelRoute
   '/checkout-success': typeof CheckoutSuccessRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
-  '/pricing': typeof PricingRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/settings': typeof SettingsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tools': typeof ToolsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/logs': typeof AdminLogsRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteWithChildren
+  '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/features': typeof Char123LocaleChar125FeaturesRoute
+  '/{-$locale}/pricing': typeof Char123LocaleChar125PricingRoute
+  '/{-$locale}/privacy': typeof Char123LocaleChar125PrivacyRoute
+  '/{-$locale}/terms': typeof Char123LocaleChar125TermsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/api/creem/checkout': typeof ApiCreemCheckoutRoute
+  '/api/files/$': typeof ApiFilesSplatRoute
   '/api/paypal/checkout': typeof ApiPaypalCheckoutRoute
   '/api/webhook/creem': typeof ApiWebhookCreemRoute
   '/api/webhook/paypal': typeof ApiWebhookPaypalRoute
   '/api/webhook/stripe': typeof ApiWebhookStripeRoute
+  '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/about'
     | '/admin'
+    | '/{-$locale}'
     | '/auth-callback'
-    | '/blog'
     | '/checkout-cancel'
     | '/checkout-success'
     | '/dashboard'
+    | '/forgot-password'
     | '/login'
-    | '/pricing'
+    | '/reset-password'
+    | '/robots.txt'
+    | '/settings'
+    | '/sitemap.xml'
+    | '/tools'
+    | '/verify-email'
+    | '/admin/analytics'
+    | '/admin/logs'
     | '/admin/payments'
     | '/admin/subscriptions'
+    | '/admin/users'
+    | '/{-$locale}/about'
+    | '/{-$locale}/blog'
+    | '/{-$locale}/contact'
+    | '/{-$locale}/features'
+    | '/{-$locale}/pricing'
+    | '/{-$locale}/privacy'
+    | '/{-$locale}/terms'
+    | '/admin/'
+    | '/{-$locale}/'
     | '/api/creem/checkout'
+    | '/api/files/$'
     | '/api/paypal/checkout'
     | '/api/webhook/creem'
     | '/api/webhook/paypal'
     | '/api/webhook/stripe'
+    | '/{-$locale}/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/about'
-    | '/admin'
     | '/auth-callback'
-    | '/blog'
     | '/checkout-cancel'
     | '/checkout-success'
     | '/dashboard'
+    | '/forgot-password'
     | '/login'
-    | '/pricing'
+    | '/reset-password'
+    | '/robots.txt'
+    | '/settings'
+    | '/sitemap.xml'
+    | '/tools'
+    | '/verify-email'
+    | '/admin/analytics'
+    | '/admin/logs'
     | '/admin/payments'
     | '/admin/subscriptions'
+    | '/admin/users'
+    | '/{-$locale}/about'
+    | '/{-$locale}/blog'
+    | '/{-$locale}/contact'
+    | '/{-$locale}/features'
+    | '/{-$locale}/pricing'
+    | '/{-$locale}/privacy'
+    | '/{-$locale}/terms'
+    | '/admin'
+    | '/{-$locale}'
     | '/api/creem/checkout'
+    | '/api/files/$'
     | '/api/paypal/checkout'
     | '/api/webhook/creem'
     | '/api/webhook/paypal'
     | '/api/webhook/stripe'
+    | '/{-$locale}/blog/$slug'
   id:
     | '__root__'
-    | '/'
-    | '/about'
     | '/admin'
+    | '/{-$locale}'
     | '/auth-callback'
-    | '/blog'
     | '/checkout-cancel'
     | '/checkout-success'
     | '/dashboard'
+    | '/forgot-password'
     | '/login'
-    | '/pricing'
+    | '/reset-password'
+    | '/robots.txt'
+    | '/settings'
+    | '/sitemap.xml'
+    | '/tools'
+    | '/verify-email'
+    | '/admin/analytics'
+    | '/admin/logs'
     | '/admin/payments'
     | '/admin/subscriptions'
+    | '/admin/users'
+    | '/{-$locale}/about'
+    | '/{-$locale}/blog'
+    | '/{-$locale}/contact'
+    | '/{-$locale}/features'
+    | '/{-$locale}/pricing'
+    | '/{-$locale}/privacy'
+    | '/{-$locale}/terms'
+    | '/admin/'
+    | '/{-$locale}/'
     | '/api/creem/checkout'
+    | '/api/files/$'
     | '/api/paypal/checkout'
     | '/api/webhook/creem'
     | '/api/webhook/paypal'
     | '/api/webhook/stripe'
+    | '/{-$locale}/blog/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
   AuthCallbackRoute: typeof AuthCallbackRoute
-  BlogRoute: typeof BlogRoute
   CheckoutCancelRoute: typeof CheckoutCancelRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
   DashboardRoute: typeof DashboardRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
-  PricingRoute: typeof PricingRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SettingsRoute: typeof SettingsRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ToolsRoute: typeof ToolsRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
   ApiCreemCheckoutRoute: typeof ApiCreemCheckoutRoute
+  ApiFilesSplatRoute: typeof ApiFilesSplatRoute
   ApiPaypalCheckoutRoute: typeof ApiPaypalCheckoutRoute
   ApiWebhookCreemRoute: typeof ApiWebhookCreemRoute
   ApiWebhookPaypalRoute: typeof ApiWebhookPaypalRoute
@@ -251,11 +478,46 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -263,6 +525,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -286,13 +555,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutCancelRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth-callback': {
       id: '/auth-callback'
       path: '/auth-callback'
@@ -300,40 +562,124 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/{-$locale}': {
+      id: '/{-$locale}'
+      path: '/{-$locale}'
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125RouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
       fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+      preLoaderRoute: typeof AdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/{-$locale}/': {
+      id: '/{-$locale}/'
       path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/'
+      preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/{-$locale}/terms': {
+      id: '/{-$locale}/terms'
+      path: '/terms'
+      fullPath: '/{-$locale}/terms'
+      preLoaderRoute: typeof Char123LocaleChar125TermsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/privacy': {
+      id: '/{-$locale}/privacy'
+      path: '/privacy'
+      fullPath: '/{-$locale}/privacy'
+      preLoaderRoute: typeof Char123LocaleChar125PrivacyRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/pricing': {
+      id: '/{-$locale}/pricing'
+      path: '/pricing'
+      fullPath: '/{-$locale}/pricing'
+      preLoaderRoute: typeof Char123LocaleChar125PricingRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/features': {
+      id: '/{-$locale}/features'
+      path: '/features'
+      fullPath: '/{-$locale}/features'
+      preLoaderRoute: typeof Char123LocaleChar125FeaturesRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/contact': {
+      id: '/{-$locale}/contact'
+      path: '/contact'
+      fullPath: '/{-$locale}/contact'
+      preLoaderRoute: typeof Char123LocaleChar125ContactRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/blog': {
+      id: '/{-$locale}/blog'
+      path: '/blog'
+      fullPath: '/{-$locale}/blog'
+      preLoaderRoute: typeof Char123LocaleChar125BlogRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/about': {
+      id: '/{-$locale}/about'
+      path: '/about'
+      fullPath: '/{-$locale}/about'
+      preLoaderRoute: typeof Char123LocaleChar125AboutRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/subscriptions': {
       id: '/admin/subscriptions'
       path: '/subscriptions'
       fullPath: '/admin/subscriptions'
       preLoaderRoute: typeof AdminSubscriptionsRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/payments': {
       id: '/admin/payments'
       path: '/payments'
       fullPath: '/admin/payments'
       preLoaderRoute: typeof AdminPaymentsRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/logs': {
+      id: '/admin/logs'
+      path: '/logs'
+      fullPath: '/admin/logs'
+      preLoaderRoute: typeof AdminLogsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/{-$locale}/blog/$slug': {
+      id: '/{-$locale}/blog/$slug'
+      path: '/$slug'
+      fullPath: '/{-$locale}/blog/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125BlogSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125BlogRoute
     }
     '/api/webhook/stripe': {
       id: '/api/webhook/stripe'
@@ -363,6 +709,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPaypalCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/files/$': {
+      id: '/api/files/$'
+      path: '/api/files/$'
+      fullPath: '/api/files/$'
+      preLoaderRoute: typeof ApiFilesSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/creem/checkout': {
       id: '/api/creem/checkout'
       path: '/api/creem/checkout'
@@ -373,30 +726,87 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AdminRouteChildren {
+interface AdminRouteRouteChildren {
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminLogsRoute: typeof AdminLogsRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminSubscriptionsRoute: typeof AdminSubscriptionsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
-const AdminRouteChildren: AdminRouteChildren = {
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminLogsRoute: AdminLogsRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminSubscriptionsRoute: AdminSubscriptionsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+interface Char123LocaleChar125BlogRouteChildren {
+  Char123LocaleChar125BlogSlugRoute: typeof Char123LocaleChar125BlogSlugRoute
+}
+
+const Char123LocaleChar125BlogRouteChildren: Char123LocaleChar125BlogRouteChildren =
+  {
+    Char123LocaleChar125BlogSlugRoute: Char123LocaleChar125BlogSlugRoute,
+  }
+
+const Char123LocaleChar125BlogRouteWithChildren =
+  Char123LocaleChar125BlogRoute._addFileChildren(
+    Char123LocaleChar125BlogRouteChildren,
+  )
+
+interface Char123LocaleChar125RouteRouteChildren {
+  Char123LocaleChar125AboutRoute: typeof Char123LocaleChar125AboutRoute
+  Char123LocaleChar125BlogRoute: typeof Char123LocaleChar125BlogRouteWithChildren
+  Char123LocaleChar125ContactRoute: typeof Char123LocaleChar125ContactRoute
+  Char123LocaleChar125FeaturesRoute: typeof Char123LocaleChar125FeaturesRoute
+  Char123LocaleChar125PricingRoute: typeof Char123LocaleChar125PricingRoute
+  Char123LocaleChar125PrivacyRoute: typeof Char123LocaleChar125PrivacyRoute
+  Char123LocaleChar125TermsRoute: typeof Char123LocaleChar125TermsRoute
+  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+}
+
+const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
+  {
+    Char123LocaleChar125AboutRoute: Char123LocaleChar125AboutRoute,
+    Char123LocaleChar125BlogRoute: Char123LocaleChar125BlogRouteWithChildren,
+    Char123LocaleChar125ContactRoute: Char123LocaleChar125ContactRoute,
+    Char123LocaleChar125FeaturesRoute: Char123LocaleChar125FeaturesRoute,
+    Char123LocaleChar125PricingRoute: Char123LocaleChar125PricingRoute,
+    Char123LocaleChar125PrivacyRoute: Char123LocaleChar125PrivacyRoute,
+    Char123LocaleChar125TermsRoute: Char123LocaleChar125TermsRoute,
+    Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+  }
+
+const Char123LocaleChar125RouteRouteWithChildren =
+  Char123LocaleChar125RouteRoute._addFileChildren(
+    Char123LocaleChar125RouteRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
   AuthCallbackRoute: AuthCallbackRoute,
-  BlogRoute: BlogRoute,
   CheckoutCancelRoute: CheckoutCancelRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
   DashboardRoute: DashboardRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
-  PricingRoute: PricingRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SettingsRoute: SettingsRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ToolsRoute: ToolsRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
   ApiCreemCheckoutRoute: ApiCreemCheckoutRoute,
+  ApiFilesSplatRoute: ApiFilesSplatRoute,
   ApiPaypalCheckoutRoute: ApiPaypalCheckoutRoute,
   ApiWebhookCreemRoute: ApiWebhookCreemRoute,
   ApiWebhookPaypalRoute: ApiWebhookPaypalRoute,

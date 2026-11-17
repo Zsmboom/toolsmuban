@@ -1,59 +1,71 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { getAdminOverviewFn } from '~/lib/admin/server-fns';
 import { getCurrentUserFn } from '~/lib/auth/server-fns';
-import { useAuth } from '~/lib/auth/context';
-import AdminSidebar from '~/components/layout/admin-sidebar';
+import { buildPageHead } from '~/lib/site-config';
+import { formatMoney, formatNumber } from '~/lib/format';
+import { AdminPageShell } from '~/components/admin/admin-page';
+import { StatCard } from '~/components/ui/card';
+import { useTranslations } from '~/lib/i18n-context';
 
-export const Route = createFileRoute('/admin')({
+export const Route = createFileRoute('/admin/')({
   loader: async () => {
     const user = await getCurrentUserFn();
-    if (!user) {
-      throw redirect({ to: '/login' });
-    }
-    if (user.role !== 'admin') {
-      throw redirect({ to: '/dashboard' });
-    }
-    return { user };
+    if (!user) throw redirect({ to: '/login' });
+    if (user.role !== 'admin') throw redirect({ to: '/dashboard' });
+
+    const overview = await getAdminOverviewFn();
+    return { user, overview };
   },
+  head: () =>
+    buildPageHead({
+      title: 'Admin',
+      description: 'Admin panel.',
+      path: '/admin',
+      noIndex: true,
+    }),
   component: AdminPage,
 });
 
 function AdminPage() {
-  const { user } = useAuth();
+  const { user, overview } = Route.useLoaderData();
+  const t = useTranslations('adminPage');
+  const tn = useTranslations('appNav');
+
+  // 这些数字全部来自数据库实时聚合
+  const cards = [
+    {
+      label: t('totalUsers'),
+      value: formatNumber(overview.totalUsers),
+      hint: t('newThisMonth', { count: overview.newUsersThisMonth }),
+    },
+    {
+      label: t('revenueMtd'),
+      value: formatMoney(overview.revenueThisMonthCents),
+      hint: t('revenueHint'),
+    },
+    {
+      label: t('activeSubscriptions'),
+      value: formatNumber(overview.activeSubscriptions),
+      hint: t('activeHint'),
+    },
+    {
+      label: t('toolRunsMtd'),
+      value: formatNumber(overview.toolRunsThisMonth),
+      hint: t('toolRunsHint'),
+    },
+  ];
 
   return (
-    <div className="flex min-h-screen">
-      <AdminSidebar user={user!} />
-      <main className="flex-1 p-8 ml-0 md:ml-64 pt-20">
-        <div>
-          <h1 className="text-3xl font-bold font-heading">Admin Panel</h1>
-          <p className="mt-2 text-muted-foreground">
-            Welcome back, {user?.name || 'Admin'}!
-          </p>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-xl border border-border bg-card p-6 card-hover cursor-pointer">
-            <p className="text-sm text-muted-foreground">Total Users</p>
-            <p className="mt-1 text-2xl font-bold font-heading">1,234</p>
-            <p className="mt-2 text-xs text-muted-foreground">+18% this month</p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-6 card-hover cursor-pointer">
-            <p className="text-sm text-muted-foreground">Revenue</p>
-            <p className="mt-1 text-2xl font-bold font-heading">$12,345</p>
-            <p className="mt-2 text-xs text-muted-foreground">+25% this month</p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-6 card-hover cursor-pointer">
-            <p className="text-sm text-muted-foreground">Subscriptions</p>
-            <p className="mt-1 text-2xl font-bold font-heading">456</p>
-            <p className="mt-2 text-xs text-muted-foreground">+8% this month</p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-6 card-hover cursor-pointer">
-            <p className="text-sm text-muted-foreground">Active Now</p>
-            <p className="mt-1 text-2xl font-bold font-heading">89</p>
-            <p className="mt-2 text-xs text-muted-foreground">Currently online</p>
-          </div>
-        </div>
-      </main>
-    </div>
+    <AdminPageShell
+      user={user}
+      title={tn('adminPanel')}
+      description={t('welcome', { name: user.name || tn('adminFallbackName') })}
+    >
+      <div className="grid-hairline sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((card) => (
+          <StatCard key={card.label} label={card.label} value={card.value} hint={card.hint} />
+        ))}
+      </div>
+    </AdminPageShell>
   );
 }

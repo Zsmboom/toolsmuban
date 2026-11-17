@@ -1,156 +1,144 @@
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import LanguageSwitcher from '~/components/language/language-switcher';
+import ThemeToggle from '~/components/ui/theme-toggle';
+import { buttonClass } from '~/components/ui/button';
 import { useAuth } from '~/lib/auth/context';
+import { useTranslations } from '~/lib/i18n-context';
+import { siteConfig } from '~/lib/site-config';
+import { cn } from '~/lib/utils';
 
+const NAV_LINKS = [
+  { to: '/{-$locale}/features', labelKey: 'features' },
+  { to: '/{-$locale}/pricing', labelKey: 'pricing' },
+  { to: '/{-$locale}/blog', labelKey: 'blog' },
+  { to: '/{-$locale}/about', labelKey: 'about' },
+] as const;
+
+/**
+ * 导航固定在顶部，靠一条 1px 下边框和半透明底与内容分开 ——
+ * 之前那个悬浮的圆角毛玻璃胶囊（glass-strong + rounded-2xl + shadow）
+ * 与全站「发丝边框、无阴影」的体系是冲突的。
+ *
+ * 导航不跟随页面的 data-accent 变色：全站不变的锚点跟着内容变色，
+ * 会让人以为跳到别的站去了。
+ */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
+  const t = useTranslations('nav');
+  const tc = useTranslations('common');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setIsOpen(false);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isOpen]);
+
+  const linkClass =
+    'inline-flex min-h-11 items-center rounded-[var(--radius)] px-3 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground';
 
   return (
-    <nav className="fixed top-0 left-0 right-4 z-50 mx-4 mt-4 glass-strong rounded-2xl shadow-sm">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold text-primary hover:text-secondary transition-colors duration-200 font-heading">
-          SaaS Template
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <div className="shell flex h-16 items-center justify-between gap-4">
+        <Link
+          to="/{-$locale}"
+          className="text-base font-medium tracking-tight text-foreground transition-colors hover:text-primary"
+        >
+          {siteConfig.name}
         </Link>
 
-        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-1 md:flex" aria-label={t('primary')}>
+          {NAV_LINKS.map((link) => (
+            <Link key={link.to} to={link.to} className={linkClass}>
+              {t(link.labelKey)}
+            </Link>
+          ))}
+        </nav>
+
         <div className="hidden items-center gap-2 md:flex">
-          <Link
-            to="/#features"
-            className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-          >
-            Features
-          </Link>
-          <Link
-            to="/pricing"
-            className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-          >
-            Pricing
-          </Link>
-          <Link
-            to="/blog"
-            className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-          >
-            Blog
-          </Link>
-          <Link
-            to="/about"
-            className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-          >
-            About
-          </Link>
+          <ThemeToggle />
           <LanguageSwitcher />
           {user ? (
-            <Link
-              to="/dashboard"
-              className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors duration-200 cursor-pointer"
-            >
-              Dashboard
+            <Link to="/dashboard" className={buttonClass({ variant: 'primary' })}>
+              {tc('dashboard')}
             </Link>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="px-4 py-2 text-sm font-medium text-foreground bg-white border border-border rounded-lg hover:bg-accent transition-colors duration-200 cursor-pointer"
-              >
-                Login
+              <Link to="/login" className={buttonClass({ variant: 'ghost' })}>
+                {tc('login')}
               </Link>
-              <Link
-                to="/login"
-                className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-primary/25 cursor-pointer"
-              >
-                Get Started
+              <Link to="/login" className={buttonClass({ variant: 'primary' })}>
+                {tc('signup')}
               </Link>
             </>
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-accent transition-colors duration-200 cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              setIsOpen(!isOpen);
-            }
-          }}
-          aria-label="Toggle menu"
-          aria-expanded={isOpen}
-          aria-controls="mobile-menu"
-        >
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius)] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={t('toggleMenu')}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+          >
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div id="mobile-menu" className="border-t border-border md:hidden">
-          <div className="container mx-auto flex flex-col gap-2 px-4 py-4">
-            <Link
-              to="/#features"
-              className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            >
-              Features
-            </Link>
-            <Link
-              to="/pricing"
-              className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link
-              to="/blog"
-              className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            >
-              Blog
-            </Link>
-            <Link
-              to="/about"
-              className="px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-primary rounded-lg hover:bg-accent cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            >
-              About
-            </Link>
-            <div className="pt-2 border-t border-border">
+      {isOpen ? (
+        <div id="mobile-menu" className="border-t border-border bg-background md:hidden">
+          <div className="shell flex flex-col gap-1 py-4">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                {t(link.labelKey)}
+              </Link>
+            ))}
+            <div className="mt-3 border-t border-border pt-3">
               <LanguageSwitcher />
             </div>
-            <div className="flex flex-col gap-2 pt-2">
+            <div className="mt-3 flex flex-col gap-2">
               {user ? (
                 <Link
                   to="/dashboard"
-                  className="w-full px-4 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors duration-200 cursor-pointer"
+                  className={cn(buttonClass({ variant: 'primary', block: true }))}
                   onClick={() => setIsOpen(false)}
                 >
-                  Dashboard
+                  {tc('dashboard')}
                 </Link>
               ) : (
                 <>
                   <Link
                     to="/login"
-                    className="w-full px-4 py-2 text-sm font-medium text-center text-foreground bg-white border border-border rounded-lg hover:bg-accent transition-colors duration-200 cursor-pointer"
+                    className={cn(buttonClass({ variant: 'secondary', block: true }))}
                     onClick={() => setIsOpen(false)}
                   >
-                    Login
+                    {tc('login')}
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full px-4 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors duration-200 cursor-pointer"
+                    className={cn(buttonClass({ variant: 'primary', block: true }))}
                     onClick={() => setIsOpen(false)}
                   >
-                    Get Started
+                    {tc('signup')}
                   </Link>
                 </>
               )}
             </div>
           </div>
         </div>
-      )}
-    </nav>
+      ) : null}
+    </header>
   );
 }

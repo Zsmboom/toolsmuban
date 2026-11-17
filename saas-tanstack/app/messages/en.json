@@ -27,7 +27,9 @@
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
-    "close": "Close"
+    "close": "Close",
+    "date": "Date",
+    "upgrade": "Upgrade your plan"
   },
   "nav": {
     "skipToMain": "Skip to main content",
@@ -36,74 +38,75 @@
     "about": "About",
     "blog": "Blog",
     "docs": "Documentation",
-    "support": "Support"
+    "support": "Support",
+    "toggleMenu": "Toggle navigation menu",
+    "changeLanguage": "Change language",
+    "primary": "Primary"
   },
   "hero": {
-    "badge": "The Ultimate SaaS Starter Template",
-    "title": "Build Your SaaS Product 10x Faster",
-    "description": "Complete Next.js 15 template with authentication, payments, admin dashboard, and everything you need to launch your SaaS business.",
-    "subtitle": "Build and launch your SaaS product faster with our production-ready template",
-    "cta": "Get Started Free",
-    "ctaShort": "Get Started",
-    "learnMore": "Explore Features",
-    "productionReady": "Production Ready",
-    "typescript": "TypeScript",
-    "responsive": "Fully Responsive"
+    "badge": "Production-ready tool-site template",
+    "title": "Everything a paid tool site needs, already wired.",
+    "description": "Authentication, a credit ledger, three payment providers, an admin panel and SEO defaults — on TanStack Start and Cloudflare Workers. Add your tool and launch.",
+    "cta": "Get started free",
+    "learnMore": "See what's included",
+    "checks": {
+      "noCard": "No card to start",
+      "openSource": "You own the code",
+      "selfHost": "Deploys to your own Cloudflare account"
+    },
+    "demo": {
+      "label": "Demo tool · example run",
+      "inputLabel": "Input",
+      "inputValue": "Summarise this paragraph in one sentence.",
+      "run": "Run",
+      "cost": "{cost} credit per run",
+      "outputLabel": "Result",
+      "outputValue": "The paragraph argues that metering belongs in the platform, not in each tool.",
+      "ledger": "Credit ledger",
+      "balance": "−{cost} credit · refunded if the run fails"
+    }
   },
   "features": {
-    "title": "Everything You Need to Launch",
-    "subtitle": "A complete SaaS starter kit with all the essential features built-in and ready to customize.",
+    "title": "Everything you need to launch",
+    "subtitle": "The parts every paid tool site needs, built and tested — so the only thing left is the tool itself.",
     "lightningFast": {
-      "title": "Lightning Fast",
-      "description": "Built on Next.js 15 with optimal performance and best practices."
+      "title": "Edge-first rendering",
+      "description": "TanStack Start with server rendering on Cloudflare Workers, close to your visitors."
     },
     "secureAuth": {
-      "title": "Secure Authentication",
-      "description": "NextAuth.js v5 with OAuth providers and database sessions."
+      "title": "Secure authentication",
+      "description": "Email + password and Google OAuth, HttpOnly session cookies, PKCE, and lockout after repeated failures."
     },
     "dualPayment": {
-      "title": "Dual Payment Gateways",
-      "description": "Integrated with both Stripe and PayPal for maximum flexibility."
+      "title": "Three payment providers",
+      "description": "Stripe, Creem and PayPal behind one plan definition, with deduplicated webhooks."
     },
     "analytics": {
-      "title": "Analytics Dashboard",
-      "description": "Comprehensive admin panel with user analytics and revenue tracking."
+      "title": "Admin panel",
+      "description": "Users, subscriptions, payments, tool logs and an audit trail of every admin write."
     },
     "responsive": {
-      "title": "Fully Responsive",
-      "description": "Perfect experience on mobile, tablet, and desktop devices."
+      "title": "Responsive and themed",
+      "description": "One token set drives light and dark mode across marketing, app and admin."
     },
     "typescript": {
-      "title": "TypeScript First",
-      "description": "Type-safe codebase with excellent developer experience."
+      "title": "TypeScript end to end",
+      "description": "Typed routes, typed server functions and a typed database schema."
     },
     "roleAccess": {
-      "title": "Role-Based Access",
-      "description": "Built-in user roles and route protection middleware."
+      "title": "Role-based access",
+      "description": "Route guards for signed-in users and for admins, enforced on the server."
     },
     "multiCountry": {
-      "title": "Multi-Country Support",
-      "description": "Track users and analytics by country out of the box."
-    }
+      "title": "Bilingual and SEO-ready",
+      "description": "URL-driven locales, hreflang, canonicals, sitemap and robots out of the box."
+    },
+    "eyebrow": "What's included"
   },
   "testimonials": {
     "title": "Loved by Developers",
     "subtitle": "See what our customers have to say about their experience.",
-    "testimonial1": {
-      "name": "Sarah Johnson",
-      "role": "Founder, TechStart",
-      "content": "This template saved us months of development time. The code quality is exceptional and the documentation is comprehensive."
-    },
-    "testimonial2": {
-      "name": "Michael Chen",
-      "role": "CTO, DataFlow",
-      "content": "The built-in payment integration with Stripe and PayPal made monetization incredibly easy. Highly recommended!"
-    },
-    "testimonial3": {
-      "name": "Emily Rodriguez",
-      "role": "Product Manager, AppVenture",
-      "content": "The admin dashboard is fantastic. We can track everything from user analytics to revenue metrics in real-time."
-    }
+    "eyebrow": "In their words"
   },
   "pricingCards": {
     "title": "Simple, Transparent Pricing",
@@ -146,50 +149,72 @@
       "feature7": "Advanced API access",
       "feature8": "Custom integrations",
       "feature9": "SLA guarantee"
+    },
+    "free": {
+      "name": "Free",
+      "description": "Try the tools before you commit",
+      "feature1": "100 credits per month",
+      "feature2": "Core tools",
+      "feature3": "Community support",
+      "feature4": "Single user"
+    },
+    "perMonth": "/month",
+    "forever": "forever",
+    "payWith": "Pay with",
+    "currentPlan": "Current plan",
+    "checkoutFailed": "Could not start checkout. Please try again.",
+    "notConfigured": "Not available",
+    "eyebrow": "Pricing",
+    "processing": "Processing…",
+    "providers": {
+      "stripe": "Card",
+      "creem": "Creem",
+      "paypal": "PayPal"
     }
   },
   "faq": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Everything you need to know about the template.",
+    "title": "Frequently asked questions",
+    "subtitle": "How the template is built, and what you are expected to change.",
     "question1": {
-      "q": "What payment methods do you accept?",
-      "a": "We accept all major credit cards through Stripe, as well as PayPal. Both payment gateways are fully integrated and secure."
+      "q": "Which payment providers are supported?",
+      "a": "Stripe, Creem and PayPal, all three at once. They share a single plan definition, so a customer gets the plan they actually paid for regardless of which provider they used."
     },
     "question2": {
-      "q": "Can I cancel my subscription anytime?",
-      "a": "Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period, and you won't be charged again."
+      "q": "Can subscribers cancel at any time?",
+      "a": "Yes. Cancellation runs through each provider's own customer portal, and access continues until the end of the paid period."
     },
     "question3": {
-      "q": "Is there a free trial?",
-      "a": "Yes! All plans come with a 14-day free trial. No credit card required to start your trial."
+      "q": "How does the credit system work?",
+      "a": "Every plan carries a monthly credit allowance. Running a tool debits credits before execution and refunds them automatically if the run fails, so a failure never costs the user anything."
     },
     "question4": {
-      "q": "How does the authentication work?",
-      "a": "We use NextAuth.js v5 with Google OAuth by default. The template is designed to easily add more providers like GitHub, Microsoft, or custom email/password authentication."
+      "q": "How does authentication work?",
+      "a": "Email + password and Google OAuth are both built in. Sessions are HttpOnly, Secure, SameSite=Lax cookies issued server-side, and the OAuth flow carries state plus a PKCE challenge."
     },
     "question5": {
-      "q": "Is the code production-ready?",
-      "a": "Absolutely! The template follows Next.js best practices, includes TypeScript for type safety, and is optimized for deployment on Vercel. It includes proper error handling, loading states, and security measures."
+      "q": "Is it production-ready?",
+      "a": "It ships with typed routes and server functions, deduplicated webhooks, an admin audit trail, rate-limited sign-in and SEO defaults. What it does not ship with is your tool."
     },
     "question6": {
-      "q": "What database does it use?",
-      "a": "The template uses Turso (LibSQL) with Drizzle ORM. The database schema is fully typed and includes migrations. You can easily switch to other SQL databases like PostgreSQL or MySQL if needed."
+      "q": "Which database does it use?",
+      "a": "Drizzle ORM with two interchangeable drivers: Cloudflare D1 (SQLite) for edge deploys and Neon (Postgres) for everything else. One schema, checked for parity by a test."
     },
     "question7": {
-      "q": "Do you provide support?",
-      "a": "Yes! Basic plans include email support, Pro plans get priority support, and Enterprise customers receive dedicated support with SLA guarantees."
+      "q": "How do I add my own tool?",
+      "a": "Declare it in app/lib/tools/registry.ts and implement the handler in app/lib/tools/server-fns.ts. Metering, logging and refunds keep working without any further changes."
     },
     "question8": {
-      "q": "Can I customize the design?",
-      "a": "Of course! The template uses Tailwind CSS and Shadcn UI components, making it easy to customize colors, typography, and layouts to match your brand."
-    }
+      "q": "How do I change the design?",
+      "a": "Every colour, radius and font is a token in app/styles/globals.css. Change that one file and the whole site follows — ESLint blocks hard-coded palette colours in components so it stays that way."
+    },
+    "eyebrow": "FAQ"
   },
   "cta": {
-    "title": "Ready to Get Started?",
-    "subtitle": "Join thousands of developers building amazing SaaS products with our template.",
-    "startTrial": "Start Free Trial",
-    "viewPricing": "View Pricing",
-    "trialInfo": "14-day free trial • No credit card required • Cancel anytime"
+    "title": "Start with the plumbing already done.",
+    "subtitle": "Sign in, run the demo tool, and watch a credit get debited, logged and reported end to end.",
+    "startTrial": "Get started free",
+    "viewPricing": "View pricing",
+    "trialInfo": "No card required to create an account."
   },
   "auth": {
     "loginTitle": "Welcome Back",
@@ -271,7 +296,63 @@
       "backToHome": "Back to Home",
       "persistsProblem": "If this problem persists, please",
       "contactSupport": "contact support"
-    }
+    },
+    "errorTitle": "Authentication error",
+    "tryAgain": "Try again",
+    "completing": "Completing sign-in…",
+    "missingCode": "No authorization code was returned. Please start over.",
+    "genericError": "Authentication failed. Please try again.",
+    "accessDenied": "You cancelled the sign-in request.",
+    "signingIn": "Signing in…",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "signUpTitle": "Create your account",
+    "switchToSignUp": "Don't have an account?",
+    "switchToSignIn": "Already have an account?",
+    "signUpLink": "Sign up",
+    "signInLink": "Sign in",
+    "name": "Name (optional)",
+    "creatingAccount": "Creating account…",
+    "errors2": {
+      "INVALID_CREDENTIALS": "Email or password is incorrect.",
+      "ACCOUNT_LOCKED": "Too many failed attempts. Try again in 15 minutes.",
+      "EMAIL_TAKEN": "That email is already registered. Try signing in instead.",
+      "OAUTH_ONLY": "This account was created with Google. Please continue with Google.",
+      "WEAK_PASSWORD": "Please choose a stronger password.",
+      "UNKNOWN": "Something went wrong. Please try again.",
+      "INVALID_TOKEN": "This link is invalid or has expired. Please request a new one."
+    },
+    "passwordErrors": {
+      "tooShort": "Password must be at least 8 characters.",
+      "tooLong": "Password is too long.",
+      "tooCommon": "That password is too common — pick something less guessable.",
+      "needsVariety": "Mix letters with numbers or symbols, or use a longer passphrase."
+    },
+    "forgotTitle": "Forgot your password?",
+    "forgotSubtitle": "Enter your email and we'll send you a reset link.",
+    "forgotLink": "Forgot your password?",
+    "sendResetLink": "Send reset link",
+    "sending": "Sending…",
+    "resetLinkSent": "If an account exists for that email, a reset link is on its way. Check your inbox.",
+    "backToSignIn": "Back to sign in",
+    "resetTitle": "Choose a new password",
+    "newPassword": "New password",
+    "resetSubmit": "Update password",
+    "resetDone": "Your password has been updated. All other sessions were signed out.",
+    "verifying": "Verifying your email…",
+    "verifiedTitle": "Email verified",
+    "verifiedBody": "Thanks — your email address is confirmed.",
+    "verifyFailedTitle": "Verification failed",
+    "verifyFailedBody": "This link is invalid or has expired. You can request a new one from your dashboard.",
+    "goToDashboard": "Go to dashboard",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "passwordChanged": "Password updated.",
+    "emailVerification": "Email verification",
+    "verificationHint": "Didn't get the confirmation email? We can send another one.",
+    "resendVerification": "Resend verification email",
+    "verificationSent": "Verification email sent — check your inbox.",
+    "passwordHint": "At least 8 characters. Mix letters with numbers or symbols."
   },
   "dashboard": {
     "welcome": "Welcome back, {name}",
@@ -281,7 +362,15 @@
     "settings": "Settings",
     "analytics": "Analytics",
     "users": "Users",
-    "subscriptions": "Subscriptions"
+    "subscriptions": "Subscriptions",
+    "plan": "Plan",
+    "status": "Status",
+    "changePlan": "Change plan",
+    "upgradePlan": "Upgrade plan",
+    "manageSubscription": "Manage subscription",
+    "renewsOn": "Renews {date}",
+    "noSubscription": "No active subscription",
+    "toolsHint": "Run the demo tool and watch a credit get debited, logged and reported end to end."
   },
   "pricing": {
     "title": "Simple, Transparent Pricing",
@@ -347,7 +436,16 @@
     "metaTitle": "Pricing Plans - Start Free Today",
     "metaDescription": "Flexible pricing for teams of all sizes. Basic $29/mo, Pro $99/mo, Enterprise custom pricing. Start with a 14-day free trial, no credit card required. Cancel anytime.",
     "title": "Simple, Transparent Pricing",
-    "subtitle": "Choose the plan that's right for you"
+    "subtitle": "Choose the plan that's right for you",
+    "costs": {
+      "eyebrow": "Credit costs",
+      "title": "What each run costs",
+      "lede": "A plan gives you a monthly credit allowance. This table is what spends it.",
+      "tool": "Tool",
+      "description": "What it does",
+      "credits": "Credits per run",
+      "note": "Failed runs are refunded automatically — you are only charged for runs that produce a result."
+    }
   },
   "aboutPage": {
     "metaTitle": "About Us - Our Mission & Story",
@@ -374,19 +472,90 @@
         "title": "Continuous Support",
         "description": "Regular updates, bug fixes, and new features to keep you ahead."
       }
+    },
+    "facts": {
+      "title": "At a glance",
+      "stack": {
+        "label": "Stack",
+        "value": "TanStack Start · React 19"
+      },
+      "database": {
+        "label": "Database",
+        "value": "Drizzle · D1 / Neon"
+      },
+      "payments": {
+        "label": "Payments",
+        "value": "Stripe · Creem · PayPal"
+      },
+      "deploy": {
+        "label": "Deploys to",
+        "value": "Cloudflare Workers"
+      }
     }
   },
   "termsPage": {
     "metaTitle": "Terms of Service - Legal Terms & Conditions",
     "metaDescription": "Read our terms of service to understand the rules and regulations for using our SaaS template.",
     "title": "Terms of Service",
-    "lastUpdated": "Last updated"
+    "lastUpdated": "Last updated",
+    "sections": {
+      "s1": {
+        "heading": "Acceptance of terms",
+        "body": "By creating an account or using the service you agree to these terms. If you do not agree, do not use the service."
+      },
+      "s2": {
+        "heading": "Accounts",
+        "body": "You are responsible for activity that happens under your account and for keeping your sign-in method secure. Accounts are for a single user unless your plan states otherwise."
+      },
+      "s3": {
+        "heading": "Credits and plans",
+        "body": "Paid plans include a monthly credit allowance. Credits reset at the start of each billing period and do not roll over. Running a tool consumes credits; failed runs are refunded automatically."
+      },
+      "s4": {
+        "heading": "Billing and cancellation",
+        "body": "Subscriptions renew automatically until cancelled. You can cancel at any time from your dashboard; access continues until the end of the paid period."
+      },
+      "s5": {
+        "heading": "Acceptable use",
+        "body": "You may not use the service to break the law, infringe others’ rights, or attempt to disrupt or reverse engineer the platform."
+      },
+      "s6": {
+        "heading": "Disclaimer and liability",
+        "body": "The service is provided “as is” without warranties of any kind. To the maximum extent permitted by law, our aggregate liability is limited to the amount you paid in the twelve months preceding the claim."
+      }
+    }
   },
   "privacyPage": {
     "metaTitle": "Privacy Policy - How We Protect Your Data",
     "metaDescription": "Our privacy policy explains how we collect, use, and protect your personal information. We prioritize your privacy and data security.",
     "title": "Privacy Policy",
-    "lastUpdated": "Last updated"
+    "lastUpdated": "Last updated",
+    "sections": {
+      "s1": {
+        "heading": "Information we collect",
+        "body": "We collect the email address, name and profile picture provided by your identity provider when you sign in, together with usage records for the tools you run and billing records for any purchase you make."
+      },
+      "s2": {
+        "heading": "How we use your information",
+        "body": "Your data is used to operate your account, meter credit consumption, process payments, provide support and improve the service. We do not sell your personal data."
+      },
+      "s3": {
+        "heading": "Payment data",
+        "body": "Card details are handled entirely by our payment providers (Stripe, Creem and PayPal). We never see or store full payment credentials — only the identifiers required to reconcile your subscription."
+      },
+      "s4": {
+        "heading": "Cookies",
+        "body": "We set a strictly necessary, HttpOnly session cookie to keep you signed in, and a language preference cookie. No advertising cookies are used."
+      },
+      "s5": {
+        "heading": "Data retention",
+        "body": "Account and billing records are retained for as long as your account exists and for the period required by applicable tax and accounting rules."
+      },
+      "s6": {
+        "heading": "Your rights",
+        "body": "You may request access to, correction of, or deletion of your personal data at any time by contacting us."
+      }
+    }
   },
   "blogPage": {
     "metaTitle": "Blog - SaaS Template",
@@ -399,7 +568,8 @@
     "noPosts": "No posts yet",
     "checkBackSoon": "Check back soon for new articles and insights.",
     "categories": "Categories",
-    "tags": "Tags"
+    "tags": "Tags",
+    "readMore": "Read the article"
   },
   "blogPost": {
     "backToBlog": "Back to Blog",
@@ -519,7 +689,16 @@
     "recentActivity": {
       "title": "Recent Activity",
       "noActivity": "No recent activity"
-    }
+    },
+    "welcome": "Welcome back, {name}",
+    "totalUsers": "Total users",
+    "newThisMonth": "+{count} this month",
+    "revenueMtd": "Revenue (MTD)",
+    "revenueHint": "Succeeded payments this month",
+    "activeSubscriptions": "Active subscriptions",
+    "activeHint": "Status = active",
+    "toolRunsMtd": "Tool runs (MTD)",
+    "toolRunsHint": "Logged tool executions"
   },
   "adminUsersPage": {
     "title": "Users Management",
@@ -529,11 +708,29 @@
     "totalUsers": "Total Users",
     "searchResults": "Search Results",
     "currentPage": "Current Page",
-    "pages": "Pages"
+    "pages": "Pages",
+    "user": "User",
+    "role": "Role",
+    "signIn": "Sign-in",
+    "credits": "Credits",
+    "joined": "Joined",
+    "actions": "Actions",
+    "empty": "No users yet",
+    "accountCount": "{count} accounts",
+    "password": "Password",
+    "locked": "Locked",
+    "unlock": "Unlock",
+    "signOut": "Sign out",
+    "operationFailed": "Operation failed",
+    "creditsAdjusted": "Credits adjusted",
+    "unlocked": "Unlocked",
+    "sessionsRevoked": "Sessions revoked",
+    "creditPrompt": "Credit adjustment (e.g. 100 or -50):",
+    "reasonPrompt": "Reason (recorded in the audit log):"
   },
   "adminLogsPage": {
     "title": "System Logs",
-    "subtitle": "Monitor tool usage and system activity",
+    "subtitle": "Tool runs, and every admin write operation",
     "loading": "Loading...",
     "stats": {
       "totalApiCalls": "Total API Calls",
@@ -548,11 +745,27 @@
       "duration": "Duration",
       "time": "Time",
       "unknown": "Unknown"
-    }
+    },
+    "toolRuns": "Tool runs",
+    "tool": "Tool",
+    "user": "User",
+    "credits": "Credits",
+    "duration": "Duration",
+    "country": "Country",
+    "when": "When",
+    "noToolRuns": "No tool runs yet",
+    "auditTrail": "Admin audit trail",
+    "auditHint": "Every admin write leaves a record, so you can trace afterwards who did what.",
+    "action": "Action",
+    "actor": "Actor",
+    "target": "Target",
+    "detail": "Detail",
+    "ip": "IP",
+    "noAudit": "No admin actions recorded yet"
   },
   "adminSubscriptionsPage": {
     "title": "Subscriptions Management",
-    "subtitle": "Monitor and manage user subscriptions",
+    "subtitle": "Every subscription, across all payment providers",
     "loading": "Loading...",
     "stats": {
       "activeSubscriptions": "Active Subscriptions",
@@ -566,11 +779,20 @@
       "provider": "Provider",
       "created": "Created",
       "unknown": "Unknown"
-    }
+    },
+    "total": "Total",
+    "user": "User",
+    "plan": "Plan",
+    "status": "Status",
+    "provider": "Provider",
+    "periodEnd": "Period end",
+    "created": "Created",
+    "empty": "No subscriptions found",
+    "unknownUser": "Unknown"
   },
   "adminAnalyticsPage": {
     "title": "Country Analytics",
-    "subtitle": "Geographic distribution of users and usage",
+    "subtitle": "Last 30 days",
     "loading": "Loading...",
     "stats": {
       "totalCountries": "Total Countries",
@@ -588,6 +810,201 @@
       "users": "Users",
       "toolUsage": "Tool Usage",
       "avgPerUser": "Avg/User"
+    },
+    "toolRuns30d": "Tool runs (30d)",
+    "credits30d": "Credits consumed (30d)",
+    "revenueMtd": "Revenue (MTD)",
+    "newUsersMtd": "New users (MTD)",
+    "dailyRuns": "Daily tool runs",
+    "noData": "No usage data yet.",
+    "barTitle": "{day}: {runs} runs, {credits} credits"
+  },
+  "credits": {
+    "title": "Credits",
+    "balance": "Balance",
+    "monthlyQuota": "{quota} monthly quota",
+    "unlimited": "Unlimited",
+    "used": "Used",
+    "quotaUsed": "{percent}% of quota used",
+    "insufficient": "Not enough credits. Upgrade your plan or wait for the monthly reset.",
+    "history": "Credit history",
+    "noTransactions": "No credit activity yet.",
+    "type": "Type",
+    "amount": "Amount",
+    "description": "Description",
+    "date": "Date",
+    "balanceAfter": "Balance after"
+  },
+  "tools": {
+    "title": "Tools",
+    "subtitle": "Run a tool. Each run consumes credits from your monthly quota.",
+    "demoName": "Demo tool",
+    "demoDescription": "A placeholder tool that shows the full credit-metering flow. Replace it with your own.",
+    "costLabel": "Costs {cost} credits per run",
+    "run": "Run",
+    "running": "Running…",
+    "input": "Input",
+    "inputPlaceholder": "Type anything…",
+    "result": "Result",
+    "runFailed": "The tool run failed. No credits were charged.",
+    "recentRuns": "Recent runs",
+    "noRuns": "No runs yet.",
+    "tool": "Tool",
+    "creditsUsed": "Credits"
+  },
+  "legal": {
+    "lastUpdated": "Last updated: {date}",
+    "placeholderNotice": "This is template text. Replace it with your own policy before going live.",
+    "contact": {
+      "title": "Contact",
+      "body": "Questions about this document? Email"
     }
+  },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "We usually reply within one business day.",
+    "emailUs": "Email us at",
+    "topics": {
+      "support": {
+        "title": "Product support",
+        "description": "Something is broken or behaving in a way you did not expect.",
+        "sla": "1 business day"
+      },
+      "billing": {
+        "title": "Billing",
+        "description": "Invoices, refunds, plan changes and failed payments.",
+        "sla": "1 business day"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Vulnerability reports and data requests. Please include reproduction steps.",
+        "sla": "24 hours"
+      },
+      "other": {
+        "title": "Everything else",
+        "description": "Partnerships, press, and anything that does not fit the boxes above.",
+        "sla": "3 business days"
+      }
+    }
+  },
+  "featuresPage": {
+    "title": "What comes in the box",
+    "subtitle": "Authentication, credit metering, three payment providers, an admin panel and SEO defaults — already wired together.",
+    "eyebrow": "Features"
+  },
+  "theme": {
+    "switchTo": {
+      "light": "Switch to the light theme",
+      "dark": "Switch to the dark theme",
+      "system": "Follow the system theme"
+    },
+    "current": {
+      "light": "Light theme",
+      "dark": "Dark theme",
+      "system": "Following the system theme"
+    }
+  },
+  "appNav": {
+    "dashboard": "Dashboard",
+    "tools": "Tools",
+    "settings": "Settings",
+    "admin": "Admin",
+    "overview": "Overview",
+    "subscriptions": "Subscriptions",
+    "payments": "Payments",
+    "users": "Users",
+    "logs": "Logs",
+    "analytics": "Analytics",
+    "logout": "Log out",
+    "adminPanel": "Admin panel",
+    "adminPanelHint": "Users, billing and the audit trail",
+    "adminFallbackName": "admin",
+    "backToApp": "Back to the app",
+    "anonymous": "there",
+    "openMenu": "Open navigation",
+    "closeMenu": "Close navigation"
+  },
+  "facts": {
+    "paymentProviders": "Payment providers",
+    "locales": "Languages",
+    "databases": "Database drivers",
+    "tools": "Tools in the registry"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Four steps from sign-up to a metered run.",
+    "lede": "The plumbing between these steps is what the template is for. You supply the tool.",
+    "signUp": {
+      "title": "Sign up",
+      "description": "Email and password, or Google. Sessions are HttpOnly cookies issued server-side."
+    },
+    "pickPlan": {
+      "title": "Pick a plan",
+      "description": "Stripe, Creem or PayPal. Every plan carries a monthly credit allowance."
+    },
+    "runTool": {
+      "title": "Run a tool",
+      "description": "Credits are debited before the run and refunded automatically when it fails."
+    },
+    "watchUsage": {
+      "title": "Watch usage",
+      "description": "Each run is logged with duration and country; the admin panel aggregates it."
+    }
+  },
+  "toolGrid": {
+    "eyebrow": "The toolkit",
+    "title": "Your tools live in one registry.",
+    "lede": "Cost, sign-in requirement and copy all come from the same declaration, so the homepage, the pricing table and the runner can never drift apart.",
+    "cost": "{cost} credits",
+    "signInRequired": "Sign-in required",
+    "noSignIn": "No sign-in",
+    "addTool": {
+      "title": "Add your own",
+      "description": "Declare the tool once — id, credit cost, whether it needs an account — and metering, logging and refunds work unchanged."
+    }
+  },
+  "boundaries": {
+    "eyebrow": "Boundaries",
+    "title": "What this template does not do.",
+    "lede": "Written down before you start, not discovered halfway through.",
+    "noContent": {
+      "title": "No CMS",
+      "description": "Blog posts live in a typed array in app/lib/blog.ts. Point it at your own source when you need one."
+    },
+    "noEmailMarketing": {
+      "title": "No marketing email",
+      "description": "Transactional mail only — verification and password reset. No campaigns, lists or unsubscribe handling."
+    },
+    "noTeams": {
+      "title": "No teams or organisations",
+      "description": "Accounts are single-user. Shared workspaces, seats and invitations are yours to add."
+    },
+    "noMobileApp": {
+      "title": "No mobile app",
+      "description": "It is a responsive web app. There is no React Native or native shell in the box."
+    }
+  },
+  "checkout": {
+    "successTitle": "Payment successful",
+    "successBody": "Your subscription is being activated — it may take a few seconds to appear on your dashboard.",
+    "orderId": "Order",
+    "goToDashboard": "Go to dashboard",
+    "backToHome": "Back to home",
+    "cancelTitle": "Payment cancelled",
+    "cancelBody": "No charge was made. Pick a plan again whenever you are ready.",
+    "viewPlans": "View plans"
+  },
+  "adminPaymentsPage": {
+    "subtitle": "Every payment transaction, across all providers",
+    "revenue": "Revenue",
+    "succeeded": "Succeeded",
+    "user": "User",
+    "amount": "Amount",
+    "status": "Status",
+    "provider": "Provider",
+    "description": "Description",
+    "date": "Date",
+    "empty": "No payments found",
+    "unknownUser": "Unknown"
   }
 }

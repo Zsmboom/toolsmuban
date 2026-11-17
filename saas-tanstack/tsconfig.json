@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
@@ -13,17 +17,30 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": [
+        "./app/*"
+      ]
     },
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "types": [
+      "@cloudflare/workers-types"
+    ]
   },
   "include": [
     "app/**/*",
     "lib/**/*",
-    "components/**/*"
+    "components/**/*",
+    "tests/**/*",
+    "worker/**/*",
+    "*.config.ts",
+    "worker-configuration.d.ts"
   ],
-  "exclude": ["node_modules", "dist", ".tanstack"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".tanstack"
+  ]
 }

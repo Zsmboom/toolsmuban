@@ -2,19 +2,21 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { defineConfig } from 'vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { fileURLToPath } from 'url'
 import path from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    rollupOptions: {
+      // Workers 运行时内置模块，打包器不需要（也无法）解析它
+      external: [/^cloudflare:/],
+    },
+  },
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './app'),
+      '~': path.resolve(import.meta.dirname, './app'),
     },
   },
   plugins: [

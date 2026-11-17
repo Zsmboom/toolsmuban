@@ -1,30 +1,70 @@
 name = "saas-tanstack"
-main = "./dist/server/server.js"
-compatibility_date = "2024-12-01"
-compatibility_flags = ["nodejs_compat"]
+# 入口是 worker/index.ts 而不是构建产物本身，原因见该文件注释
+main = "./worker/index.ts"
+
+# 使用近期运行时行为；2026-08-04 起 Node.js 兼容层由日期默认启用，
+# 无需再保留 nodejs_compat / nodejs_compat_populate_process_env 标记。
+compatibility_date = "2026-09-07"
 
 [assets]
 directory = "./dist/client"
 
+[observability]
+enabled = true
+
 [vars]
 NODE_ENV = "production"
 ENVIRONMENT = "production"
+# PayPal 环境显式声明，不要依赖 NODE_ENV（Workers 上恒为 production）
+PAYPAL_MODE = "sandbox"
 
-# Environment variables (secrets should be set via wrangler secret put)
-# DATABASE_URL = ""  # Neon PostgreSQL connection string
-# GOOGLE_CLIENT_ID = ""
-# GOOGLE_CLIENT_SECRET = ""
-# STRIPE_SECRET_KEY = ""
-# STRIPE_WEBHOOK_SECRET = ""
-# VITE_STRIPE_PUBLISHABLE_KEY = ""
+# 以下为机密，用 `wrangler secret put <NAME>` 设置，不要写进本文件：
+#   DATABASE_URL            Neon PostgreSQL 连接串
+#   GOOGLE_CLIENT_ID
+#   GOOGLE_CLIENT_SECRET
+#   STRIPE_SECRET_KEY
+#   STRIPE_WEBHOOK_SECRET
+#   CREEM_API_KEY
+#   CREEM_WEBHOOK_SECRET
+#   PAYPAL_CLIENT_ID
+#   PAYPAL_CLIENT_SECRET
+#   PAYPAL_WEBHOOK_ID
+#
+# 非机密的构建期变量（价格/商品 ID、站点地址）通过 CI 的 vars 注入，
+# 见 .github/workflows/deploy.yml 里的 VITE_* 列表。
 
-# 使用 Cloudflare KV 存储（可选）
-# [[kv_namespaces]]
-# binding = "KV"
-# id = "your_kv_namespace_id"
-
-# 使用 Cloudflare D1 数据库（可选）
+# ============================================================
+# 数据库：二选一，跟 `npm run db:use` 的选择保持一致
+# ============================================================
+# 选 D1 时取消下面三行注释，并把 database_id 换成
+# `wrangler d1 create <name>` 返回的值。
+# 选 Neon 时保持注释，改用 `wrangler secret put DATABASE_URL`。
+#
 # [[d1_databases]]
 # binding = "DB"
 # database_name = "saas-db"
-# database_id = "your_database_id"
+# 本地 `wrangler dev --local` 用不到真实 id。
+# 部署前执行 `wrangler d1 create saas-db`，把返回的 id 填到这里。
+# database_id = "REPLACE_WITH_REAL_D1_ID"
+# migrations_dir = "drizzle/sqlite"
+
+# ============================================================
+# 工具产物存储（R2）
+# ============================================================
+# `wrangler r2 bucket create <name>` 后取消注释。
+# 建议再给桶绑一个自定义域名并设置 R2_PUBLIC_BASE_URL，
+# 这样文件由 R2 直接返回给用户，不经过 Worker。
+#
+# [[r2_buckets]]
+# binding = "BUCKET"
+# bucket_name = "saas-tool-outputs"
+
+# ============================================================
+# 邮件（选 cloudflare provider 时才需要）
+# ============================================================
+# 前提：Workers Paid 计划 + 域名接入 Email Service 并配好 SPF/DKIM。
+# remote = true 让 wrangler dev 也能调真实发信 API。
+#
+# [[send_email]]
+# name = "EMAIL"
+# remote = true
