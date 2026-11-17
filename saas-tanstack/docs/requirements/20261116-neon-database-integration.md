@@ -98,7 +98,7 @@ select id from admin_audit_logs limit 1
 | `docs/deployment.md` | 整篇 Turso（`turso db create`、`TURSO_AUTH_TOKEN`），`main = "./dist/server/index.mjs"` | `wrangler.toml` 的 main 是 `./worker/index.ts` |
 | `docs/api.md` | 环境变量写 `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` | 实际是 `DATABASE_URL` |
 | `README.md` | 已正确写 Neon（默认） | ✅ 无需改 |
-| `MIGRATION_SUMMARY.md` / `FINAL_SUMMARY.md` / `UPGRADE_SUMMARY.md` | 当年 Turso→Neon 的一次性迁移产物 | 与现状不符，且与 `docs/` 重复 |
+| `MIGRATION_SUMMARY.md` / `FINAL_SUMMARY.md` / `UPGRADE_SUMMARY.md` | 当年 Turso→Neon 的一次性迁移产物 | 与现状不符，且与 `docs/` 重复（**已删除**） |
 
 ---
 
@@ -529,7 +529,7 @@ CI 的 verify 作业全绿，deploy 作业报 `Authentication error [code: 10000
 |---|---|
 | 积分流水非严格事务 | `app/lib/credits/index.ts:94` 注释已自认：HTTP driver 不支持跨语句事务，扣费成功后补写流水，「最坏情况流水缺一条」。修法就是 Q2 的 B 方案 |
 | 30+ 索引 | 单表最多 6 个索引，写入放大明显；建议按 `pg_stat_user_indexes` 的 `idx_scan` 清掉零命中索引 |
-| 仓库杂物 | `MIGRATION_SUMMARY.md` / `FINAL_SUMMARY.md` / `UPGRADE_SUMMARY.md`、`app.config.timestamp_*.js`（4 个）、多处 `.DS_Store` |
+| 仓库杂物 | ~~`MIGRATION_SUMMARY.md` / `FINAL_SUMMARY.md` / `UPGRADE_SUMMARY.md`~~（已删除）；`app.config.timestamp_*.js`、`.DS_Store` 仍为本地未跟踪文件 |
 | `.claude/settings.local.json` | 塞了大量一次性 heredoc 权限（含与本项目无关的历史内容），建议清理 |
 | CI 无迁移校验 | 现在部署前不检查「库是否落后于 schema」，正是本次漂移能上线的通道；`db:check` 补上 |
 | 无 `AGENTS.md` / `PROJECT.md` | 项目缺 agent 规则与需求档案；建议本次一并建（可另开） |

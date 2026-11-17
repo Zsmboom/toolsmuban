@@ -204,7 +204,17 @@ try {
 
 ## Rate Limiting
 
-Rate limiting is implemented at the Cloudflare Workers level for production deployments.
+There is **no** generic per-IP or per-endpoint throttle in this template. What exists:
+
+| Protection | Where |
+|---|---|
+| Password login lockout (5 failures → 15 min) | `app/lib/auth/credentials.ts` |
+| Credit balance gate (atomic `UPDATE ... WHERE balance >= cost`) | `app/lib/credits/index.ts` |
+| Webhook idempotency (`(provider, event_id)` unique index) | `app/lib/payments/sync.ts` |
+
+Tool endpoints rely on the credit balance alone, so a funded account can still
+drive unbounded write volume. Add a rate limiter (Cloudflare Rate Limiting rules,
+or a KV/Durable Object counter) before exposing a tool to real traffic.
 
 ## Authentication
 
@@ -212,11 +222,18 @@ Most server functions require authentication. If a user is not authenticated, th
 
 ## Environment Variables
 
-Server functions access environment variables via `process.env`:
+Server functions read configuration from `process.env` (on Workers this is populated
+only for `compatibility_date` >= 2025-04-01 — see [architecture.md](./architecture.md)).
 
-- `GOOGLE_CLIENT_ID` - Google OAuth client ID
-- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
-- `STRIPE_SECRET_KEY` - Stripe secret key
-- `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret
-- `TURSO_DATABASE_URL` - Turso database URL
-- `TURSO_AUTH_TOKEN` - Turso auth token
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URL` | Neon pooled connection string (runtime) |
+| `DATABASE_URL_UNPOOLED` | Neon direct connection string (migrations only, never in the Worker) |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth |
+| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Stripe |
+| `CREEM_API_KEY` / `CREEM_WEBHOOK_SECRET` | Creem |
+| `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` / `PAYPAL_WEBHOOK_ID` | PayPal |
+| `ADMIN_EMAILS` | Comma-separated admin allowlist |
+| `MAIL_PROVIDER` / `MAIL_FROM` / `RESEND_API_KEY` | Email |
+
+Full list with descriptions: [`.env.example`](../.env.example).

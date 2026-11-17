@@ -255,9 +255,15 @@ npm run type-check   # 仅类型检查
 npm run lint
 npm test
 npm run dev:cf       # 用 wrangler 跑真实 workerd（R2 本地开发必须走这个）
-npm run db:generate  # 改完 schema 生成迁移
-npm run db:push
+npm run db:generate  # 改完 schema.pg.ts 生成迁移
+npm run db:migrate   # 应用未应用的迁移（走直连）
+npm run db:check     # 库是否落后于迁移文件；落后则非 0 退出
+npm run db:baseline  # 给 db:push 建出来的老库补迁移记录
+npm run db:studio    # 可视化浏览
 ```
+
+`db:push` 仍在，但**只建议一次性本地实验**——它不留迁移记录，
+之后 `db:migrate` 会从 0000 重放并撞「表已存在」。
 
 ## 多语言
 
@@ -303,6 +309,10 @@ noindex 的，没有 SEO 价值。
 - 线上 `DATABASE_URL` 用 `wrangler secret put DATABASE_URL` 设置（填池化端点）。
   迁移用的 `DATABASE_URL_UNPOOLED` 只放本地 `.env.local` 与 CI Secret，不要注入 Worker。
 - Stripe SDK 锁在 v14（对应 API 版本 `2023-10-16`）。
+- **没有通用的接口限流**。工具端点只靠积分余额拦截，余额充足就能持续写入；
+  对外开放前建议挂 Cloudflare Rate Limiting 或 KV/Durable Object 计数器。
+- 积分扣减与流水写入不是同一事务（neon-http 驱动不支持跨语句事务），
+  「扣费成功但流水缺一条」在极端情况下可能发生，余额本身不会出错。
 - 使用 R2 存储工具产物前，先创建桶，再取消 `wrangler.toml` 中
   `[[r2_buckets]]` 的注释。
 - 隐私政策与服务条款是占位文本，上线前必须替换。

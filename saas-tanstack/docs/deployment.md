@@ -1,278 +1,153 @@
-# Deployment Guide
+# 部署指南
 
-## Overview
+模板部署到 Cloudflare Workers，数据库用 Neon（PostgreSQL）。
+数据库的运维细节（连接串分工、迁移、备份、排障）见 [database.md](./database.md)。
 
-This guide explains how to deploy the SaaS Template to Cloudflare Workers.
+## 1. 前提
 
-## Prerequisites
+| 项 | 要求 |
+|---|---|
+| Node.js | ≥ 24（仓库有 `.nvmrc`） |
+| Neon 账号 | 免费计划即可 |
+| Cloudflare 账号 | Workers 免费计划即可；R2 / Email Service 需要相应权限 |
+| 命令行 | `npm i -g neon` 与 `wrangler`（作为 devDependency 已装） |
 
-1. Node.js 18+ installed
-2. Cloudflare account
-3. Wrangler CLI installed (`npm install -g wrangler`)
-4. Turso database setup
-5. Stripe account (for payments)
-6. Google Cloud Console project (for OAuth)
-
-## Local Development
-
-### 1. Install Dependencies
+## 2. 本地开发
 
 ```bash
+cd saas-tanstack
 npm install
-```
 
-### 2. Setup Environment Variables
-
-Copy `.env.example` to `.env.local` and fill in your values:
-
-```bash
 cp .env.example .env.local
+# 用 Neon CLI 自动填连接串（不要手拼）
+neon link --project-id <project-id> --branch main
+neon env pull
+
+npm run db:check     # 确认库与迁移文件一致
+npm run db:migrate   # 库落后时应用迁移
+npm run dev          # http://localhost:3000
 ```
 
-### 3. Setup Database
+> **跨境访问注意**：本机到 Neon 的直连在建连阶段可能抖到十几秒，
+> 而 Node 的 undici 默认 10s 超时。若频繁出现 `UND_ERR_CONNECT_TIMEOUT`，
+> 带代理启动：`HTTPS_PROXY=http://127.0.0.1:7890 NODE_USE_ENV_PROXY=1 npm run dev`
+
+## 3. Neon 准备
 
 ```bash
-npm run db:generate
-npm run db:push
+neon projects create --name <name> --region-id aws-ap-southeast-1   # 区域创建后不可改
+neon link --project-id <project-id> --branch main
+neon env pull        # 同时写入 DATABASE_URL（池化）与 DATABASE_URL_UNPOOLED（直连）
+npm run db:migrate
 ```
 
-### 4. Start Development Server
+两个连接串分工不同，别混用：应用用池化，迁移/备份用直连。见 [database.md](./database.md)。
+
+## 4. 部署到 Cloudflare Workers
+
+### 4.1 构建与部署
 
 ```bash
-npm run dev
+npm run build:cf     # tsc --noEmit && vite build
+wrangler deploy
 ```
 
-The application will be available at `http://localhost:3000`.
+入口是 [`worker/index.ts`](../worker/index.ts)，不是构建产物本身——原因见该文件注释。
 
-## Cloudflare Workers Deployment
-
-### 1. Login to Cloudflare
+### 4.2 设置运行时机密
 
 ```bash
-wrangler login
-```
-
-### 2. Configure wrangler.toml
-
-Update `wrangler.toml` with your Cloudflare account details:
-
-```toml
-name = "saas-tanstack"
-main = "./dist/server/index.mjs"
-compatibility_date = "2024-12-01"
-compatibility_flags = ["nodejs_compat"]
-
-[site]
-bucket = "./dist/client"
-```
-
-### 3. Set Environment Variables
-
-Set secrets using Wrangler:
-
-```bash
-wrangler secret put TURSO_DATABASE_URL
-wrangler secret put TURSO_AUTH_TOKEN
+wrangler secret put DATABASE_URL      # 池化端点（-pooler），不是直连
 wrangler secret put GOOGLE_CLIENT_ID
 wrangler secret put GOOGLE_CLIENT_SECRET
 wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_WEBHOOK_SECRET
+wrangler secret put ADMIN_EMAILS      # 逗号分隔，不配则后台对所有人关闭
 ```
 
-### 4. Build and Deploy
+`DATABASE_URL_UNPOOLED` **不要**注入 Worker：它只给迁移和 CI 用。
 
-```bash
-npm run build:cf
-npm run deploy:cf
-```
+### 4.3 构建期变量（非机密）
 
-## Database Setup (Turso)
+`VITE_*` 会被内联进产物，所以必须在**构建时**就存在：
 
-### 1. Create Turso Database
+| 变量 | 例 |
+|---|---|
+| `VITE_APP_URL` | `https://your-domain.com`（决定 OAuth 回调、支付跳转、canonical/sitemap 的绝对 URL） |
+| `VITE_PAYMENT_PROVIDERS` | `stripe` 或 `stripe,creem,paypal` |
+| `VITE_STRIPE_*` / `VITE_CREEM_*` / `VITE_PAYPAL_*` | 各渠道的价格 / 商品 ID |
 
-```bash
-turso db create saas-tanstack
-```
+本地构建：直接写进 `.env.local`。CI：配成仓库 Variables。
 
-### 2. Get Database URL
+### 4.4 CI 自动部署
 
-```bash
-turso db show saas-tanstack --url
-```
+`.github/workflows/deploy.yml`：
 
-### 3. Create Auth Token
+1. **verify**（PR 也跑）：`npm ci` → `audit` → `types:cf` → `type-check` → `lint` → `test`
+2. **deploy**（仅 main 分支）：先 `db:check`（库落后于迁移文件就不部署），再构建、部署
 
-```bash
-turso db tokens create saas-tanstack
-```
+需要的仓库配置：
 
-### 4. Run Migrations
+| 类型 | 名称 | 说明 |
+|---|---|---|
+| Secret | `CF_API_TOKEN` | 权限：`Workers Scripts:Edit` + `Account:Read` |
+| Secret | `CF_ACCOUNT_ID` | 账号 ID（`wrangler whoami` 可查） |
+| Secret | `DATABASE_URL_UNPOOLED` | 迁移检查用，仅 CI |
+| Variable | `VITE_APP_URL`、`VITE_PAYMENT_PROVIDERS`、各渠道商品 ID | 构建期内联 |
 
-```bash
-npm run db:generate
-npm run db:push
-```
+> **token 会失效**。CI 报 `Authentication error [code: 10000]` 时，
+> 去 Cloudflare Dashboard 重新生成 API Token 并更新该 secret。
 
-## Stripe Setup
+## 5. 第三方配置
 
-### 1. Get API Keys
+### 5.1 Stripe
 
-- Go to Stripe Dashboard → Developers → API Keys
-- Copy `Secret Key` and `Publishable Key`
+1. Dashboard → Developers → API Keys：拿 Secret Key / Publishable Key
+2. Products → 为每个套餐建产品与价格，记下 `price_...`
+3. Webhooks → 添加端点 `https://your-domain.com/api/webhook/stripe`，
+   勾选 `checkout.session.completed`、`customer.subscription.updated`、
+   `customer.subscription.deleted`
 
-### 2. Create Products and Prices
+结账只接收 `priceId`，金额与套餐由服务端映射，前端传什么金额都不影响扣款。
 
-- Go to Stripe Dashboard → Products
-- Create products for each plan
-- Note the price IDs
+### 5.2 Creem / PayPal
 
-### 3. Setup Webhooks
+Webhook 端点分别是 `/api/webhook/creem` 和 `/api/webhook/paypal`。
+PayPal 必须设 `PAYPAL_WEBHOOK_ID`，否则回调会被直接拒绝（不验签等于门户大开）；
+`PAYPAL_MODE` 显式设为 `sandbox` 或 `live`，不要依赖 `NODE_ENV`。
 
-- Go to Stripe Dashboard → Developers → Webhooks
-- Add endpoint: `https://your-domain.com/api/webhook/stripe`
-- Select events:
-  - `checkout.session.completed`
-  - `customer.subscription.updated`
-  - `customer.subscription.deleted`
+### 5.3 Google OAuth
 
-### 4. Update Environment Variables
+1. Google Cloud Console 建项目 → APIs & Services → Credentials → OAuth client ID（Web application）
+2. **已授权的重定向 URI 填**：`<VITE_APP_URL>/auth-callback`
 
-```bash
-wrangler secret put STRIPE_SECRET_KEY
-wrangler secret put STRIPE_WEBHOOK_SECRET
-```
+> ⚠️ 是 `/auth-callback`（中划线），**不是** `/auth/callback`。填错会得到
+> `redirect_uri_mismatch`，而且报错页面不会告诉你是路径写错了。
 
-## Google OAuth Setup
+## 6. 自定义域名
 
-### 1. Create Google Cloud Project
+1. 域名接入 Cloudflare
+2. Workers & Pages → 选中该 Worker → Settings → Domains & Routes → Add custom domain
+3. 把 `VITE_APP_URL` 改成新域名并**重新构建**（它被内联进产物），重新部署
+4. 同步更新 Google 的授权回调地址与各渠道的 webhook 地址
 
-- Go to Google Cloud Console
-- Create a new project
+## 7. 排障
 
-### 2. Enable Google+ API
+| 现象 | 原因 | 处置 |
+|---|---|---|
+| 全站 500，日志 `No database connection string was provided to neon()` | `compatibility_date` < 2025-04-01，`process.env` 是空对象 | 把 `wrangler.toml` 的 `compatibility_date` 提到 2026-09-07 后重新部署 |
+| 注册/登录报错，日志 `Pbkdf2 failed: iteration counts above 100000` | PBKDF2 迭代数超过 Workers 上限 | 保持 `app/lib/auth/password.ts` 的 `ITERATIONS = 100_000` |
+| CI 报 `Authentication error [code: 10000]` | `CF_API_TOKEN` 失效 | 重新生成并更新 secret |
+| `npm run db:migrate` 报「relation already exists」 | 库是 `db:push` 建的，迁移记录为空 | `npm run db:baseline` 后再 migrate |
+| 本地 `UND_ERR_CONNECT_TIMEOUT` | 跨境建连抖动 + undici 10s 超时 | 带代理启动（见第 2 节） |
 
-- Go to APIs & Services → Library
-- Search for "Google+ API" and enable it
+## 8. 上线检查清单
 
-### 3. Create OAuth Credentials
-
-- Go to APIs & Services → Credentials
-- Click "Create Credentials" → "OAuth client ID"
-- Application type: "Web application"
-- Authorized redirect URIs:
-  - `http://localhost:3000/auth/callback` (development)
-  - `https://your-domain.com/auth/callback` (production)
-
-### 4. Update Environment Variables
-
-```bash
-wrangler secret put GOOGLE_CLIENT_ID
-wrangler secret put GOOGLE_CLIENT_SECRET
-```
-
-## Custom Domain
-
-### 1. Add Domain to Cloudflare
-
-- Go to Cloudflare Dashboard → Workers & Pages
-- Select your worker
-- Go to Settings → Domains & Routes
-- Add your custom domain
-
-### 2. Update Environment Variables
-
-Update `VITE_APP_URL` in your environment variables:
-
-```bash
-wrangler secret put VITE_APP_URL
-# Enter: https://your-domain.com
-```
-
-## Monitoring
-
-### 1. View Logs
-
-```bash
-wrangler tail
-```
-
-### 2. Check Analytics
-
-- Go to Cloudflare Dashboard → Workers & Pages
-- Select your worker
-- View Analytics tab
-
-## Troubleshooting
-
-### Build Errors
-
-If you encounter build errors:
-
-1. Clear build cache: `rm -rf dist .vinxi`
-2. Reinstall dependencies: `rm -rf node_modules && npm install`
-3. Rebuild: `npm run build:cf`
-
-### Database Connection Issues
-
-1. Verify `TURSO_DATABASE_URL` is correct
-2. Verify `TURSO_AUTH_TOKEN` is valid
-3. Check Turso dashboard for database status
-
-### Stripe Webhook Issues
-
-1. Verify webhook endpoint is correct
-2. Check webhook signature verification
-3. View Stripe webhook logs for errors
-
-### Google OAuth Issues
-
-1. Verify redirect URI matches exactly
-2. Check Google Cloud Console for API enabled
-3. Verify client ID and secret are correct
-
-## Performance Optimization
-
-### 1. Enable Caching
-
-Cloudflare Workers automatically caches static assets. For dynamic content, use Cloudflare KV or D1 for caching.
-
-### 2. Optimize Images
-
-Use Cloudflare Images for image optimization and delivery.
-
-### 3. Enable Compression
-
-Cloudflare automatically compresses responses. Verify in Cloudflare Dashboard → Speed → Optimization.
-
-## Security Best Practices
-
-1. **Keep secrets secure:** Never commit secrets to version control
-2. **Use HTTPS:** Always use HTTPS in production
-3. **Regular updates:** Keep dependencies updated
-4. **Monitor logs:** Regularly check for suspicious activity
-5. **Backup database:** Regularly backup your Turso database
-
-## Cost Optimization
-
-### Cloudflare Workers
-
-- Free tier: 100,000 requests/day
-- Paid tier: $0.50 per million requests
-
-### Turso
-
-- Free tier: 9GB storage, 1 billion row reads
-- Paid tier: Pay as you go
-
-### Stripe
-
-- No monthly fees
-- 2.9% + 30¢ per transaction
-
-## Support
-
-For issues or questions:
-
-1. Check the [documentation](./docs/)
-2. Search [GitHub Issues](https://github.com/yourusername/saas-tanstack/issues)
-3. Join our [Discord community](https://discord.gg/your-server)
+- [ ] `npm run db:check` 通过（库与迁移文件一致）
+- [ ] `wrangler secret list` 里 `DATABASE_URL` 指向**池化**端点
+- [ ] `ADMIN_EMAILS` 已配置（不配则后台对所有人关闭）
+- [ ] `MAIL_PROVIDER` 从 `console` 换成真实服务商
+- [ ] 隐私政策 / 服务条款占位文本已替换
+- [ ] `VITE_APP_URL` 与线上域名一致，且部署前重新构建过
+- [ ] 三个渠道的 webhook 端点都能收到回调（在 Dashboard 里看投递记录）
+- [ ] 走一遍：注册 → 登录 → 跑工具扣积分 → 登出 → 重登

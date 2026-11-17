@@ -197,7 +197,7 @@
     },
     "question6": {
       "q": "用的什么数据库？",
-      "a": "Drizzle ORM 配两套可互换的驱动：边缘部署用 Cloudflare D1（SQLite），其余场景用 Neon（Postgres）。一份 schema，有测试保证两边一致。"
+      "a": "Drizzle ORM + Neon（PostgreSQL）。表结构只有一份，迁移是版本化的 SQL 文件；库落后于迁移文件时 CI 会拒绝部署。"
     },
     "question7": {
       "q": "怎么加我自己的工具？",
@@ -481,7 +481,7 @@
       },
       "database": {
         "label": "数据库",
-        "value": "Drizzle · D1 / Neon"
+        "value": "Drizzle · Neon (PostgreSQL)"
       },
       "payments": {
         "label": "支付",

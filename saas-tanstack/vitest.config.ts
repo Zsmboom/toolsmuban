@@ -14,7 +14,7 @@ export default defineConfig({
     alias: {
       '~': path.resolve(import.meta.dirname, './app'),
       // Workers 运行时内置模块，测试环境用 stub 顶替，
-      // 这样切到 D1 时单元测试照样能跑
+      // 这样 mail/storage 这些依赖 `cloudflare:workers` 的模块仍能被解析
       'cloudflare:workers': path.resolve(import.meta.dirname, './tests/cloudflare-workers-stub.ts'),
     },
   },

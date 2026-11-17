@@ -197,7 +197,7 @@
     },
     "question6": {
       "q": "Which database does it use?",
-      "a": "Drizzle ORM with two interchangeable drivers: Cloudflare D1 (SQLite) for edge deploys and Neon (Postgres) for everything else. One schema, checked for parity by a test."
+      "a": "Drizzle ORM on Neon (PostgreSQL). One schema file, versioned SQL migrations, and a deploy gate that refuses to ship when the database is behind them."
     },
     "question7": {
       "q": "How do I add my own tool?",
@@ -481,7 +481,7 @@
       },
       "database": {
         "label": "Database",
-        "value": "Drizzle · D1 / Neon"
+        "value": "Drizzle · Neon (PostgreSQL)"
       },
       "payments": {
         "label": "Payments",
@@ -920,7 +920,7 @@
     "adminPanelHint": "Users, billing and the audit trail",
     "adminFallbackName": "admin",
     "backToApp": "Back to the app",
-    "anonymous": "there",
+    "anonymous": "friend",
     "openMenu": "Open navigation",
     "closeMenu": "Close navigation"
   },

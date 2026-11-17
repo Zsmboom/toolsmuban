@@ -14,7 +14,7 @@ interface SendEmailBinding {
 /**
  * Cloudflare Email Service（Email Sending）。
  *
- * 优点是不用引入第三方：你如果本来就为了 D1 写入额度上了 Workers Paid，
+ * 优点是不用引入第三方：你如果本来就已经在 Workers Paid 计划上，
  * 发信是顺带的。
  *
  * 使用前提：
