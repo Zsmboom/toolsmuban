@@ -34,19 +34,11 @@ PAYPAL_MODE = "sandbox"
 # 见 .github/workflows/deploy.yml 里的 VITE_* 列表。
 
 # ============================================================
-# 数据库：二选一，跟 `npm run db:use` 的选择保持一致
+# 数据库：仅 Neon（PostgreSQL）
 # ============================================================
-# 选 D1 时取消下面三行注释，并把 database_id 换成
-# `wrangler d1 create <name>` 返回的值。
-# 选 Neon 时保持注释，改用 `wrangler secret put DATABASE_URL`。
-#
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "saas-db"
-# 本地 `wrangler dev --local` 用不到真实 id。
-# 部署前执行 `wrangler d1 create saas-db`，把返回的 id 填到这里。
-# database_id = "REPLACE_WITH_REAL_D1_ID"
-# migrations_dir = "drizzle/sqlite"
+# 连接串是机密，用 `wrangler secret put DATABASE_URL` 设置（填池化端点）。
+# 迁移/备份用直连端点 DATABASE_URL_UNPOOLED，只放在本地 .env.local 与 CI Secret，
+# 不要注入 Worker 运行时。
 
 # ============================================================
 # 工具产物存储（R2）

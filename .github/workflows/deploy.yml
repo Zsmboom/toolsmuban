@@ -42,19 +42,6 @@ jobs:
       - name: Test
         run: npm test
 
-      # 模板同时支持 Neon 和 D1。当前没启用的那个也必须能编译、能过测试，
-      # 否则等到真要切换时才发现坏了。这里把两种配置都跑一遍。
-      - name: Verify the inactive database provider still builds
-        run: |
-          ACTIVE=$(grep -oE "'(neon|d1)'" app/lib/db/provider.ts | head -1 | tr -d "'")
-          OTHER=$([ "$ACTIVE" = "neon" ] && echo d1 || echo neon)
-          echo "active=$ACTIVE, verifying $OTHER"
-          npm run db:use "$OTHER"
-          npm run type-check
-          npm run lint
-          npm test
-          npm run db:use "$ACTIVE"
-          git diff --exit-code -- app/lib/db drizzle.config.ts
 
   deploy:
     # 只有校验通过才部署，且 PR 不部署
@@ -74,6 +61,14 @@ jobs:
           cache-dependency-path: saas-tanstack/package-lock.json
 
       - run: npm ci
+
+      # 库落后于迁移文件就不许部署。
+      # 2026-06 那次线上故障（admin_audit_logs / users 三列从未应用）就是因为
+      # 部署前没有任何一步检查过「库和代码是否对得上」。
+      - name: Check pending DB migrations
+        run: npm run db:check
+        env:
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       # 这些是非机密的构建期变量（商品/价格 ID、站点地址），
       # 会被内联进产物，供服务端和浏览器端共用。

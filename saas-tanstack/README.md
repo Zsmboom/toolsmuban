@@ -7,7 +7,7 @@
 
 - **框架**：TanStack Start + TanStack Router（SSR）
 - **UI**：React 19 + Tailwind CSS v4
-- **数据库**：Neon (PostgreSQL) 或 Cloudflare D1 (SQLite)，一条命令切换
+- **数据库**：Neon (PostgreSQL)，Drizzle ORM + 迁移文件管理
 - **存储**：Cloudflare R2（工具产物）
 - **支付**：Stripe / Creem / PayPal（可任选启用）
 - **部署**：Cloudflare Workers
@@ -38,7 +38,7 @@ CI 会用无密钥的示例环境检查它是否同步。
 | 套餐价格、额度、各渠道商品 ID | `app/lib/payments/plans.ts` |
 | 工具清单与每次消耗的积分 | `app/lib/tools/registry.ts` |
 | **工具的实际实现** | `app/lib/tools/server-fns.ts` 里的 `handlers` |
-| 数据库服务商 | `npm run db:use neon\|d1` |
+| 数据库连接 | `.env.local` 里的 `DATABASE_URL` / `DATABASE_URL_UNPOOLED` |
 | 全站文案（中英） | `app/messages/en.json`、`zh.json` |
 | 启用哪些语言 | `app/lib/i18n.ts` 的 `ENABLED_LOCALES` |
 | 首页各区块内容 | `app/components/marketing/*` |
@@ -73,45 +73,47 @@ export const TOOLS = {
 } satisfies Record<string, ToolDefinition>;
 ```
 
-## 数据库：Neon 还是 D1
+## 数据库（Neon PostgreSQL）
 
-模板同时支持两家，**建站时选一个**：
+模板只支持 Neon。表结构在 `app/lib/db/schema.pg.ts`，迁移文件在 `drizzle/pg/`。
+
+### 两条连接串，别混用
+
+| 变量 | 用在哪 | 端点 |
+|---|---|---|
+| `DATABASE_URL` | 应用运行时 | **池化**（主机名含 `-pooler`） |
+| `DATABASE_URL_UNPOOLED` | 迁移 / 生成 / 备份 | **直连** |
+
+池化连接上跑 DDL 会出各种偶发问题，而错误信息通常和真实原因无关。
+`npm run db:*` 已被 `scripts/db.mjs` 包了一层，会强制校验直连串并拒绝 `-pooler`。
+
+两条都可以用 Neon CLI 自动写入，不要手拼：
 
 ```bash
-npm run db:use d1      # Cloudflare D1 (SQLite)
-npm run db:use neon    # Neon (PostgreSQL)   ← 默认
+neon link --project-id <id> --branch main    # 写 .neon 上下文，并把 env 拉进 .env.local
+neon env pull                                # 只刷新 Neon 变量，其它行保留
 ```
 
-这条命令只改四个「切换点」（驱动 import、schema re-export、方言标记、drizzle 配置），
-业务代码一行都不动。切换后重新生成迁移即可。
+### 迁移命令
 
-### 怎么选
+```bash
+npm run db:generate   # schema.pg.ts 改动 → 生成新的 SQL 迁移
+npm run db:migrate    # 把未应用的迁移打到库上（走直连）
+npm run db:check      # 库是否落后于迁移文件；落后则非 0 退出（CI 用）
+npm run db:baseline   # 给「用 db:push 建出来的老库」补迁移记录
+npm run db:studio     # 可视化浏览
+```
 
-|  | D1 | Neon |
-|---|---|---|
-| 免费存储 | 5 GB | 0.5 GB |
-| 免费读/写 | 500 万行/天 · 10 万行/天 | 按计算时长 |
-| 冷启动 | 无 | 有（空闲自动挂起） |
-| 出口流量 | 免费 | 有限制 |
-| 本地开发 | `npm run dev:cf`（wrangler） | `npm run dev` |
-| 可移植性 | 绑定 Cloudflare | 换服务商即可 |
+`db:push` 仍然保留，但**只建议用于一次性本地实验**。它直接改库、不留迁移记录，
+之后 `db:migrate` 就会从 0000 重放并撞「表已存在」——2026-06 那次事故就是这么来的。
 
-**部署在 Cloudflare、想省事 → D1。** 没有冷启动、不用管第二个服务商、
-免费额度大十倍。按当前 schema 算，每次工具调用约写入 14 行（含索引写放大），
-10 万行/天≈**7,100 次调用/天**；不够用就上 Workers Paid（$5/月，账号下所有站共享，
-写入提到 5000 万/月）。
+### 部署前必须做
 
-**需要 pgvector / 全文检索 / 复杂分析 SQL，或不想绑定 Cloudflare → Neon。**
+`db:check` 已经接进 CI 的 deploy 作业：库落后于迁移文件时**不会部署**。
+本地要验证线上库状态，把 `DATABASE_URL_UNPOOLED` 指到线上直连串再跑 `npm run db:check`。
 
-### 维护两份 schema
-
-方言绑定的关系，表结构必须写两份：`schema.pg.ts` 和 `schema.sqlite.ts`。
-**改了一边一定要改另一边** —— `schema-parity.test.ts` 会逐表比对表名、列名、
-notNull、主键、默认值、索引、唯一约束、外键数量，漏改直接测试失败。
-CI 还会把没启用的那个服务商也跑一遍类型检查和测试。
-
-方言差异的 SQL 统一收在 `app/lib/db/dialect.ts`（目前只有日期格式化和 `MAX/GREATEST`
-两处），业务代码里不要直接写某一家的专有函数。
+方言差异的 SQL 集中在 `app/lib/db/dialect.ts`（日期格式化、`GREATEST` 两处），
+业务代码里不要直接写数据库专有函数。
 
 ## 管理员
 
@@ -169,7 +171,7 @@ MAIL_PROVIDER=resend      # Resend
 
 | | 说明 |
 |---|---|
-| **Cloudflare Email Service** | 不用引第三方。**但发信功能仅 Workers Paid 计划**（公测中）。你若本来就为 D1 额度上了付费计划，这是最省事的。 |
+| **Cloudflare Email Service** | 不用引第三方。**但发信功能仅 Workers Paid 计划**（公测中）。你若已经在 Workers Paid 计划，这是最省事的。 |
 | **Resend** | 纯 HTTP API，Workers 上零兼容问题。 |
 | 其他（Brevo / SES / MailerSend…） | 加个 provider 文件即可。 |
 
@@ -200,9 +202,9 @@ loader 是同构的，顶层 import 数据库会把 Neon 驱动和整套表结�
 
 **积分扣减必须是单条带条件的 UPDATE。**
 `UPDATE ... WHERE balance >= cost RETURNING` 的原子性在两家都成立
-（Postgres 靠行锁，SQLite/D1 写操作本身串行）。先 SELECT 再 UPDATE
+（Postgres 靠行锁）。先 SELECT 再 UPDATE
 在并发下会把余额扣成负数。
-注意 neon-http 和 D1 都不支持跨语句事务，需要严格一致时 Neon 可换 WebSocket 驱动。
+注意 neon-http 驱动不支持跨语句事务，需要严格一致时改用 Cloudflare Hyperdrive + node-postgres。
 
 **webhook 必须去重。**
 三家渠道都会重投，`webhook_events` 表的 `(provider, event_id)` 唯一约束是闸门，
@@ -252,8 +254,7 @@ npm run build:cf     # 类型检查 + 构建
 npm run type-check   # 仅类型检查
 npm run lint
 npm test
-npm run dev:cf       # 用 wrangler 跑真实 workerd（D1 / R2 本地开发必须走这个）
-npm run db:use d1    # 切换数据库服务商
+npm run dev:cf       # 用 wrangler 跑真实 workerd（R2 本地开发必须走这个）
 npm run db:generate  # 改完 schema 生成迁移
 npm run db:push
 ```
@@ -299,10 +300,8 @@ noindex 的，没有 SEO 价值。
 - 生产环境需要把 `MAIL_PROVIDER` 从 `console` 换成真实服务商，否则不会真的发信。
 - **Google OAuth 的真实往返尚未端到端验证过**（需要你自己的 client id/secret）。
   代码里 state + PKCE + 邮箱已验证校验都在，但没跑过真实授权。
-- 只有切换到 D1 时，才取消 `wrangler.toml` 中 `[[d1_databases]]` 的注释，
-  并把 `database_id` 换成 `wrangler d1 create` 返回的真值。
-  注意本地 D1 状态是按 database_id 存的，改完之后本地库会变空，重跑一次
-  `wrangler d1 migrations apply saas-db --local` 即可。
+- 线上 `DATABASE_URL` 用 `wrangler secret put DATABASE_URL` 设置（填池化端点）。
+  迁移用的 `DATABASE_URL_UNPOOLED` 只放本地 `.env.local` 与 CI Secret，不要注入 Worker。
 - Stripe SDK 锁在 v14（对应 API 版本 `2023-10-16`）。
 - 使用 R2 存储工具产物前，先创建桶，再取消 `wrangler.toml` 中
   `[[r2_buckets]]` 的注释。
