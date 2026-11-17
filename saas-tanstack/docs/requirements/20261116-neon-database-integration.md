@@ -481,6 +481,48 @@ HTTPS_PROXY=http://127.0.0.1:7890 NODE_USE_ENV_PROXY=1 npm run dev
 
 ---
 
+## 10.5 执行结果（2026-11-17，P0–P8 全部完成）
+
+| 阶段 | 结果 |
+|---|---|
+| 提交基线 | 旧 Next.js 应用删除 / saas-tanstack 入库 / 工程配置 / Turso 配置清理，共 7 个提交，分支 `neon-migration` 已并入 `main` |
+| 安全 | `npm audit` 27 个漏洞（6 critical / 9 high）→ **0**；TanStack Start 反射型 XSS 修复；`zod` 确认为零引用死依赖后移除而非破坏性升级 |
+| 单栈收敛 | D1 驱动 / schema.sqlite / parity 测试 / db-use.mjs / drizzle/sqlite 全部移除；`dialect.ts` 仅保留 Postgres 实现 |
+| 迁移体系 | 新增 `scripts/db.mjs`：强制直连、拒绝 `-pooler`、自动加载 `.env.local`，提供 `check` / `baseline`；CI 部署前跑 `db:check` |
+| 文档 | `architecture.md` 重写、`deployment.md` 与 `api.md` 的 Turso 内容清除、新增 `docs/database.md` 运维手册、README 重写数据库章节 |
+| 本地端到端 | 注册 → Dashboard(100 额度) → 跑工具(Balance 99) → 落库核对 users=1 / tx=1 / logs=1 ✓ |
+| 线上部署 | 已部署（版本 `80ce226c`），全站 200，`wrangler tail` 无异常，robots/sitemap 正常 |
+| 线上端到端 | 注册 → 扣积分 → 登出 → 重登，全部通过，数据落在新加坡库（`pbkdf2$100000$…`） |
+
+### 执行中发现的两个新缺陷（均已修复）
+
+**1. 密码哈希迭代次数超过 Workers 上限（线上注册/登录必失败）**
+
+```
+NotSupportedError: Pbkdf2 failed: iteration counts above 100000 are not supported (requested 210000)
+```
+
+Workers WebCrypto 的 PBKDF2 上限是 100,000，代码按 OWASP 取了 210,000。
+Node 无此限制，所以本地正常、线上必挂，单元测试（跑在 Node 上）也覆盖不到。
+已降为 100,000 并在注释里记录原始报错，测试断言锁死该值。
+
+**2. GitHub Actions 的 `CF_API_TOKEN` 已失效**
+
+CI 的 verify 作业全绿，deploy 作业报 `Authentication error [code: 10000]`。
+该 token 创建于 2026-06-12，已失效。本次部署改用本地 `wrangler`（OAuth）完成。
+**待办：在 Cloudflare Dashboard 重新生成 API Token 并更新仓库 secret。**
+
+### 仍未解决（需要你决策）
+
+| 项 | 说明 |
+|---|---|
+| Worker 缺业务 secret | 目前只有 `DATABASE_URL`；`GOOGLE_*` / `STRIPE_*` / `CREEM_*` / `PAYPAL_*` 均未设置，Google 登录与支付在线上不可用 |
+| 仓库 variables 不全 | 只有 `VITE_APP_URL`、`VITE_PAYMENT_PROVIDERS`；价格/商品 ID 缺失，结账会失败 |
+| 支付与积分的测试缺口 | `payments` 的 webhook/sync、`credits`、`admin` 仍无单元测试 |
+| `.claude/settings.local.json` | 22KB 历史一次性权限，未清理（不属于本次范围） |
+
+---
+
 ## 11. 顺带发现（**不在本次范围**，仅登记）
 
 | 发现 | 说明 |
