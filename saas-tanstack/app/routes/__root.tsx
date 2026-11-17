@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   useRouterState,
+  type ErrorComponentProps,
 } from '@tanstack/react-router';
 import { AuthProvider } from '~/lib/auth/context';
 import { I18nProvider } from '~/lib/i18n-context';
@@ -134,7 +135,11 @@ function NotFound() {
   );
 }
 
-function RootError({ error }: { error: Error }) {
+function RootError({ error }: ErrorComponentProps) {
+  // TanStack 把 errorComponent 的 error 类型收敛为 unknown，
+  // 只有开发态才展示细节，这里显式判一下类型。
+  const message = error instanceof Error ? error.message : String(error ?? '');
+
   return (
     <RootDocument>
       <main id="main" className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
@@ -144,7 +149,7 @@ function RootError({ error }: { error: Error }) {
         </p>
         {import.meta.env?.DEV && (
           <pre className="tabular mt-6 max-w-2xl overflow-x-auto rounded-[var(--radius)] border border-border bg-subtle p-4 text-left text-xs">
-            {error.message}
+            {message}
           </pre>
         )}
         <Link to="/{-$locale}" className={cn(buttonClass({ variant: 'primary' }), 'mt-8')}>
