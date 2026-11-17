@@ -13,7 +13,8 @@ describe('password hashing', () => {
     const h = await hashPassword('correct horse battery');
     const [algo, iterations] = h.split('$');
     expect(algo).toBe('pbkdf2');
-    expect(Number(iterations)).toBeGreaterThanOrEqual(210_000);
+    // Cloudflare Workers 的 PBKDF2 上限是 100,000，超了线上注册会直接抛错
+    expect(Number(iterations)).toBe(100_000);
   });
 
   it('正确密码通过，错误密码不通过', async () => {

@@ -3,16 +3,26 @@ import { timingSafeEqual } from './index';
 /**
  * 密码哈希。
  *
- * Cloudflare Workers 上跑不了 bcrypt / argon2（原生模块），能用的只有
- * WebCrypto。这里用 PBKDF2-HMAC-SHA256，迭代次数按 OWASP 2023 的建议取
- * 210,000。**绝对不要**退回到裸 SHA-256 —— 那种哈希用 GPU 每秒能试上百亿次。
+ * Cloudflare Workers 上跑不了 bcrypt / argon2（原生模块），能用的只有 WebCrypto。
+ * 这里用 PBKDF2-HMAC-SHA256。**绝对不要**退回到裸 SHA-256 —— 那种哈希用 GPU
+ * 每秒能试上百亿次。
+ *
+ * ⚠️ 迭代次数上限是 100,000，这是 Cloudflare Workers 硬性限制，不是我们的选择。
+ * Workers 的 WebCrypto 实现在超过该值时直接抛：
+ *   NotSupportedError: Pbkdf2 failed: iteration counts above 100000 are not supported
+ * 而 Node 的 WebCrypto 没有这个上限 —— 所以调高到 OWASP 建议的 210,000 会
+ * 出现「本地注册正常、线上注册必失败」这种只在生产暴露的故障（2026-11-17 实际踩到）。
  *
  * 存储格式：`pbkdf2$<iterations>$<saltHex>$<hashHex>`
- * 迭代次数写进串里，将来调高门槛时老密码仍能校验，用户下次登录再透明升级。
+ * 迭代次数写进串里，将来平台放宽上限时可以平滑升级老密码。
+ *
+ * 历史兼容：若库中存在按 >100,000 迭代生成的哈希，在 Workers 上无法校验
+ * （算不出来），只能让用户走一次密码重置。
  */
 
 const ALGORITHM = 'pbkdf2';
-const ITERATIONS = 210_000;
+/** Workers WebCrypto 允许的最大值；改大之前先确认平台上限已放宽 */
+const ITERATIONS = 100_000;
 const SALT_BYTES = 16;
 const KEY_BITS = 256;
 
